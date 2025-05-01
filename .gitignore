@@ -1,0 +1,24 @@
+# Logs
+ServiceManagerFrontend/logs
+ServiceManagerFrontend/*.log
+ServiceManagerFrontend/npm-debug.log*
+ServiceManagerFrontend/yarn-debug.log*
+ServiceManagerFrontend/yarn-error.log*
+ServiceManagerFrontend/pnpm-debug.log*
+ServiceManagerFrontend/lerna-debug.log*
+
+ServiceManagerFrontend/node_modules
+ServiceManagerFrontend/dist
+ServiceManagerFrontend/dist-ssr
+ServiceManagerFrontend/*.local
+
+# Editor directories and files
+ServiceManagerFrontend/.vscode/*
+ServiceManagerFrontend/!.vscode/extensions.json
+ServiceManagerFrontend/.idea
+ServiceManagerFrontend/.DS_Store
+ServiceManagerFrontend/*.suo
+ServiceManagerFrontend/*.ntvs*
+ServiceManagerFrontend/*.njsproj
+ServiceManagerFrontend/*.sln
+ServiceManagerFrontend/*.sw?
