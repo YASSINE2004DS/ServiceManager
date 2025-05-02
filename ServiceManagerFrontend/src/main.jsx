@@ -13,6 +13,7 @@ import PageInscription from './Pages/PageInscription/PageInscription';
 import PageConnexion from './Pages/PageConnextion/PageConnexion';
 import PageDemandeEnvoyer from './Pages/PageDemandeEnvoyer/PageDemandeEnvoyer';
 import PageBoiteEmails from './Pages/PageBoiteEmails/PageBoiteEmails';
+import PageProfile from './Pages/PageProfile/PageProfile';
 
 const router = createBrowserRouter([
     {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
         path: '/intervention',
         element: <PageIntervention />,
     },
+    {
+        path: '/profile',
+        element: <PageProfile />
+    }
 ]);
 
 createRoot(document.getElementById('root')).render(
