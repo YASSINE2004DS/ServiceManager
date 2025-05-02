@@ -4,12 +4,13 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 
 import PageAccueil from './Pages/PageAccueil/PageAccueil';
 import PageAdmin from './Pages/PageAdmin/PageAdmin';
-import PageAuthentification from './Pages/PageAuthentification/PageAuthentification';
 import PageDemande from './Pages/PageDemande/PageDemande';
 import PageEmail from './Pages/PageEmail/PageEmail';
 import PageEmployee from './Pages/PageEmployee/PageEmployee';
 import PageIntervention from './Pages/PageIntervention/PageIntervention';
 import PageErreur from './Pages/PageErreur/PageErreur';
+import PageInscription from './Pages/PageInscription/PageInscription';
+import PageConnexion from './Pages/PageConnextion/PageConnexion';
 
 const router = createBrowserRouter([
     {
@@ -22,8 +23,8 @@ const router = createBrowserRouter([
         element: <PageAdmin />,
     },
     {
-        path: '/authentification',
-        element: <PageAuthentification />,
+        path: '/connexion',
+        element: <PageConnexion />,
     },
     {
         path: '/demande',
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
     {
         path: '/employee',
         element: <PageEmployee />,
+    },
+    {
+        path: '/inscription',
+        element: <PageInscription />
     },
     {
         path: '/intervention',
