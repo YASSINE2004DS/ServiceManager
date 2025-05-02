@@ -11,6 +11,7 @@ import PageIntervention from './Pages/PageIntervention/PageIntervention';
 import PageErreur from './Pages/PageErreur/PageErreur';
 import PageInscription from './Pages/PageInscription/PageInscription';
 import PageConnexion from './Pages/PageConnextion/PageConnexion';
+import PageDemandeEnvoyer from './Pages/PageDemandeEnvoyer/PageDemandeEnvoyer';
 
 const router = createBrowserRouter([
     {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
     {
         path: '/demande',
         element: <PageDemande />,
+    },
+    {
+        path: '/demandeenvoyer',
+        element: <PageDemandeEnvoyer />
     },
     {
         path: '/email',
