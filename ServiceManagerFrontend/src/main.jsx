@@ -12,6 +12,7 @@ import PageErreur from './Pages/PageErreur/PageErreur';
 import PageInscription from './Pages/PageInscription/PageInscription';
 import PageConnexion from './Pages/PageConnextion/PageConnexion';
 import PageDemandeEnvoyer from './Pages/PageDemandeEnvoyer/PageDemandeEnvoyer';
+import PageBoiteEmails from './Pages/PageBoiteEmails/PageBoiteEmails';
 
 const router = createBrowserRouter([
     {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
     {
         path: '/demandeenvoyer',
         element: <PageDemandeEnvoyer />
+    },
+    {
+        path: '/boite',
+        element: <PageBoiteEmails />
     },
     {
         path: '/email',
