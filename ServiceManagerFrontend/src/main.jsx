@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 
 import PageAccueil from './Pages/PageAccueil/PageAccueil';
 import PageAdmin from './Pages/PageAdmin/PageAdmin';
-import PageDemande from './Pages/PageDemande/PageDemande';
+import PageContenuEmail from './Pages/PageContenuEmail/PageContenuEmail';
 import PageEmail from './Pages/PageEmail/PageEmail';
 import PageEmployee from './Pages/PageEmployee/PageEmployee';
 import PageIntervention from './Pages/PageIntervention/PageIntervention';
@@ -29,8 +29,8 @@ const router = createBrowserRouter([
         element: <PageConnexion />,
     },
     {
-        path: '/demande',
-        element: <PageDemande />,
+        path: '/contenu',
+        element: <PageContenuEmail />,
     },
     {
         path: '/demandeenvoyer',
