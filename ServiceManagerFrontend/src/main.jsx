@@ -13,7 +13,8 @@ import PageInscription from './Pages/PageInscription/PageInscription';
 import PageConnexion from './Pages/PageConnextion/PageConnexion';
 import PageDemandeEnvoyer from './Pages/PageDemandeEnvoyer/PageDemandeEnvoyer';
 import PageBoiteEmails from './Pages/PageBoiteEmails/PageBoiteEmails';
-import PageProfile from './Pages/PageProfile/PageProfile';
+import PageProfil from './Pages/PageProfil/PageProfil';
+import PageInterventions from './Pages/PageInterventions/PageInterventions';
 
 const router = createBrowserRouter([
     {
@@ -35,11 +36,11 @@ const router = createBrowserRouter([
     },
     {
         path: '/demandeenvoyer',
-        element: <PageDemandeEnvoyer />
+        element: <PageDemandeEnvoyer />,
     },
     {
         path: '/boite',
-        element: <PageBoiteEmails />
+        element: <PageBoiteEmails />,
     },
     {
         path: '/email',
@@ -51,16 +52,20 @@ const router = createBrowserRouter([
     },
     {
         path: '/inscription',
-        element: <PageInscription />
+        element: <PageInscription />,
     },
     {
         path: '/intervention',
         element: <PageIntervention />,
     },
     {
-        path: '/profile',
-        element: <PageProfile />
-    }
+        path: '/interventions',
+        element: <PageInterventions />,
+    },
+    {
+        path: '/profil',
+        element: <PageProfil />,
+    },
 ]);
 
 createRoot(document.getElementById('root')).render(
