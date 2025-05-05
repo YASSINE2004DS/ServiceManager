@@ -1,7 +1,9 @@
-import User from "../UserModule/UserModel";       // Import the User model
-import Agency from "../AgencyModule/AgencyModel"; // Import the Agency model
-import Email from "../EmailModule/EmailModel";   // Import the Email model
-import { Intervention, Section } from "../InterventionModule/InterventionModel"; // Import Intervention and Section
+import User from "../UserModule/UserModel.js";       // Import the User model
+import Agency from "../AgencyModule/AgencyModel.js"; // Import the Agency model
+import Email from "../EmailModule/EmailModel.js";   // Import the Email model
+import Models from "../InterventionModule/InterventionModel.js"; // Import Intervention and Section
+
+const { Intervention, Section } = Models
 
 
 
