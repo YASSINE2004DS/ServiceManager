@@ -1,5 +1,5 @@
-import Sequelize from 'sequelize';                   // to use the sequelize library
-import sequelize from '../DatabaseModule/ConnectDB'; // to connect to the database
+import Sequelize, { INTEGER } from 'sequelize';         // to use the sequelize library
+import sequelize from '../DatabaseModule/ConnectDB.js'; // to connect to the database
 
 const Intervention = sequelize.define('interventions', {
 
@@ -118,3 +118,4 @@ export default {
     Intervention,
     Section
 }
+
