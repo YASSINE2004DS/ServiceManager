@@ -1,18 +1,40 @@
-const express = require('express');
+// import packages
+import express from 'express'
+import dotenv from 'dotenv';
+
+// database connection
+import sequelize from './DatabaseModule/ConnectDB.js';
+import Models from './DatabaseModule/ModelAssociations.js'
+const { User, Agency, Email, Intervention, Section} = Models;
+
 const app = express();
-const AuthoesRouter = require('./Routers/User.route');
-const UserRoute = require('./Routers/Auth.route');
-require('dotenv').config(); // Pour charger les variables d'environnement depuis le fichier .env
-const cors = require('cors');
-app.use(cors({ origin: 'http://localhost:3000' })); // Autoriser les requêtes depuis le frontend
+app.use(express.json());
 
-app.use(express.json()); // Pour parser les requêtes JSON
+// All routes
+import UserRoute from './UserModule/UserRouter.js';
 
-// Vos routes ici
-
-app.use('/users', UserRoute);
+app.use('/user', UserRoute);
 
 
+
+// Connect to the database
+sequelize.sync({ alter: true })
+    .then(() => {
+            console.log('Good.');
+            app.listen(3000, () => {
+            console.log('Server running on port 3000');
+            });
+    })
+    .catch((error) => {
+            console.error('Error from the database :', error);
+});
+
+sequelize.sync();
+
+
+
+// lance the server
+dotenv.config();
 app.listen(process.env.PORT, () => {
     console.log('Serveur démarré sur le port ', process.env.PORT);
 });
