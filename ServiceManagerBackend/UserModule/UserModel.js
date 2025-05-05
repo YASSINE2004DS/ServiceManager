@@ -1,7 +1,8 @@
-import Sequelize from 'sequelize'; // to use the sequelize library
-import sequelize from '../DatabaseModule/ConnectDB'; // to connect to the database
+import Sequelize from 'sequelize';                      // to use the sequelize library
+import sequelize from '../DatabaseModule/ConnectDB.js'; // to connect to the database
 
 // This model defines the structure of the 'User' table
+
 const User = sequelize.define('users', {
 
     user_id: {
@@ -36,6 +37,12 @@ const User = sequelize.define('users', {
         type:          Sequelize.STRING(50),
         allowNull:     false,
         defaultValue:  'user',
+    },
+
+    active: {
+        type:           Sequelize.BOOLEAN,
+        allowNull:      false,
+        defaultValue:   false,
     },
 
     agency_id: {
