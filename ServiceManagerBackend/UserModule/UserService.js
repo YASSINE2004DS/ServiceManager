@@ -57,43 +57,7 @@ class UserService {
             });
 
         } catch (error) {
-
-            // Using switch case to handle different error types.
-            switch (error.name) {
-
-                case 'SequelizeValidationError':
-                    // Handles validation errors (e.g., missing or invalid fields).
-                    const validationErrors = error.errors.map(err => err.message);
-
-                    return res.status(400).json({   Error: 'Validation errors: ',
-                                                    description: validationErrors.join(', ')
-                                                });
-
-
-                case 'SequelizeUniqueConstraintError':
-                    // Handles unique constraint violations (e.g., duplicate email).
-                    return res.status(400).json({   Error: 'Unique constraint violation: ',
-                                                    description: error.errors[0].message
-                                                });
-
-
-                case 'SequelizeForeignKeyConstraintError':
-                    // Handles foreign key constraint violations (e.g., non-existent agency_id).
-                    return res.status(400).json({   Error: 'Foreign key constraint error: ',
-                                                    description: error.message
-                                                });
-
-
-                case 'SequelizeDatabaseError':
-                    // Handles database-related errors (e.g., SQL issues or constraint violations).
-                    return res.status(500).json({   Error: 'Database error: ',
-                                                    description: error.message
-                                                });
-
-                default:
-                    // Handles any other errors (e.g., server errors, business logic issues).
-                    return res.status(500).json({   Error: 'Internal server error' });
-            }
+            this.handleError(error, res);
         }
     }
 
@@ -122,13 +86,103 @@ class UserService {
     }
 
     async modifyUser(req, res){
-        
+        // Check if the user exist and valid.
+        const userId = req.params.id;
+        if(isNaN(Number(userId)))
+            return res.status(400).json({ Error: "User id not valid!" });
+
+        // Get the user from the database.
+        const user = await User.findOne({ where: { user_id: userId } });
+
+        // If the user not exist.
+        if(!user) return res.status(400).json({ Error: `No user has the id : ${userId}` });
+
+        // Check the request format
+        const { error, value } = updateUserSchema.validate(req.body);
+        if (error)
+            return res.status(400).json({ Error: error.details[0].message });
+
+        // Hash the password if exist
+        if (value.password)
+            value.password = await bcrypt.hash(value.password, 10);
+
+        try {
+            // update the user
+            await user.update(value);
+
+            res.status(200).json({ message: 'User updated successfully' });
+        } catch (error) {
+            this.handleError(error, res);
+        }
 
     }
 
-    async deleteUser(req, res){
-        // TODO : Implement all logic for delete a user by his ID.
-        res.send('Delete user');
+    async deleteUser(req, res) {
+        // Check if the user ID is valid.
+        const userId = req.params.id;
+        if (isNaN(Number(userId)))
+            return res.status(400).json({ Error: "User ID is not valid!" });
+
+        try
+        {
+            // Find the user in the database.
+            const user = await User.findOne({ where: { user_id: userId } });
+
+            // If the user does not exist, return an error.
+            if (!user) {
+                return res.status(400).json({ Error: `No user found with ID: ${userId}` });
+            }
+
+            // Delete the user from the database.
+            await user.destroy();
+
+            // Send a success response.
+            return res.status(200).json({ message: 'User deleted successfully' });
+        } catch (error) {
+            this.handleError(error, res);
+        }
+    }
+
+
+    handleError(error, res) {
+
+        // Using switch case to handle different error types.
+        switch (error.name)
+        {
+
+            case 'SequelizeValidationError':
+                // Handles validation errors (e.g., missing or invalid fields).
+                const validationErrors = error.errors.map(err => err.message);
+
+                return res.status(400).json({   Error: 'Validation errors: ',
+                                                description: validationErrors.join(', ')
+                                            });
+
+
+            case 'SequelizeUniqueConstraintError':
+                // Handles unique constraint violations (e.g., duplicate email).
+                return res.status(400).json({   Error: 'Unique constraint violation: ',
+                                                description: error.errors[0].message
+                                            });
+
+
+            case 'SequelizeForeignKeyConstraintError':
+                // Handles foreign key constraint violations (e.g., non-existent agency_id).
+                return res.status(400).json({   Error: 'Foreign key constraint error: ',
+                                                description: error.message
+                                            });
+
+
+            case 'SequelizeDatabaseError':
+                // Handles database-related errors (e.g., SQL issues or constraint violations).
+                return res.status(500).json({   Error: 'Database error: ',
+                                                description: error.message
+                                            });
+
+            default:
+                // Handles any other errors (e.g., server errors, business logic issues).
+                return res.status(500).json({   Error: 'Internal server error' });
+        }
     }
 }
 
