@@ -1,5 +1,5 @@
-import Sequelize from 'sequelize'; // to use the sequelize library
-import sequelize from '../DatabaseModule/ConnectDB'; // to connect to the database
+import Sequelize from 'sequelize';                      // to use the sequelize library
+import sequelize from '../DatabaseModule/ConnectDB.js'; // to connect to the database
 
 // define the Agency model
 const Agency = sequelize.define('agencies', {
@@ -29,6 +29,11 @@ const Agency = sequelize.define('agencies', {
         type: Sequelize.STRING(100),
         allowNull: false
     },
+
+    current: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+    }
 });
 
 export default Agency;
