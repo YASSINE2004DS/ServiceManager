@@ -1,5 +1,5 @@
-import Sequelize from 'sequelize';                   // to use the sequelize library
-import sequelize from '../DatabaseModule/ConnectDB'; // to connect to the database
+import Sequelize from 'sequelize';                      // to use the sequelize library
+import sequelize from '../DatabaseModule/ConnectDB.js'; // to connect to the database
 
 
 const Email = sequelize.define('emails', {
