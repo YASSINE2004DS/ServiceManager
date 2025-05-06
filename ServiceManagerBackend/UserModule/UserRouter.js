@@ -37,15 +37,30 @@ class UserRouter {
             return UserController.getUserById(req, res);
         })
 
-        // Define put route to modify a user by id
+        // Define PUT route to modify a user by id
         this.router.patch('/:id', async (req, res) => {
             return UserController.modifyUser(req, res);
         })
 
-        // Define delete route for deleting a user by id
-        this.router.delete('/id', async (req, res) => {
+        // Define DELETE route for deleting a user by id
+        this.router.delete('/:id', async (req, res) => {
             return UserController.deleteUser(req, res);
         })
+
+        // Define POST route for login
+        this.router.post('/login', async (req, res) => {
+            return UserController.login(req, res);
+        });
+
+        // Define GET route for fetching user profil
+        this.router.get('/me', async (req, res) => {
+            return UserController.getProfile(req, res);
+        });
+
+        // Define POST route for logout
+        this.router.post('/logout', async (req, res) => {
+            return UserController.logout(req, res);
+        });
     }
 }
 
