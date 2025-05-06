@@ -18,7 +18,7 @@ app.use('/user', UserRoute);
 
 
 // Connect to the database
-sequelize.sync({ alter: true })
+sequelize.sync()
     .then(() => {
             console.log('Good.');
             app.listen(3000, () => {

@@ -24,6 +24,8 @@ class UserController {
 
     async deleteUser  (req, res) { return UserService.deleteUser(req, res);  }
 
+    async login       (req, res) { return UserService.login(req, res);       }
+
 }
 
 
