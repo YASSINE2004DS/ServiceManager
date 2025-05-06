@@ -15,7 +15,7 @@ import UserRoute from './UserModule/UserRouter.js';        // import User Route
 import AgencyRoute from './AgencyModule/AgencyRouter.js';  // import Agency Route
 
 app.use('/api/user', UserRoute);
-app.use('/api/agency' , AgencyRoute)
+app.use('/api/agency' , AgencyRoute);
 
 
 
