@@ -11,9 +11,11 @@ const app = express();
 app.use(express.json());
 
 // All routes
-import UserRoute from './UserModule/UserRouter.js';
+import UserRoute from './UserModule/UserRouter.js';        // import User Route
+import AgencyRoute from './AgencyModule/AgencyRouter.js';  // import Agency Route
 
-app.use('/user', UserRoute);
+app.use('/api/user', UserRoute);
+app.use('/api/agency' , AgencyRoute)
 
 
 
