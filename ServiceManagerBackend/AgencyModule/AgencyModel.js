@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';                      // to use the sequelize library
 import sequelize from '../DatabaseModule/ConnectDB.js'; // to connect to the database
 
-// define the Agency model
+// define the Agency Model
 const Agency = sequelize.define('agencies', {
 
     agency_id: {
