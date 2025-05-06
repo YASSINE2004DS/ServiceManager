@@ -6,7 +6,6 @@ const Intervention = sequelize.define('interventions', {
     intervention_id: {
         type: Sequelize.BIGINT,
         primaryKey: true,
-        autoIncrement: true
     },
 
     date: {
