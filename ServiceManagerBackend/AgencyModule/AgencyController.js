@@ -27,4 +27,4 @@ class AgencyController
     async deleteAgency (req , res)    { return await agencyService.deleteAgency (req , res)    ;}
 }
 
-export default new AgencyController(); // Export an instance of the AgencyController class.
+export default new AgencyController(); // Export an instance of the AgencyController Class.

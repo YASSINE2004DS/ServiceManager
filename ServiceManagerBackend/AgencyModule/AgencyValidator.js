@@ -4,7 +4,7 @@ import Joi from 'joi';
 const VerifyDataAgencyCreating = Joi.object({
     name: Joi.string().min(2).max(50).required(),
   
-    adresse: Joi.string().max(60), 
+    adresse: Joi.string().max(60),  // validate adress
   
     start_time: Joi.string().pattern(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
       .message('start_time must be in HH:mm format'),
