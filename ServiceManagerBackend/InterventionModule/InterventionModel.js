@@ -70,7 +70,7 @@ const Intervention = sequelize.define('interventions', {
 
     comment: {
         type: Sequelize.STRING(3000),
-        allowNull: false
+        allowNull: true
     },
 
     validate: {
