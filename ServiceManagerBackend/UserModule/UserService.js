@@ -1,8 +1,11 @@
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 
-import Schema from './UserValidator.js';
-import Models from '../DatabaseModule/ModelAssociations.js'
-const { createUserSchema, updateUserSchema } = Schema;
+import Schema from './UserValidator.js'; // Contains the validation schemas.
+import Models from '../DatabaseModule/ModelAssociations.js' // Contains the database models.
+import AuthMiddleware from '../AuthModule/AuthMiddleware.js'; // Contains the authentication operations.
+
+const { createUserSchema, updateUserSchema, loginUserSchema } = Schema;
 const { User, Agency } = Models
 
 /**
@@ -143,6 +146,67 @@ class UserService {
         }
     }
 
+    async login(req, res){
+        // Check the request format.
+        const { error, value } = loginUserSchema.validate(req.body);
+        if (error)
+            return res.status(400).json({
+                                            Error: "Invalid request format!",
+                                            description: error.details[0].message
+                                        });
+
+        try {
+            // Get the email and the password.
+            const { email, password } = value;
+
+            // Check if the user exist.
+            const user = await User.findOne({ where: { email: email } });
+            if(!user) return res.status(401).json({ message: "User does not exist!" });
+
+            // Check if the password is correct.
+            const isPasswordValid = await bcrypt.compare(password, user.password);
+            if(!isPasswordValid) return res.status(401).json({ message: "Invalid password!" });
+
+            // Generate the jwt token.
+            const token = await AuthMiddleware.generateToken(user);
+
+            return res.status(200).json ({
+                                            message: "Connexion réussie",
+                                            token,
+                                            user: {
+                                                id: user._id,
+                                                email: user.email
+                                            }
+                                        });
+
+        } catch (error) {
+            this.handleError(error, res);
+        }
+    }
+
+    async getProfil(req, res) {
+        // Check if the user exist and valid.
+        const userId = req.user.user_id;
+        console.log(userId);
+        if(isNaN(Number(userId)))
+            return res.status(400).json({ Error: "User id not valid!" });
+
+        // Get the user from the database.
+        try {
+            const user = await User.findOne({
+                where: { user_id: userId },
+                attributes: { exclude: ['password'] }
+            });
+
+            // If the user not exist.
+            if(!user) return res.status(400).json({ Error: `No user has the id : ${userId}` });
+
+            // Return the user informations
+            return res.json(user);
+        } catch (error) {
+            this.handleError(error, res);
+        }
+    }
 
     handleError(error, res) {
 
@@ -154,7 +218,8 @@ class UserService {
                 // Handles validation errors (e.g., missing or invalid fields).
                 const validationErrors = error.errors.map(err => err.message);
 
-                return res.status(400).json({   Error: 'Validation errors: ',
+                return res.status(400).json({
+                                                Error: 'Validation errors: ',
                                                 description: validationErrors.join(', ')
                                             });
 
@@ -184,6 +249,9 @@ class UserService {
                 return res.status(500).json({   Error: 'Internal server error' });
         }
     }
+
+
 }
 
 export default new UserService();
+

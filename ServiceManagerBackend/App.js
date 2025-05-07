@@ -21,17 +21,17 @@ app.use('/api/intervention' , InterventionRoute);
 
 
 
-// // Connect to the database
-// sequelize.sync({ alter: true })
-//     .then(() => {
-//             console.log('Good.');
-//             app.listen(3000, () => {
-//             console.log('Server running on port 3000');
-//             });
-//     })
-//     .catch((error) => {
-//             console.error('Error from the database :', error);
-// });
+// Connect to the database
+sequelize.sync()
+    .then(() => {
+            console.log('Good.');
+            app.listen(3000, () => {
+            console.log('Server running on port 3000');
+            });
+    })
+    .catch((error) => {
+            console.error('Error from the database :', error);
+});
 
 // sequelize.sync();
 

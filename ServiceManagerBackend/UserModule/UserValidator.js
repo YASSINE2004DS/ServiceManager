@@ -24,13 +24,18 @@ const updateUserSchema = Joi.object(
     password:   Joi.string().min(5).max(200),
 
     role:       Joi.string().valid('Admin', 'User'),
-}
+});
 
+const loginUserSchema = Joi.object(
+{
+    email:      Joi.string().email().required(),
 
-);
+    password:   Joi.string().min(5).max(200).required(),
+});
 
 
 export default {
     createUserSchema,
-    updateUserSchema
+    updateUserSchema,
+    loginUserSchema
 };
