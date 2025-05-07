@@ -8,7 +8,8 @@ Ce module est responsable de fournir les différentes `API` possibles qui seront
 
 ### 🟢 Diagramme de classes
 
-![ClassDiagram1.jpg](User%20Module%201ec9dca74ad7802d937df23c87913dfa/ClassDiagram1.jpg)
+![Diagramme de classes](./Docs/ClassDiagram1.jpg)
+
 
 ### 🟢 Explication
 
