@@ -13,9 +13,11 @@ app.use(express.json());
 // All routes
 import UserRoute from './UserModule/UserRouter.js';        // import User Route
 import AgencyRoute from './AgencyModule/AgencyRouter.js';  // import Agency Route
+import InterventionRoute from './InterventionModule/InterventionRouter.js'; // import Intervention Route
 
 app.use('/api/user', UserRoute);
 app.use('/api/agency' , AgencyRoute);
+app.use('/api/intervention' , InterventionRoute);
 
 
 
@@ -31,7 +33,7 @@ sequelize.sync()
             console.error('Error from the database :', error);
 });
 
-sequelize.sync();
+// sequelize.sync();
 
 
 

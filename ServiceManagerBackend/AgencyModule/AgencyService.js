@@ -109,9 +109,9 @@ class AgencyService {
             const findAgency = await Agency.findOne({ 
                                                       where: { name: req.body.name } 
                                                     });
-             
-            // if the agency name already exist and not the same as the current agency
-            if(findAgency && findAgency.agency_id !== agencyId) return res.status(400).json({ Error: 'Agency already exists' });
+
+             // if the agency name already exist and not the same as the current agency
+            if(findAgency && findAgency.agency_id !== parseInt(agencyId) ) return res.status(400).json({ Error: 'Agency already exists'});
           }
 
           // update the agency
@@ -122,11 +122,15 @@ class AgencyService {
                 end_time        : req.body.end_time,
                 current         : req.body.current
             }, { 
-                where: { agency_id: agencyId } 
+                where: { agency_id: agencyId }
                                                });
+           const agencyupdated = await Agency.findOne({
+                                                where: { agency_id: agencyId },
+                                                attributes: { exclude: ['createdAt', 'updatedAt'] }
+                                             });                               
 
             // return Success response
-            res.status(200).json({ message: 'Agency updated successfully', agency });
+            res.status(200).json({ message: 'Agency updated successfully', agency , agencyupdated });
         } catch (error) {
             // handle error
             res.status(500).json({ Error : error.message });
@@ -145,7 +149,7 @@ class AgencyService {
         try{
             // check if the agency exist by id
             const findAgency = await Agency.findOne({
-                                                       where : { id_agency : agencyId } 
+                                                       where : { agency_id : agencyId } 
                                                     });
 
             // verify exist Agency

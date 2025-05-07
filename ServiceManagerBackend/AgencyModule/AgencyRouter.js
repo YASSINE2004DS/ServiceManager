@@ -1,6 +1,11 @@
 import { Router } from 'express'; // Required to create route handlers.
 
-import AgencyController from './AgencyController'; // Import the Agency controller.
+import Authorization from '../Authorization/AuthorizationOperations.js'; // Import the authorization operations.
+
+const { AuthorizationJustAdmin } = Authorization; // Import the authorization operations
+
+import AgencyController from './AgencyController.js'; // Import the Agency controller.
+ // Import the authorization operations.   
 
 /**
  * @class UserRouter 
@@ -22,28 +27,28 @@ class AgencyRouter {
 
     init() {
         // Define GET route for fetching all agencies
-        this.router.get('/',  async (req, res) => {
+        this.router.get('/', AuthorizationJustAdmin , async (req, res) => {
             return AgencyController.getAllAgency(req, res);
         });
 
 
         // Define POST  route for create new agency
-        this.router.post('/', async (req, res) => {
+        this.router.post('/', AuthorizationJustAdmin , async (req, res) => {
             return AgencyController.createAgency(req, res);
         })
 
         // Define GET route for fetching agency by id
-        this.router.get('/:id', async (req, res) => {
+        this.router.get('/:id', AuthorizationJustAdmin , async (req, res) => {
             return AgencyController.getAgencyById(req, res);
         })
 
         // Define put route to modify a agency by id
-        this.router.patch('/:id', async (req, res) => {
+        this.router.patch('/:id', AuthorizationJustAdmin , async (req, res) => {
             return AgencyController.updateAgency(req, res);
         })
 
         // Define delete route for deleting a agency by id
-        this.router.delete('/:id', async (req, res) => {
+        this.router.delete('/:id', AuthorizationJustAdmin , async (req, res) => {
             return AgencyController.deleteAgency(req, res);
         })
     }
