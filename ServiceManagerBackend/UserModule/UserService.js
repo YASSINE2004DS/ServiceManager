@@ -184,6 +184,30 @@ class UserService {
         }
     }
 
+    async getProfil(req, res) {
+        // Check if the user exist and valid.
+        const userId = req.user.user_id;
+        console.log(userId);
+        if(isNaN(Number(userId)))
+            return res.status(400).json({ Error: "User id not valid!" });
+
+        // Get the user from the database.
+        try {
+            const user = await User.findOne({
+                where: { user_id: userId },
+                attributes: { exclude: ['password'] }
+            });
+
+            // If the user not exist.
+            if(!user) return res.status(400).json({ Error: `No user has the id : ${userId}` });
+
+            // Return the user informations
+            return res.json(user);
+        } catch (error) {
+            this.handleError(error, res);
+        }
+    }
+
     handleError(error, res) {
 
         // Using switch case to handle different error types.
