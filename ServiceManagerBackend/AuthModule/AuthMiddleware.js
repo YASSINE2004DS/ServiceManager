@@ -17,9 +17,12 @@ class AuthMiddleware{
     // Middleware used to decode a token (jwt) for the user.
     async decodeToken(token)           { return AuthService.decodeToken       (token);          }
 
-    // Middleware used to authorize a user based on their role.
-    async authorize (req, res, next)   { return AuthService.authorize         (req, res, next); }
+    // Middleware used to authorize a admin Operations.
+    async authorizeAdminOnly    (req, res, next)   { return AuthService.authorizeAdminOnly         (req, res, next); }
 
+    
+    // Middleware used to authorize  navigate pages and operations a user and admin . 
+    async authorizeUserAndAdmin (req, res, next)   { return AuthService.authorizeUserAndAdmin   (req, res, next); }
 }
 
 export default new AuthMiddleware();

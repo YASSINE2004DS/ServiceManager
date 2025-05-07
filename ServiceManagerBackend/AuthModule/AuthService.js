@@ -78,7 +78,10 @@ class AuthService{
         return decoded;
     }
 
-    async authorize(req, res, next){
+    async authorizeAdminOnly(req, res, next){
+
+        this.authenticate(req , res , () => {
+
         // Get the user information from the request object.
         const user = req.user;
         const role = user.role;
@@ -89,8 +92,28 @@ class AuthService{
                         .status(403)
                         .json({ message: "You do not have the required permissions to access this resource" });
 
-        // Access the protected route.
-        next();
+           // Access the protected route.
+            next();
+        });
+    }
+
+    async authorizeUserAndAdmin(req, res, next){
+
+        this.authenticate(req , res , () => {
+        // Get the user information from the request object.
+        const user = req.user;
+        const role = user.role;
+        const Id = user.user_id;
+
+        // If the user is not a admin.
+        if(role !== ROLES.ADMIN && Id !== parseInt(req.params.id))
+            return res
+                        .status(403)
+                        .json({ message: "You do not have the required permissions to access this resource" });
+
+          // Access the protected route.
+           next();
+       });
     }
 }
 

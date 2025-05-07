@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import intereventionController from './InterventionController.js';
-import Authorization from '../Authorization/AuthorizationOperations.js'; // Import the authorization operations.
-const { AuthorizationAdminAndUser, AuthorizationJustAdmin , verifyTokenExist } = Authorization; // Import the authorization operations
+
+import AuthMiddleware from '../AuthModule/AuthMiddleware.js'; //the authentication operations.
+
 
 
 
@@ -25,34 +26,47 @@ class IntereventionController {
     }
 
     init() {
-        // Define GET route for fetching all agencies
-        this.router.get('/', AuthorizationJustAdmin , async (req, res) => {
-            return intereventionController.getInterventions(req, res);
-        });
+        // Define GET route for fetching all Interventions
+        this.router.get('/' ,  
+                               AuthMiddleware.authorizeAdminOnly  ,
+                               async (req, res) => {
+                               return intereventionController.getInterventions(req, res);
+                       }); 
 
-        // Define POST  route for create new agency
-        this.router.post('/', verifyTokenExist , async (req, res) => {
-            return intereventionController.createNewIntervention   (req, res);
-        });
+        // Define POST  route for create new Intervention
+        this.router.post('/', 
+                               AuthMiddleware.authenticate ,
+                               async (req, res) => {
+                                return intereventionController.createNewIntervention   (req, res);
+                       });
 
-        this.router.get('/:id', AuthorizationAdminAndUser , async (req, res) => {
-            return intereventionController.getIntereventionByUserId (req, res);
-        });
+        // Define GET route for fetching Intervention by id
+        this.router.get('/:id', 
+                               AuthMiddleware.authorizeUserAndAdmin , 
+                               async (req, res) => {
+                               return intereventionController.getIntereventionByUserId (req, res);
+                        });
 
-        // Define GET route for fetching agency by id
-        this.router.get('/:id/:id_Intervention', AuthorizationAdminAndUser , async (req, res) => {
-            return intereventionController.getInterventionById(req, res);
-        });
+        // Define GET route for fetching Interevention by id of a user Id
+        this.router.get('/:id/:id_Intervention', 
+                              AuthMiddleware.authorizeUserAndAdmin ,
+                              async (req, res) => {
+                              return intereventionController.getInterventionById(req, res);
+                        });
 
-        // Define put route to modify a agency by id
-        this.router.patch('/:id/:id_Intervention', AuthorizationAdminAndUser , async (req, res) => {
-            return intereventionController.modifyIntervention(req, res);
-        });
+        // Define put route to modify a Intervention by id of a user Id
+        this.router.patch('/:id/:id_Intervention', 
+                            AuthMiddleware.authorizeUserAndAdmin , //Authorize the user and admin to modify the intervention
+                            async (req, res) => {
+                            return intereventionController.modifyIntervention(req, res);
+                        });
 
-        // Define delete route for deleting a agency by id
-        this.router.delete('/:id/:id_Intervention', AuthorizationJustAdmin , async (req, res) => {
-            return intereventionController.deleteIntervention(req, res);
-        });
+        // Define delete route for deleting a Intervention by id of a user Id
+        this.router.delete('/:id/:id_Intervention', 
+                            AuthMiddleware.authorizeAdminOnly , 
+                            async (req, res) => {
+                            return intereventionController.deleteIntervention(req, res);
+                        });
     }
 }
 
