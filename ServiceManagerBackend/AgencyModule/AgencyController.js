@@ -1,4 +1,4 @@
-import agencyService from './AgencyService' // import AgencyService from AgencyService file
+import agencyService from './AgencyService.js' // import AgencyService from AgencyService file
 
 /**
  * @class UserController
@@ -22,7 +22,7 @@ class AgencyController
 
     async createAgency (req , res)   { return await agencyService.createAgency  (req , res)    ;}
 
-    async updateAgency (req , res)   { return await agencyService.updateAgency  (req , res)    ;} 
+    async updateAgency (req , res)   { return await agencyService.UpdateAgency  (req , res)    ;} 
 
     async deleteAgency (req , res)    { return await agencyService.deleteAgency (req , res)    ;}
 }

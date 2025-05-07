@@ -17,17 +17,17 @@ const Agency = sequelize.define('agencies', {
 
     start_time: {
         type: Sequelize.TIME,
-        allowNull: false
+        allowNull: true
     },
 
     end_time: {
         type: Sequelize.TIME,
-        allowNull: false
+        allowNull: true
     },
 
     adress: {
         type: Sequelize.STRING(100),
-        allowNull: false
+        allowNull: true
     },
 
     current: {

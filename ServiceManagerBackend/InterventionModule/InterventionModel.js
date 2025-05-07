@@ -6,7 +6,6 @@ const Intervention = sequelize.define('interventions', {
     intervention_id: {
         type: Sequelize.BIGINT,
         primaryKey: true,
-        autoIncrement: true
     },
 
     date: {
@@ -71,7 +70,7 @@ const Intervention = sequelize.define('interventions', {
 
     comment: {
         type: Sequelize.STRING(3000),
-        allowNull: false
+        allowNull: true
     },
 
     validate: {

@@ -43,7 +43,7 @@ class UserRouter {
         })
 
         // Define delete route for deleting a user by id
-        this.router.delete('/id', async (req, res) => {
+        this.router.delete('/:id', async (req, res) => {
             return UserController.deleteUser(req, res);
         })
     }
