@@ -22,46 +22,63 @@ class UserRouter {
         this.init(); // Setup routes
     }
 
-    init() {
+    init()
+    {
+
         // Define GET route for fetching users
-        this.router.get('/', AuthMiddleware.authenticate, async (req, res) => {
-            return UserController.getUsers(req, res);
-        });
+        this.router.get     (
+                                '/',
+                                AuthMiddleware.authenticate,
+                                async (req, res) => { return UserController.getUsers(req, res);    }
+                            );
 
         // Define POST  route for create new user
-        this.router.post('/', async (req, res) => {
-            return UserController.createUser(req, res);
-        })
-
-        // Define GET route for fetching user by id
-        this.router.get('/:id', AuthMiddleware.authenticate, async (req, res) => {
-            return UserController.getUserById(req, res);
-        })
-
-        // Define PUT route to modify a user by id
-        this.router.patch('/:id', AuthMiddleware.authenticate, async (req, res) => {
-            return UserController.modifyUser(req, res);
-        })
-
-        // Define DELETE route for deleting a user by id
-        this.router.delete('/:id', AuthMiddleware.authenticate, async (req, res) => {
-            return UserController.deleteUser(req, res);
-        })
+        this.router.post    (
+                                '/',
+                                async (req, res) => { return UserController.createUser(req, res);  }
+                            );
 
         // Define POST route for login
-        this.router.post('/login', async (req, res) => {
-            return UserController.login(req, res);
-        });
+        this.router.post    (
+                                '/login',
+                                async (req, res) => { return UserController.login(req, res);       }
+                            );
 
         // Define GET route for fetching user profil
-        this.router.get('/me',AuthMiddleware.authenticate, async (req, res) => {
-            return UserController.getProfile(req, res);
-        });
+        this.router.get     (
+                                '/me',
+                                AuthMiddleware.authenticate,
+                                async (req, res) => { return UserController.getProfil(req, res);   }
+                            );
 
         // Define POST route for logout
-        this.router.post('/logout', AuthMiddleware.authenticate, async (req, res) => {
-            return UserController.logout(req, res);
-        });
+        this.router.post    (
+                                '/logout',
+                                AuthMiddleware.authenticate,
+                                async (req, res) => { return UserController.logout(req, res);      }
+                            );
+
+        // Define GET route for fetching user by id
+        this.router.get     (
+                                '/:id',
+                                AuthMiddleware.authenticate,
+                                async (req, res) => {return UserController.getUserById(req, res);  }
+                            );
+
+        // Define PUT route to modify a user by id
+        this.router.patch   (
+                                '/:id',
+                                AuthMiddleware.authenticate,
+                                async (req, res) => { return UserController.modifyUser(req, res);  }
+                            );
+
+        // Define DELETE route for deleting a user by id
+        this.router.delete  (
+                                '/:id',
+                                AuthMiddleware.authenticate,
+                                async (req, res) => { return UserController.deleteUser(req, res);  }
+                            );
+
     }
 }
 
