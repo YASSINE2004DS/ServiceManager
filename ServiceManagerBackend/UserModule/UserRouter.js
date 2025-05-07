@@ -1,6 +1,7 @@
 import { Router } from 'express'; // Required to create route handlers.
 
-import UserController from './UserController.js'; // Import the user controller.
+import UserController from './UserController.js'; // the user controller.
+import AuthMiddleware from '../AuthModule/AuthMiddleware.js'; //the authentication operations.
 
 
 /**
@@ -23,7 +24,7 @@ class UserRouter {
 
     init() {
         // Define GET route for fetching users
-        this.router.get('/',  async (req, res) => {
+        this.router.get('/', AuthMiddleware.authenticate, async (req, res) => {
             return UserController.getUsers(req, res);
         });
 
@@ -33,17 +34,17 @@ class UserRouter {
         })
 
         // Define GET route for fetching user by id
-        this.router.get('/:id', async (req, res) => {
+        this.router.get('/:id', AuthMiddleware.authenticate, async (req, res) => {
             return UserController.getUserById(req, res);
         })
 
         // Define PUT route to modify a user by id
-        this.router.patch('/:id', async (req, res) => {
+        this.router.patch('/:id', AuthMiddleware.authenticate, async (req, res) => {
             return UserController.modifyUser(req, res);
         })
 
         // Define DELETE route for deleting a user by id
-        this.router.delete('/:id', async (req, res) => {
+        this.router.delete('/:id', AuthMiddleware.authenticate, async (req, res) => {
             return UserController.deleteUser(req, res);
         })
 
@@ -53,12 +54,12 @@ class UserRouter {
         });
 
         // Define GET route for fetching user profil
-        this.router.get('/me', async (req, res) => {
+        this.router.get('/me',AuthMiddleware.authenticate, async (req, res) => {
             return UserController.getProfile(req, res);
         });
 
         // Define POST route for logout
-        this.router.post('/logout', async (req, res) => {
+        this.router.post('/logout', AuthMiddleware.authenticate, async (req, res) => {
             return UserController.logout(req, res);
         });
     }

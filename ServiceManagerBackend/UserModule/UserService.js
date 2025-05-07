@@ -1,8 +1,10 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
-import Schema from './UserValidator.js';
-import Models from '../DatabaseModule/ModelAssociations.js'
+import Schema from './UserValidator.js'; // Contains the validation schemas.
+import Models from '../DatabaseModule/ModelAssociations.js' // Contains the database models.
+import AuthMiddleware from '../AuthModule/AuthMiddleware.js'; // Contains the authentication operations.
+
 const { createUserSchema, updateUserSchema, loginUserSchema } = Schema;
 const { User, Agency } = Models
 
@@ -166,7 +168,7 @@ class UserService {
             if(!isPasswordValid) return res.status(401).json({ message: "Invalid password!" });
 
             // Generate the jwt token.
-            const token = jwt.sign({ user_id: user.user_id, role: user.role }, process.env.SECRET_KEY, { expiresIn: '7d' });
+            const token = await AuthMiddleware.generateToken(user);
 
             return res.status(200).json ({
                                             message: "Connexion réussie",
