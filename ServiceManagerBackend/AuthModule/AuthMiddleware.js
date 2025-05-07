@@ -15,7 +15,10 @@ class AuthMiddleware{
     async generateToken(user)          { return AuthService.generateToken     (user);           }
 
     // Middleware used to decode a token (jwt) for the user.
-    async  decodeToken(token)          { return AuthService.decodeToken       (token);          }
+    async decodeToken(token)           { return AuthService.decodeToken       (token);          }
+
+    // Middleware used to authorize a user based on their role.
+    async authorize (req, res, next)   { return AuthService.authorize         (req, res, next); }
 
 }
 
