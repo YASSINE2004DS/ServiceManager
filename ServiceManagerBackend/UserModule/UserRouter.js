@@ -29,7 +29,7 @@ class UserRouter {
         this.router.get     (
                                 '/',
                                 AuthMiddleware.authenticate,
-                                AuthMiddleware.authorize,
+                                AuthMiddleware.authorizeAdminOnly,
                                 async (req, res) => { return UserController.getUsers(req, res);    }
                             );
 
@@ -63,7 +63,7 @@ class UserRouter {
         this.router.get     (
                                 '/:id',
                                 AuthMiddleware.authenticate,
-                                AuthMiddleware.authorize,
+                                AuthMiddleware.authorizeAdminOnly,
                                 async (req, res) => {return UserController.getUserById(req, res);  }
                             );
 
@@ -71,7 +71,7 @@ class UserRouter {
         this.router.patch   (
                                 '/:id',
                                 AuthMiddleware.authenticate,
-                                AuthMiddleware.authorize,
+                                AuthMiddleware.authorizeAdminOnly,
                                 async (req, res) => { return UserController.modifyUser(req, res);  }
                             );
 
@@ -79,7 +79,7 @@ class UserRouter {
         this.router.delete  (
                                 '/:id',
                                 AuthMiddleware.authenticate,
-                                AuthMiddleware.authorize,
+                                AuthMiddleware.authorizeAdminOnly,
                                 async (req, res) => { return UserController.deleteUser(req, res);  }
                             );
 

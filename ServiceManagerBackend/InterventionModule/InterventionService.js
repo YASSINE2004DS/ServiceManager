@@ -1,9 +1,7 @@
 import Models from '../DatabaseModule/ModelAssociations.js'; // import Models
 import validateDataInterevention  from './ValidatorInterevention.js';       // import the variables for validate data from user 
 const { ValidateUpdatingIntervention , ValidateCreatingIntervention } = validateDataInterevention; // destructure the variables for validate data from user
-//import Authorization from '../AuthorizationModule/Authorization.js'; // import the authorization middleware
 
-//const { AuthorizationAdminAndUser , AuthorizationJustAdmin } = Authorization; // destructure the variables for authorization middleware
 // import the models from the database; 
 const {  Intervention } = Models ; 
 
@@ -20,6 +18,8 @@ class InterventionService {
             res.status(500).json({ Error : error.message });
         }
     }
+
+
     async getInterventionById(req , res) {
         try {
             // Check if the Interevention exist and valid.
@@ -43,6 +43,7 @@ class InterventionService {
             res.status(500).json({ Error : error.message });
         }
     }
+
 
     async getInterventionsByIdUser(req , res) {
         try {
@@ -68,6 +69,7 @@ class InterventionService {
             res.status(500).json({ Error : error.message });
         }
     }
+
 
     async createNewIntervention(req , res){
 
@@ -117,6 +119,7 @@ class InterventionService {
             res.status(500).json({ Error : error.message });
             }
     }
+
 
     async UpdateInterventionById(req , res){
          try{
