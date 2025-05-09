@@ -92,6 +92,11 @@
     background-color: #3b8b9d;
   }
 
+  .error-message {
+    color           : red;
+    margin          : 0;
+  }
+
   /* Animations */
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px)  ;}
