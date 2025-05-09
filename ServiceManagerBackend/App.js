@@ -5,11 +5,13 @@ import dotenv from 'dotenv';
 // database connection
 import sequelize from './DatabaseModule/ConnectDB.js';
 import Models from './DatabaseModule/ModelAssociations.js'
+import cors from 'cors';
+
 const { User, Agency, Email, Intervention, Section} = Models;
 
 const app = express();
 app.use(express.json());
-
+app.use(cors());
 // All routes
 import UserRoute from './UserModule/UserRouter.js';        // import User Route
 import AgencyRoute from './AgencyModule/AgencyRouter.js';  // import Agency Route
@@ -26,7 +28,7 @@ sequelize.sync()
     .then(() => {
             console.log('Good.');
             app.listen(3000, () => {
-            console.log('Server running on port 3000');
+            console.log('Database connected successfully!');
             });
     })
     .catch((error) => {
@@ -36,9 +38,9 @@ sequelize.sync()
 // sequelize.sync();
 
 
-
 // lance the server
 dotenv.config();
 app.listen(process.env.PORT, () => {
-    console.log('Serveur démarré sur le port ', process.env.PORT);
+    console.log('Server running on port : ', process.env.PORT);
 });
+
