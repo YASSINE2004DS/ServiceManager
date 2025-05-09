@@ -1,0 +1,164 @@
+.container {
+    height          :  100vh;
+    width           : 100%;
+    display         : flex ;
+    justify-content : center;
+    align-items     : center;
+}
+
+.home-container {
+    display         : flex;
+    flex-direction  : column;
+    align-items     : center;
+    justify-content : center;
+    padding         : 40px 20px;
+    font-family     : 'Segoe UI', sans-serif;
+    background      : linear-gradient(to bottom right, #f0f0f0, #ffffff);
+    color           : #333;
+    text-align      : center;
+    width           : 60%;
+    height          : 75%;
+    border-radius   : 5px;
+    box-shadow      : 2px 2px 5px 3px gray;
+    position        : absolute;
+  }
+  
+  .logo {
+    max-width       : 200px;
+    height          : auto;
+    margin-bottom   : 20px;
+    animation       : fadeIn 2s ease-in-out;
+     position       :absolute ;
+     top            : 10px ;
+  }
+  
+  .description {
+    max-width       : 700px;
+    animation       : slideUp 1.5s ease;
+  }
+  
+  .description h2 {
+    font-size       : 20px;
+    margin-bottom   : 15px;
+  }
+  
+  .description ul {
+    list-style      : none;
+    padding         : 0;
+  }
+  
+  .description li {
+    margin          : 5px 0;
+    font-weight     : 500;
+  }
+  
+  .welcome-sectione {
+    /* display:flex;
+    flex-direction: column;
+    justify-content: space-between; */
+    width           : 50% ;
+    margin-top      : 40px;
+    animation       : fadeIn 2s ease-in-out;
+    height          : 50% ;
+    width           :90% ;
+  }
+  
+  .welcome-sectione h1 {
+    font-size      : 26px;
+    margin-bottom  : 20px;
+    color          : #005580;
+  }
+  
+  .button-groupe {
+    display         : flex;
+    flex-direction  : column;
+    gap             : 15px;
+    flex-wrap       : wrap;
+    justify-content : center;
+    width           :100%;
+    margin-top      : 11%;
+  }
+  
+  .btn {
+    padding         : 12px 24px;
+    border          : none;
+    border-radius   : 8px;
+    font-size       : 16px;
+    cursor          : pointer;
+    transition      : background 0.3s ease;
+    width           :50% ;
+    align-self      : center ;
+  }
+  
+  .login {
+    background-color : #007BFF;
+    color            : white;
+  }
+  
+  .signup {
+    background-color : #28A745;
+    color            : white;
+  }
+  
+  .btn:hover {
+    opacity          : 0.85;
+  }
+  /* Image slider */
+.slider {
+    width             : 100%;
+    overflow          : hidden;
+    margin-bottom     : 30px;
+  }
+  
+  .slide-track {
+    display           : flex;
+    width             : calc(300px * 6); /* largeur totale (image x nb images) */
+    animation         : scroll 18s linear infinite;
+  }
+  
+  .slide {
+    width             : 300px;
+    height            : 200px;
+    object-fit        : cover;
+    flex-shrink       : 0;
+    margin-right      : 10px;
+    border-radius     : 10px;
+    box-shadow        : 0 0 10px rgba(0,0,0,0.2);
+  }
+  
+  @keyframes scroll {
+    0% {
+      transform        : translateX(0);
+    }
+    100% {
+      transform         : translateX(-50%);
+    }
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px)  ;}
+    to   { opacity: 1; transform: translateY(0)     ;}
+  }
+  
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(50px)   ;}
+    to   { opacity: 1; transform: translateY(0)      ;}
+  }
+  
+  /* Responsive */
+  @media (max-width: 600px) {
+    .description h2 {
+      font-size           : 16px;
+    }
+  
+    .welcome-section h1 {
+      font-size           : 20px;
+    }
+  
+    .btn {
+      width               : 100px;
+      font-size           : 14px;
+    }
+  }
+  
