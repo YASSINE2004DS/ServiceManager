@@ -1,7 +1,21 @@
-import './PageErreur.css'
+import React from 'react';
+import './PageErreur.css';
+import logo from '../PageAccueil/Assets/safarelec-logo.png'; // remplace avec ton logo réel
 
-function PageErreur() {
-    return <h1>PageErreur</h1>;
-}
+const PageErreur = () => {
+  return (
+    <div className='container'>
+      <div className="home-container">
+        <img src={logo} alt="SAFARELEC Logo" className="logo" />
+        <div className="welcome-sectione2">
+            <h1>404 - Page Not Found</h1>
+            <div className="Message">
+                  Sorry, the page you're looking for doesn't exist.
+            </div>
+         </div>
+      </div>
+    </div>
+  );
+};
 
 export default PageErreur;

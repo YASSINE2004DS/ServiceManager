@@ -1,0 +1,111 @@
+.container {
+    height          :  100vh;
+    width           : 100%;
+    display         : flex ;
+    justify-content : center;
+    align-items     : center;
+}
+
+.home-container-connexion {
+    display         : flex;
+    flex-direction  : column;
+    align-items     : center;
+    justify-content : center;
+    padding         : 40px 20px 0px  20px;
+    font-family     : 'Segoe UI', sans-serif;
+    background      : linear-gradient(to bottom right, #f0f0f0, #ffffff);
+    color           : #333;
+    text-align      : center;
+    width           : 60%;
+    height          : 70%;
+    border-radius   : 5px;
+    box-shadow      : 2px 2px 5px 3px gray;
+    position        : absolute;
+  }
+  
+  .logo {
+    max-width       : 200px;
+    height          : auto;
+    margin-bottom   : 20px;
+    animation       : fadeIn 2s ease-in-out;
+     position       :absolute ;
+     top            : 10px ;
+  }
+    
+  .welcome-section-form {
+    animation       : fadeIn 2s ease-in-out;
+    height          :  70% ;
+    width           :  60% ;
+    display         : flex ;
+    flex-direction  : column;
+    padding         : 5px 0px ;
+    position        : absolute;
+    bottom          : 0px ;
+  }
+
+  label {
+    font-family     : Georgia, 'Times New Roman', Times, serif;
+    font-weight     : bold;
+    align-self      : flex-start;
+    color           :darkblue ;
+    margin          : 0% 2% ;
+  }
+
+  .welcome-section-form input {
+    display: block;
+    padding         :3px 10px ;
+    height          : 35px ;
+    margin-bottom   : 30px;
+    margin-top      : 5px ;
+    border          : 1px solid #a9a1a1;
+    border-radius   : 8px;
+    font-size       : 17px;
+    outline         : none;
+  }
+
+  .Input:focus {
+    border-color    : #4ca1af;
+    box-shadow      : 0 0 5px rgba(76, 161, 175, 0.5);
+  }
+  
+  .welcome-section-form h2 {
+    font-size       : x-large ;
+    margin-bottom   : 20px;
+    color           : #005580;
+  }
+
+  .button {
+    background-color: #4ca1af;
+    transition      : background 0.3s ease;
+    padding         : 12px 24px;
+    border          : none;
+    border-radius   : 8px;
+    font-size       : 16px;
+    cursor          : pointer;
+    transition      : background 0.3s ease;
+    width           :50% ;
+    align-self      : center ;
+    color           : white ;
+  }
+
+  .button:hover {
+    background-color: #3b8b9d;
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px)  ;}
+    to   { opacity: 1; transform: translateY(0)     ;}
+  }
+  
+  /* Responsive */
+  @media (max-width: 600px) {
+    .welcome-section h1 {
+      font-size           : 20px;
+    }
+    .welcome-section .Message {
+      margin-top: 18% ;
+    }
+  
+  }
+  
