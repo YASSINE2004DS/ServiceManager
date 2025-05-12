@@ -7,8 +7,26 @@ const PageEmail = () => {
     const [title, setTitle] = useState('');
     const [message, setMessage] = useState('');
 
-    const sendEmail = () => {
-        console.log(email, title, message);
+    const sendEmail = async () => {
+
+        // get the token from the local storage.
+        const token = localStorage.getItem('token');
+
+        try{
+            const response = await fetch('http://localhost:3001/api/email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ destination_email: email, title: title, content: message })
+            });
+
+            const data = await response.json();
+            console.log(data);
+        }catch(error){
+            console.error('Error sending email:', error);
+        }
     }
 
     return  (
