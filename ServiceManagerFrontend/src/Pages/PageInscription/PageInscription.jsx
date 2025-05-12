@@ -1,7 +1,7 @@
 import{ useState } from 'react';
 
 import './PageInscription.css';
-import logo from '../PageAccueil/Assets/safarelec-logo.png';
+import logo from '../../Shared/Assets/safarelec-logo.png';
 
 /**
  * @class PageInscription

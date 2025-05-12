@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import logo from '../PageAccueil/Assets/safarelec-logo.png';
+import logo from '../../Shared/Assets/safarelec-logo.png';
 import './PageConnexion.css' ;
 
 
