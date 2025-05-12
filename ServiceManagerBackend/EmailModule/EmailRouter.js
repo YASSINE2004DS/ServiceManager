@@ -25,30 +25,35 @@ class EmailRouter {
         // Define POST route for creating new email
         this.router.post    (
                                 '/',
+                                AuthMiddleware.authenticate,
                                 async (req, res) => { return EmailController.createEmail(req, res);}
                             );
 
         // Define GET route for fetching all emails by userid
         this.router.get     (
                                 '/:userid/source',
+                                AuthMiddleware.authenticate,
                                 async (req, res) => { return EmailController.getEmailsBySourceUserId (req, res);}
                             );
 
         // Define GET route for fetching all emails by userid
         this.router.get     (
                                 '/:userid/destination',
+                                AuthMiddleware.authenticate,
                                 async (req, res) => { return EmailController.getEmailsByDestinationUserId (req, res);}
                             );
 
         // Define GET route for fetching email by id
         this.router.get     (
                                 '/:id',
+                                AuthMiddleware.authenticate,
                                 async (req, res) => { return EmailController.getEmailById(req, res);}
                             );
 
         // Define POST route for make a email as read
         this.router.post    (
                                 '/:id/read',
+                                AuthMiddleware.authenticate,
                                 async (req, res) => { return EmailController.readEmail(req, res);  }
                             );
     }

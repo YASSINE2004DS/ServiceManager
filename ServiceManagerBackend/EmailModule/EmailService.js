@@ -1,7 +1,7 @@
 import EmailValidator from './EmailValidator.js';
 const { createEmailSchema } = EmailValidator;
 import Models from '../DatabaseModule/ModelAssociations.js';
-const { Email } = Models;
+const { Email, User } = Models;
 
 class EmailService {
 
@@ -9,30 +9,33 @@ class EmailService {
         // Validate the email informations.
         const { error, value } = createEmailSchema.validate(req.body);
         if(error) return res.status(400).json({ Error: error.details[0].message });
-        
+        console.log(req.user);
 
-        // Create the new email.
+        // get the destination user id from the database.
         try{
+            const destinationUser = await User.findOne({ where: { email: value.destination_email }});
+            if(!destinationUser) return res.status(404).json({ Error: 'Destination user not found' });
+
+            const destinationUserId = destinationUser.user_id;
             const email = await Email.create(
                 {
                     title: value.title,
                     content: value.content,
                     status: 'unread',
-                    source_user_id: value.source_user_id,
-                    destination_user_id: value.destination_user_id
+                    source_user_id: req.user.user_id,
+                    destination_user_id: destinationUserId
                 }
             );
-            
+
             // Email created successfully.
             return res.status(201).json({
                 message: 'Email created successfully',
                 emailId: email.email_id
             });
 
-        }catch(error){
+        } catch(error){
             return res.status(500).json({ Error: error.message });
         }
-
     }
 
     async getEmailsBySourceUserId(req, res) {

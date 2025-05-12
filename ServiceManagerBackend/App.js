@@ -16,10 +16,12 @@ app.use(cors());
 import UserRoute from './UserModule/UserRouter.js';        // import User Route
 import AgencyRoute from './AgencyModule/AgencyRouter.js';  // import Agency Route
 import InterventionRoute from './InterventionModule/InterventionRouter.js'; // import Intervention Route
+import EmailRoute from './EmailModule/EmailRouter.js'; // import Email Route
 
 app.use('/api/user', UserRoute);
 app.use('/api/agency' , AgencyRoute);
 app.use('/api/intervention' , InterventionRoute);
+app.use('/api/email' , EmailRoute);
 
 
 
