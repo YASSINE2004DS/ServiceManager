@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
 
 import Schema from './UserValidator.js'; // Contains the validation schemas.
 import Models from '../DatabaseModule/ModelAssociations.js' // Contains the database models.
