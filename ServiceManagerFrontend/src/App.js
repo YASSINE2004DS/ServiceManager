@@ -2,6 +2,7 @@ import Acceuil from './Pages/PageAccueil/PageAccueil.jsx';
 import PageErreur from './Pages/PageErreur/PageErreur.jsx';
 import SingUp from './Pages/PageInscription/PageInscription.jsx';
 import Login from './Pages/PageConnextion/PageConnexion.jsx';
+import PageEmail from './Pages/PageEmail/PageEmail.jsx';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -13,6 +14,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
             <Route path="/sign_up"     element={< SingUp />      }          />
             <Route path="/login"       element={< Login />       }            />
             <Route path="*"            element={< PageErreur />  }          />
+            <Route path="/sendemail"       element={< PageEmail />  }          />
           </Routes>
         </Router>
       );
