@@ -6,6 +6,7 @@ const PageEmail = () => {
     const [email, setEmail] = useState('');
     const [title, setTitle] = useState('');
     const [message, setMessage] = useState('');
+    const [Error, setError] = useState('');
 
     const sendEmail = async () => {
 
@@ -22,8 +23,17 @@ const PageEmail = () => {
                 body: JSON.stringify({ destination_email: email, title: title, content: message })
             });
 
+
             const data = await response.json();
-            console.log(data);
+            
+            if(!response.ok){
+                setError(data.Error);
+            }else{
+                setError('');
+                setEmail('');
+                setTitle('');
+                setMessage('');
+            }
         }catch(error){
             console.error('Error sending email:', error);
         }
@@ -40,7 +50,7 @@ const PageEmail = () => {
 
                         <div className='email-container'>
 
-
+                            <p className='error-message'>{Error}</p>
                             {/*  Email input field */}
                             <div className='email-inputs'>
 
