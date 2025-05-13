@@ -1,6 +1,6 @@
 import React                      from 'react';
 import './PageErreur.css';
-import logo                       from '../PageAccueil/Assets/safarelec-logo.png';  // import image logo safarelec
+import logo from '../../Shared/Assets/safarelec-logo.png'; // remplace avec ton logo réel
 
 const PageErreur = () => {
   return (

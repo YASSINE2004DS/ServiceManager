@@ -1,6 +1,6 @@
 import React from 'react';
 import './PageAccueil.css';
-import logo from './Assets/safarelec-logo.png'; // remplace avec ton logo réel
+import logo from '../../Shared/Assets/safarelec-logo.png';
 // import img1 from './Assets/img1.jpg';
 // import img2 from './Assets/img2.jpg';
 // import img3 from './Assets/img3.jpg'; // tu peux en ajouter autant que tu veux

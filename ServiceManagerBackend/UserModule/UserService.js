@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
 
 import Schema from './UserValidator.js'; // Contains the validation schemas.
 import Models from '../DatabaseModule/ModelAssociations.js' // Contains the database models.
@@ -94,10 +93,8 @@ class UserService {
         if(isNaN(Number(userId)))
             return res.status(400).json({ Error: "User id not valid!" });
 
-        // Get the user from the database.
+        // Check if the user exist in our database.
         const user = await User.findOne({ where: { user_id: userId } });
-
-        // If the user not exist.
         if(!user) return res.status(400).json({ Error: `No user has the id : ${userId}` });
 
         // Check the request format
@@ -214,6 +211,10 @@ class UserService {
         }
     }
 
+    async logout(req, res){
+        // TODO: Implement the logout function.
+    }
+
     handleError(error, res) {
 
         // Using switch case to handle different error types.
@@ -260,4 +261,3 @@ class UserService {
 }
 
 export default new UserService();
-

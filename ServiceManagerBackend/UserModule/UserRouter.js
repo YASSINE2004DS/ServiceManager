@@ -83,6 +83,8 @@ class UserRouter {
                                 async (req, res) => { return UserController.deleteUser(req, res);  }
                             );
 
+        
+
     }
 }
 
