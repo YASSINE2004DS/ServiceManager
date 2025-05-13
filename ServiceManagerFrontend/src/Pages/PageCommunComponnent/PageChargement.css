@@ -1,0 +1,8 @@
+.Chargement {
+    display            : flex  ;
+    margin             : auto ;
+    gap                : 20px ;
+    color              :darkblue ;
+    font-size          : 14 ;
+    font-weight        : bold;   
+  }

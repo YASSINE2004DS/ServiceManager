@@ -1,0 +1,56 @@
+.header {
+    display : flex ;
+    height : 80px ;
+    width : 100% ;
+    justify-content: space-between;
+    background-color: #a9a1a1;
+    position : fixed  ;
+    z-index: 2;
+  }
+  
+  .profile {
+    display : flex;
+    align-items: center;
+    gap : 30px ;
+    padding : 0px 4% ;
+  }
+  .logo-safarelec {
+    max-width           : 200px;
+    height              : auto;
+
+  }
+  .email_user {
+    font-size: 16 ;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    color : darkblue ;
+  }
+  .MessageSend {
+    width : 30% ;
+    height : 40px ;
+    position : fixed ;
+    top : 85px ;
+    left : 40%;
+    z-index: 3;
+    background-color: green;
+    font-size : 15 ;
+    font-weight: bold ;
+    text-align: center;
+    color : white ;
+    padding-top : 8px  ;
+    border-radius: 6px;
+     animation       : fadeIn 1s ease-in-out;
+  }
+
+  .avatar {
+    width: 50px;
+    height: 50px;
+    background-color: #3f51b5;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+  }

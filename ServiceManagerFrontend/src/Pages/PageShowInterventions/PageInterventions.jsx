@@ -1,0 +1,284 @@
+import React, { useEffect, useState }                from 'react';
+import './PageInterventions.css'
+import axios                                          from 'axios' ;
+import { useNavigate }                                from 'react-router-dom';
+import PageHeader                                     from '../PageCommunComponnent/PageHeader'
+import PageChargement                                 from '../PageCommunComponnent/PageChargement'
+import {VerifierExpiredToken , UserIdAndRole , token} from '../Authentification/Authentification' // import deux fonctions un pour la verifications
+                                                                                                  //de token et l'autre pour decode le token ainsi le 
+                                                                                                  //token 
+const PageInterventions = () => {
+
+    // hooks pour verifié l'authentification et l'expiration du token
+    useEffect(( )=> {
+      if(!token || VerifierExpiredToken(token))
+        {
+            navigate('/RequiredAuthentification');
+            return ;
+        }
+     } , []);
+
+  const [Time , SetTime]                                      = useState([]); // tableau pour sauvegerder le time restant pour la modification
+  const [Success , SetSuccess]                                = useState('');
+  const [loading , SetLoading]                                = useState(true);// variable qui indique le chargement des données
+  const navigate                                              = useNavigate() ;
+  const [Interventions , SetInterventions]                    = useState([]);
+  const {user_Id}                                             = UserIdAndRole(token) ; //fonction permet de decodé le token et de recuperer le id et le role d'utilisateur
+
+  // fonction pour recuperer tout les intreventions de l'uitilisateur courant
+  const RecupererInterventions =async ()=>{
+    try {
+
+      //requeste get pour recuperer toutes les intervention d'utilisateur par id (user_id) et une header "token" pour verifié l'authorization
+        const responseIntreventions =   await axios.get(
+            `http://localhost:8000/api/intervention/${user_Id}`,
+            {
+               headers: {
+                  authorization: `Bearer ${token}`
+               }
+            },
+        );
+
+        // indique que les données et chargé
+        SetLoading(false) ;
+      return responseIntreventions ;
+
+     }catch(erreur){
+
+      console.log(erreur);
+     }
+  }
+
+  // handler permettre d'envoyer l'intervention => changement sur le champ validate
+  const EnvoyerIntervention = async (id_intervention) => {
+    try {
+
+          //recuperer l'intervention pour verifier est ce que n'est pas déje envoyée
+          const response = await axios.get(
+              `http://localhost:8000/api/intervention/${user_Id}/${id_intervention}`,
+            {
+              headers: {
+                authorization: `Bearer ${token}`
+              }
+            },     
+         );
+        const intervention = response.data ;
+
+         // si l'intervention n'est pas envoyée
+        if(!intervention.validate)
+      {
+          intervention.validate=true ; // modifié le champ qui permet de verifie est ce que l'intervention est envoyée ou non
+          await axios.patch(
+            `http://localhost:8000/api/intervention/${user_Id}/${id_intervention}`,
+            {
+                 validate:true 
+            } ,
+            {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            },   
+          ) ;
+
+        console.log("success send Intrevention");
+
+        // modifié l'intervention modifié dans le tableau des interventions
+
+        //copié de tableau interventions pour faire la modification
+        let UpdateIntervention = Interventions.map((inter , index)=>
+         inter.intervention_id === id_intervention ? {...inter , validate : true} 
+                                                   : inter
+        );
+
+        // modifie le tableau par le nouveau tableau modifié
+        SetInterventions(UpdateIntervention);
+
+        // initialisé une message de réussie doit apparaitre pendent 2s 
+        SetSuccess("Intervention est bien envoyée");
+
+        setTimeout(() => {
+          SetSuccess('');
+        }, 2000);
+
+      }
+    } catch (error)
+    {
+      // les cas des errurs envoyé au niveau de backend
+      if(error.response && error.response.data && error.response.data.message)
+      {
+        console.log(error.response.data.message);
+      }else {
+
+        console.log("erreur send intervention" , error);
+      }
+      
+    }
+  }
+
+  // handler permet de consulter les informations d'une intervention a travers le click sur le button voir plus
+  const ConsulterIntervention= (interventionId) => {
+ 
+    //redirection ver la page /intervention/id_intervention
+    navigate(`/intervention/${interventionId}`);
+  }
+
+ //hooks pour recuperer les interventions est l'initialis' dans une variable tableau
+  useEffect( ()=> {
+    try {
+
+      RecupererInterventions()
+      .then(response=>{
+          SetInterventions(response.data);
+         })
+      .catch(erreur=>{
+          console.log(erreur);
+       });
+
+    } catch (error) {
+
+      console.log("erreur");
+
+    }
+  }, []);
+
+  // hooks pour calculé le temps reste de la modification d'intervention (temps < 24) et ainsi pour l'envoie 
+  //automatique si le temps dépasse 24h
+  useEffect(() => {
+    const updateTime = () => {
+
+        const now = new Date(); // la date courrant
+
+        /*parcourir toutes les temps des interventions et l'initialise le temps reste de chaque intervention dans une case correspond a l'index d'intervention dans
+        le tableau Time */
+        const updatedTimes = Interventions.map((interv) => {
+
+       //calculé  le temps d'autorization de modification , le 1000 pour la convertion en ms
+        const target = new Date(interv.createdAt).getTime() + 24 * 60 * 60 * 1000;
+
+        //calculer le temps entre  time courrant  et time d'autorization
+        const diff = target - now.getTime();
+  
+         // le temps terminé
+        if (diff <= 0) {
+
+          // envoie automatique de l'intervention si n'est pas encore envoyée
+          EnvoyerIntervention(interv.intervention_id);
+          //return une indication
+          return 'Termine';
+        } else {
+
+          //calcule les heures et les minutes
+          const hours = Math.floor(diff / (1000 * 60 * 60));
+          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+          //return sous form XXh YYmin
+          return `${hours}h ${minutes}min`;
+        }
+      });
+     
+       // initialisé le tableau du temps par le tableau retourné par la fonction map
+      SetTime(updatedTimes);
+    };
+  
+    updateTime(); //  Appel immédiat au montage sans attendre 1min
+    const interval = setInterval(updateTime, 60000); // Ensuite toutes les 60 secondes
+  
+    return () => clearInterval(interval); // Nettoyage
+  }, [Interventions]);
+  
+// fonction pour la convertion du date 
+ const convertirDate = (date_recup)=> {
+    const rawDate = date_recup;
+     const date = new Date(rawDate);
+     const formattedDate = `${String(date.getDate()).padStart(2, '0')}-
+                            ${String(date.getMonth() + 1).padStart(2, '0')}-
+                            ${date.getFullYear()}`;
+
+     return formattedDate ;
+ }
+
+
+  return (
+
+   
+    <div className='container-intreventions'>
+
+      {/* header */}
+        <PageHeader />
+        
+        {loading ? (  
+          
+          // Page de chargement
+          <PageChargement />
+         ) :(
+
+         <div className='Interventions-container'>
+
+             {/* message si l'intervention est bien envoyée */}
+        {Success && <p className='MessageSend'>{Success}</p>} 
+
+       {Interventions.map((interv , index)=>
+           <div key={index} className='Intervention-container'>
+            
+             {/* section pour le temps et numero d'intervention */}
+               <div className='Data-inter'>
+                   <div className='Info-time-send'>
+
+                      <h4>{ convertirDate(interv.date)}</h4>
+
+                      <div className='Info-time-send2'>
+                      {interv.validate && <h5 style={{color:'green',}}>✅Send</h5>} 
+                      {Time[index] !== 'Termine' && <h5>⏳{Time[index]}</h5>}
+                      </div>
+
+                    </div>
+
+                    <h3 className='DI-number'>DI-N° {interv.intervention_id}</h3>
+               </div>
+
+                 {/* section pour quelque info sur l'interventions */}
+              <div className='Data-inter Addstyle'>
+
+                <div className='Info-time-send Addstyle1'>
+                    <p className='p1'><span>Status :</span><span>{(interv.status)?"OUI" : "NON"}</span> </p>
+                    <p className='p2'><span>Section :</span><span>SPI</span> </p>
+                </div>
+
+                <div className='Info-time-send Addstyle2'>
+                     <p className='p1'><span>Reception :</span><span>{(interv.reception)?"OUI" : "NON"}</span> </p>
+                    <p className='p2'><span>Type_Maintenance :</span><span>{interv.maintenance_type}</span> </p>
+                </div>     
+
+              </div>
+
+
+                      {/* section des buttons pour gerer l'intervention */}
+              <div className='button-group-inter'>
+                  <input 
+                  className=" button-consulter"
+                  type='button' 
+                  value="Voir plus"
+                  onClick={()=>ConsulterIntervention(interv.intervention_id)}/>
+               {(Time[index] !== 'Termine') &&  <input 
+                  className=" button-update"
+                  type='button' 
+                  value="Modifier"
+                  onClick={()=>{}}/>
+               }
+                {!(interv.validate) && (Time[index] !== 'Termine') && (<input 
+                  className=" button-envoyer"
+                  type='button' 
+                  value="Envoyer"
+                  onClick={()=>EnvoyerIntervention(interv.intervention_id)}/> )
+                }
+              </div>
+           </div>
+          //  fin de la fonction map
+        )}  ; 
+    </div>  )}
+          
+  </div>
+  );
+};
+
+export default PageInterventions;
