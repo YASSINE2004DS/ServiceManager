@@ -49,7 +49,21 @@
       font-family   : 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ;
       font-weight   : bold ;
       font-size     : xx-large ;
-      margin-top    : 10% ;
+      margin-top    : 5% ;
+  }
+  .btn-event {
+    padding         : 15px 25px;
+    background-color: #005580;;
+    border          : none;
+    color           : white;
+    font-size       : 1rem;
+    cursor          : pointer;
+    border-radius   : 5px;
+    margin          : 70px 0px ;
+  }
+  
+  .btn-event:hover {
+    opacity : 0.8 ;
   }
    
   /* Animations */
@@ -59,12 +73,49 @@
   }
   
   /* Responsive */
+
+  
+  @media (max-width: 1200px) {
+    .welcome-section h1 {
+      font-size           : 20px;
+    }
+    .welcome-sectione2 .Message {
+      margin-top          : 7% ;
+      font-size           : 25px;
+    }
+
+    .welcome-sectione2 .btn-event {
+      margin-top          : 70px ;
+    }
+  
+  }
+
+  @media (max-width: 800px) {
+    .welcome-section h1 {
+      font-size           : 20px;
+    }
+    .welcome-sectione2 .Message {
+      margin-top          : 7% ;
+      font-size           : 20px;
+    }
+
+    .welcome-sectione2 .btn-event {
+      margin-top          : 60px ;
+    }
+  
+  }
+  
   @media (max-width: 600px) {
     .welcome-section h1 {
       font-size           : 20px;
     }
-    .welcome-section .Message {
-      margin-top: 18% ;
+    .welcome-sectione2 .Message {
+      margin-top          : 18% ;
+      font-size           : 17px;
+    }
+
+    .welcome-sectione2 .btn-event {
+      margin-top          : 50px ;
     }
   
   }
