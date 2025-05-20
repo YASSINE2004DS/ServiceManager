@@ -1,4 +1,4 @@
-import logo from '../PageAccueil/Assets/safarelec-logo.png'; // remplace avec ton logo réel
+import logo         from '../../Shared/Assets/safarelec-logo.png';
 import './PageHeader.css'
 
 const PageHeader = () => {

@@ -28,5 +28,5 @@ export const UserIdAndRole = (token) => {
   }
 };
 
-export const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo3LCJyb2xlIjoidXNlciIsImlhdCI6MTc0NzA5OTcyOSwiZXhwIjoxNzQ3NzA0NTI5fQ.kDcNEY8GmUW10ZdR8M_1-vRgsPI9rKTp_Tm9GFRcQH0`;
+export const token = localStorage.getItem('token');
 

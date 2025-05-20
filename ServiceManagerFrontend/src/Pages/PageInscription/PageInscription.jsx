@@ -56,7 +56,7 @@ const PageInscription = () => {
             // Remove confirm_password before sending to API
             const { confirm_password, ...dataToSend } = formData;
 
-            const response = await fetch('http://localhost:3001/api/user', {
+            const response = await fetch('http://localhost:8000/api/user', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

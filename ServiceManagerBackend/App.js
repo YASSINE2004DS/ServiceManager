@@ -13,15 +13,17 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 // All routes
-import UserRoute from './UserModule/UserRouter.js';        // import User Route
-import AgencyRoute from './AgencyModule/AgencyRouter.js';  // import Agency Route
-import InterventionRoute from './InterventionModule/InterventionRouter.js'; // import Intervention Route
-import EmailRoute from './EmailModule/EmailRouter.js'; // import Email Route
+import UserRoute              from './UserModule/UserRouter.js';        // import User Route
+import AgencyRoute            from './AgencyModule/AgencyRouter.js';  // import Agency Route
+import InterventionRoute      from './InterventionModule/InterventionRouter.js'; // import Intervention Route
+import EmailRoute             from './EmailModule/EmailRouter.js'; // import Email Route
+import SectionRouter          from './SectionModule/SectionRouter.js';
 
-app.use('/api/user', UserRoute);
-app.use('/api/agency' , AgencyRoute);
-app.use('/api/intervention' , InterventionRoute);
-app.use('/api/email' , EmailRoute);
+app.use('/api/user'             ,  UserRoute);
+app.use('/api/agency'           ,  AgencyRoute);
+app.use('/api/intervention'     ,  InterventionRoute);
+app.use('/api/email'            ,  EmailRoute);
+app.use('/api/section'          ,  SectionRouter);
 
 
 
@@ -37,7 +39,7 @@ sequelize.sync()
             console.error('Error from the database :', error);
 });
 
-// sequelize.sync();
+sequelize.sync();
 
 
 // lance the server
