@@ -446,7 +446,7 @@ const PageIntervention = () => {
                   className="btn button-suivant"
                   type='button' 
                   value="Enregistrer"
-                  onClick={(e)=>{ConfirmRegistreAndSenIntervention("Registre" , e)}}/>
+                  onClick={(e)=>{RegistreIntervention("Registre" , e)}}/>
           <input 
                   className="btn button-envoyer-direct"
                   type='button' 
