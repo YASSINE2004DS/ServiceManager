@@ -42,14 +42,13 @@ class IntereventionController {
 
         // Define GET route for fetching Intervention by id
         this.router.get('/:id', 
-                               AuthMiddleware.authorizeUserAndAdmin , 
                                async (req, res) => {
                                return intereventionController.getIntereventionByUserId (req, res);
                         });
 
         // Define GET route for fetching Interevention by id of a user Id
         this.router.get('/:id/:id_Intervention', 
-                              AuthMiddleware.authorizeUserAndAdmin ,
+
                               async (req, res) => {
                               return intereventionController.getInterventionById(req, res);
                         });

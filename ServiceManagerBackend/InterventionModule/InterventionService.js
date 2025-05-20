@@ -3,13 +3,19 @@ import validateDataInterevention  from './ValidatorInterevention.js';       // i
 const { ValidateUpdatingIntervention , ValidateCreatingIntervention } = validateDataInterevention; // destructure the variables for validate data from user
 
 // import the models from the database; 
-const {  Intervention } = Models ; 
+const {  Intervention , Section , User } = Models ; 
 
 class InterventionService {
     async getInterventions(req , res) {
         try {
             // Get all Agencies from the database.
-            const interventions = await Intervention.findAll();
+            const interventions = await Intervention.findAll({ 
+                                                         include: {
+                                                                model: Section,
+                                                                attributes: ['name'] // <-- optionnel : liste des attributs à retourner
+                                                                  }
+                                                               
+                                                             });
 
             //return the Agencies informations
             res.json(interventions);
@@ -24,20 +30,27 @@ class InterventionService {
         try {
             // Check if the Interevention exist and valid.
             const interventionId = req.params.id_Intervention;
+            const userId = req.params.id;
 
             if(isNaN(Number(interventionId)))
                 return res.status(400).json({ Error: "Intervention id not valid!" });
 
             // Get the Interevention from the database.
             const intervention = await Intervention.findOne({ 
-                                                    where: { intervention_id: interventionId } 
+                                                    where: { intervention_id: interventionId } ,
+                                                    include: {
+                                                        model: Section,
+                                                        attributes: ['name'] // <-- optionnel : liste des attributs à retourner
+                                                      }
                                                 });
 
             // If the Interevention not exist.
             if(!intervention) return res.status(400).json({ Error: `No Intervention has the id : ${interventionId}` });
 
+            if(intervention.user_id != userId) return res.status(403).json({message : "Authorization failed"}) ;
+
             // Return the Interevention informations
-            return res.json(intervention);
+            return res.json(intervention );
         }catch (error) {
             // handle error
             res.status(500).json({ Error : error.message });
@@ -56,7 +69,8 @@ class InterventionService {
             // Get the Intreventions from the database.
             const intervention = await Intervention.findAll({ 
                                                                where: { user_id: userId }, 
-                                                               attributes: { exclude: ['createdAt', 'updatedAt'] }
+                                                               attributes: { exclude: ['updatedAt'] },
+                                                               includes :[{ model: Section, as: "section", }]
                                                             });
 
             // If the Intervention not exist.
@@ -162,19 +176,19 @@ class InterventionService {
             if(dataFromUser.intervention_id) { 
                 IntereventionUpdated = await Intervention.findOne({
                     where     : { intervention_id : dataFromUser.intervention_id },
-                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                    attributes: { exclude: ['updatedAt'] }
                                                                   });
             }else{
              IntereventionUpdated = await Intervention.findOne({
                 where     : { intervention_id : interventionId },
-                attributes: { exclude: ['createdAt', 'updatedAt'] }
+                attributes: { exclude: ['updatedAt'] }
                                                                 });
             }                                                     
             if(UpdateIntervention) return res.json({Success : "Intervention demande updated successfully" , UpdateIntervention , IntereventionUpdated});
 
     }catch (error) {
             // handle error
-            res.status(500).json({ Error : error.message });
+            res.status(500).json({ message : error.message });
         }
     }
 
@@ -184,7 +198,7 @@ class InterventionService {
             const interventionId = req.params.id_Intervention;
 
             if(isNaN(Number(interventionId)))
-                return res.status(400).json({ Error: "Intervention id not valid!" });
+                return res.status(400).json({ message: "Intervention id not valid!" });
 
             // Get the Interevention from the database.
             const intervention = await Intervention.findOne({ 
@@ -192,7 +206,7 @@ class InterventionService {
                                                             });
 
             // If the Interevention not exist.
-            if(!intervention) return res.status(400).json({ Error: `No Intervention has the id : ${interventionId}` });
+            if(!intervention) return res.status(400).json({ message: `No Intervention has the id : ${interventionId}` });
 
             // Delete the Interevention from the database.
             await Intervention.destroy({ where: { intervention_id: interventionId } });
@@ -201,10 +215,11 @@ class InterventionService {
             return res.json({ Success: `Intervention with id : ${interventionId} deleted successfully!` });
         }catch (error) {
             // handle error
-            res.status(500).json({ Error : error.message });
+            res.status(500).json({ message : error.message });
         }
     }
-        
+
 }
+
 
 export default new InterventionService(); // export the instance of the class
