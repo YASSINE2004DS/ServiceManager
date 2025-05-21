@@ -1,9 +1,10 @@
    .container-intreventions-consulter {
-    display                 : flex ;
-    flex-direction          : column;
-    align-items             : center;
- 
-   }
+    height              : 100vh;
+    width               : 100%;
+    display             : flex;
+    flex-direction      : row ;
+
+     }
 
    .Interventions-container-consulter  h2 {
     text-align              : center;
@@ -14,19 +15,20 @@
 
   .Interventions-container-consulter {
     height                  : 630px ;
-     width                  : 80% ;
-    margin-top              : 150px ;
-   border-radius            : 5px;
+     width                  : 95%   ;
+   border-radius            : 5px   ;
    box-shadow               : 2px 2px 5px 3px gray;
-   padding                  : 2px ; 
+   padding                  : 2px   ; 
+   margin                   : auto;
+   margin-top               : 150px ;
 
   }
 
   .AllSection {
-    width                   : 100% ;
-    height                  : 42% ;
-    display                 : flex ;
-    column-gap              : 0px ;
+    width                   : 100%  ;
+    height                  : 42%   ;
+    display                 : flex  ;
+    column-gap              : 0px   ;
     margin                  : 30px 13px 0px  13px ; 
 
   }
@@ -107,9 +109,9 @@
     display                   : block;
     font-size                 : larger ;
     padding                   : 5px ;
-    font-weight               :bold ;
+    font-weight               : bold ;
     color                     : darkblue;
-    margin:8px ;
+    margin                    : 8px ;
 
   }
   
@@ -135,4 +137,260 @@
     overflow-y                 : auto;       
     white-space                : normal;       
     word-wrap                  : break-word;    
+   }
+
+   /* Responsive */
+   @media (max-width : 1300px) {
+
+    .Interventions-container-consulter  h2 {
+      font-size:  18px;
+   
+    }
+
+   .Interventions-container-consulter {
+     height                  : fit-content;
+      width                  : 95% ;
+    border-radius            : 5px;
+    box-shadow               : 2px 2px 5px 3px gray;
+    padding                  : 2px ; 
+   margin                    : auto ;
+    margin-top               : 120px ;
+    margin-bottom            : 5px ;
+ 
+   }
+
+   .AllSection {
+     width                   : 95% ;
+     height                  : 80% ;
+    font-size                : 10px;
+    margin                   : 30px 13px 0px  13px ; 
+    margin                   : auto;
+    background-color         :aliceblue;
+    font-size                : 11px;
+ 
+   }
+
+     .Section {
+      row-gap : 10px ;
+     }
+
+     .Section2 {
+      row-gap : 25px ;
+    }
+
+   .Section2ConfigHeight {
+    row-gap: 10px;
+   }
+
+   .ZoneCommentaire {
+    display                   : flex;
+    flex-direction            : column;
+    width                     : 95% ;
+    height                    : 20% ;
+    align-items               : center;
+    background-color          : aliceblue;
+    padding                   : 15px 0px ;
+    margin                    : auto;
+    margin-bottom             : 5px ;
+
+  }
+  
+   .ZoneCommentaire  span {
+    display                   : block;
+    font-size                 : 13px ;
+    font-weight               : bold ;
+    color                     : darkblue;
+    margin                    : 8px ;
+
+  }
+  
+  textarea {
+    width                     : 90% ;
+    height                    : 100px ;
+    outline                   : none ;
+    padding                   : 5px ;
+    font-size                 : 16px ;
+    border-radius             : 2px;
+    border                    : none ;
+    background-color          : rgb(233, 239, 244);
+    color                     : black;
+
+  }
+   }
+
+   @media (max-width : 800px) {
+    .Interventions-container-consulter  h2 {
+      font-size:  18px;
+   
+    }
+
+   .Interventions-container-consulter {
+     height                  : fit-content;
+      width                  : 95% ;
+    border-radius            : 5px;
+    box-shadow               : 2px 2px 5px 3px gray;
+    padding                  : 2px ; 
+   margin                    : auto ;
+    margin-top               : 100px ;
+    margin-bottom            : 5px ;
+ 
+   }
+ 
+   .AllSection {
+    display: grid;
+    grid-template-columns    : repeat(2 , 1fr);
+     width                   : 95% ;
+     height                  : 80% ;
+    font-size                : 14px;
+ 
+   }
+
+   .Section2All
+   {
+    grid-column              : 1/-1;
+   }
+
+   .Section , .Section2 {
+     width                   : 100% ;
+     display                 : flex ;
+     flex-direction          : column;
+     padding                 : 5px ;
+     background-color        : aliceblue;
+     font-size: 12px;
+ 
+   }
+
+   .Section  , .Section2{
+    row-gap                 : 8px ;
+  }
+
+  .ZoneCommentaire  span {
+    display                   : block;
+    font-size                 : 14px ;
+    padding                   : 5px ;
+    font-weight               : bold ;
+    color                     : darkblue;
+    margin                    : 8px ;
+
+  }
+  
+  textarea {
+    width                     : 90% ;
+    height                    : 85px ;
+    outline                   : none ;
+    padding                   : 5px ;
+    font-size                 : 16px ;
+    border-radius             : 2px;
+    border                    : none ;
+    background-color          : rgb(233, 239, 244);
+    color                     : black;
+
+  }
+
+   }
+
+
+
+   @media (max-width  : 700px) {
+ 
+
+     .Interventions-container-consulter  h2 {
+       font-size:  16px;
+    
+     }
+
+    .Interventions-container-consulter {
+      height                  : fit-content;
+       width                  : 93% ;
+     border-radius            : 5px;
+     box-shadow               : 2px 2px 5px 3px gray;
+     padding                  : 2px ; 
+    margin                    : auto ;
+     margin-top               : 100px ;
+     margin-bottom            : 5px ;
+  
+    }
+  
+    .AllSection {
+      width                   : 90% ;
+      height                  : 80% ;
+      display                 : block ;
+      margin                  : 0px auto;
+  
+    }
+    .Section , .Section2 {
+      width                   : 100% ;
+      display                 : flex ;
+      flex-direction          : column;
+      padding                 : 5px ;
+      background-color        : aliceblue;
+  
+    }
+    .champ {
+      width:100%;
+    }
+    
+    .Champ span {
+      display                 : block;
+      width                   : 50%  ;
+      font-size               : 13px ;
+      padding                 : 5px  ;
+      font-weight             : bold ;
+  
+    }
+
+    .Section .Champ span:nth-of-type(1) , .Section2 .Champ span:nth-of-type(1) {
+      width                   : 50%;
+      align-items             : flex-start;
+      color                   : darkblue ;
+  
+    }
+  
+    .Section .Champ span:nth-of-type(2) , .Section2 .Champ span:nth-of-type(2) {
+      width                   : 50%;
+      align-items             : center;
+    }
+
+    .Section  , .Section2{
+      row-gap                 : 8px ;
+  
+    }
+
+    .ZoneCommentaire {
+      display                   : flex;
+      flex-direction            : column;
+      width                     : 93% ;
+      height                    : 20% ;
+      align-items               : center;
+      background-color          : aliceblue;
+      padding                   : 15px 0px ;
+      position: relative;
+      left : 1%;
+  
+    }
+
+    
+  .ZoneCommentaire  span {
+    display                   : block;
+    font-size                 : 14px ;
+    padding                   : 5px ;
+    font-weight               : bold ;
+    color                     : darkblue;
+    margin                    : 8px ;
+
+  }
+  
+  textarea {
+    width                     : 90% ;
+    height                    : 85px ;
+    outline                   : none ;
+    padding                   : 5px ;
+    font-size                 : 12px ;
+    border-radius             : 2px;
+    border                    : none ;
+    background-color          : rgb(233, 239, 244);
+    color                     : black;
+
+  }
+
    }

@@ -29,7 +29,7 @@ const PageConnexion = () => {
 
         try {
             // Send login request to backend API
-            const response = await fetch('http://localhost:3001/api/user/login', {
+            const response = await fetch('http://localhost:8000/api/user/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -49,7 +49,7 @@ const PageConnexion = () => {
                 localStorage.setItem('token', data.token);
 
                 // Redirect to the home page
-                window.location.href = '/home';
+                window.location.href = '/ShowInterventions';
             } else {
                 // Set the error message
                 setError(data.message);

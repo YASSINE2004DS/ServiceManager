@@ -1,12 +1,14 @@
 import React, { useState , useEffect}                from 'react';
-import './PageIntervention.css';                                                                       // import fichier css
-import axios                                          from 'axios' ;
-import swal                                           from 'sweetalert2'
-import { useNavigate }                                from 'react-router-dom';
+import './PageUpdateIntervention.css';                                                                       // import fichier css
+import axios from 'axios' ;
+import { useNavigate , useParams }                    from 'react-router-dom';
 import PageHeader                                     from '../PageCommunComponnent/PageHeader'     // import page qui contient le header
+import PageChargement                                 from '../PageCommunComponnent/PageChargement'
+import swal                                           from 'sweetalert2'
 import {VerifierExpiredToken , UserIdAndRole , token} from '../Authentification/Authentification' // import deux fonctions un pour la verifications
                                                                                                   //de token et l'autre pour decode le token ainsi le 
                                                                                                   //token 
+
 
 const PageIntervention = () => {
 
@@ -19,33 +21,65 @@ const PageIntervention = () => {
         }
      } , []);
 
-  const [intreventionSection , SetIntreventionSection]         = useState(1); // variable pour precise la section  1 ou 2
-  const [Sections , SetSections]                               = useState([]) ;
-  const {user_Id}                                              = UserIdAndRole(token) ; //fonction permet de decodé le token et de recuperer le id et le role d'utilisateur
-  const [Erreur , SetErreur]                                   = useState('');//variable pour les erreur
-  const [Success , SetSuccess]                                 = useState('');//variable pour la validatin de creation
-  const navigate                                               = useNavigate() ;
-  
-  const [IntreventionInformation , SetIntreventionInformation] = useState //variable objet pour sauvegarder les données saisie
-  ({
-      intervention_id           :''      ,
-      date                      : ''     ,
-      team                      : ''     ,
-      reference                 : ''     ,
-      post                      : ''     ,
-      maintenance_type          : 'PREVENTIF' ,
-      status                    :false  ,
-      work_order_number         : ''     ,
-      work_autorisation_number  : ''     ,
-      planification             : false  ,
-      reception                 : false  ,
-      start_time                : ''     ,
-      end_time                  : ''     ,
-      comment                   : ' '    ,
-      validate                  : false  ,
-      section_id                :  1     ,
-      user_id                   :  user_Id 
-   });
+    const [intreventionSection , SetIntreventionSection]        =  useState(1); // variable pour precise la section  1 ou 2
+    const [Erreur , SetErreur]                                  =  useState('');//variable pour les erreur
+    const [Success , SetSuccess]                                =  useState('');//variable pour la validatin de creation
+    const [IntreventionInformation , SetIntreventionInformation]=  useState({});  //variable pour le stockage des données recu par l'api
+    const [Sections , SetSections]                              =  useState([]) ;
+    const [loading , SetLoading]                                =  useState(true);// variable qui indique le chargement des données
+    const {id_Intervention}                                     =  useParams();   // variable pour recuperer les parametre de l'url
+    const {user_Id}                                             =  UserIdAndRole(token) ; //fonction permet de decodé le token et de recuperer le id et le role d'utilisateur
+    const navigate                                              =  useNavigate(); // pour le navigation entre les pages
+
+    
+    // hooks pour gerer l'authentification et la ercuperation des donnees a partie de backend a partir d'une api
+    useEffect(() => {
+    
+        const fetchIntervention = async () => {
+          try {
+    
+            // Envoie d'une requete pour recuperer intervention avec une header contient le token pour verifier l'authorization
+            const response = await axios.get(
+              `http://localhost:8000/api/intervention/${user_Id}/${id_Intervention}`,
+              {
+                headers: {
+                  authorization: `Bearer ${token}`
+                }
+              }
+            );
+            
+            //Initialiser données recuperer dans la variable Intervention
+            SetIntreventionInformation(response.data);
+            SetLoading(false);
+            console.log("Intervention bien récupérée");
+    
+          } catch (error) {
+    
+            if (error.response && error.response.data && error.response.data.message) {
+                //erreur pour les authorizations
+              if(error.response.data.message === "Authorization failed")
+              {
+                console.log("Vous n'avez pas le droit de consulter cette intervention");
+                navigate('/AuthorizationFailed' , {replace : true });  // navigé vers une page erreur authorization failed
+                return ;
+              }else { 
+                //pour les autre erreur 
+                console.log("ID d'intervention invalide ou inexistant" , error.response.data.message);
+                navigate("/erreur");
+              
+              }
+            } else {
+                //erreur lié au serveur
+              console.log("Erreur serveur", error);
+            }
+             SetLoading(false);
+          }
+        };
+    
+       fetchIntervention(); // appeler la fonction dessus
+    
+      }, [id_Intervention, user_Id, token]);
+
 
     const RecupererSections = async () => {
       try {
@@ -108,18 +142,16 @@ const PageIntervention = () => {
   }
 
    // fonction pour sauvegarder l'intervention dans la BD
-   const RegistreIntervention = async (Type_Validate , event) => {
-    event.preventDefault(); // pour eviter l'envoi de formulaire
-     try {
+   const UpdateIntervention = async ( event ) => {
 
-      //preciser le type d'evenement envoyer ou enregistrer
-      if(Type_Validate==="Envoyer")
-        SetIntreventionInformation(prev => ({ ...prev, validate: true }));
-        
+     event.preventDefault(); // pour eviter l'envoi de formulaire
+     const {createdAt , section , ...infoUpdating} = IntreventionInformation ;
+      try {
+  
       // requete pour le sauvegarde avec une header pour verifier l'authorization
-       const response = await axios.post(
-        'http://localhost:8000/api/intervention',
-         IntreventionInformation, // directement l'objet
+       const response = await axios.patch(
+        `http://localhost:8000/api/intervention/${user_Id}/${id_Intervention}`,
+        infoUpdating , 
         {
           headers: {
             authorization: `Bearer ${token}`
@@ -127,73 +159,77 @@ const PageIntervention = () => {
         },
       );
       SetErreur('');
-      SetSuccess(response.data.Success);
+      // SetSuccess(response.data.Success);
 
       // message apparitre pendent 2s seulement
-        await setTimeout(()=> SetSuccess('') , 3000 ) ;
+         setTimeout( navigate('/ShowInterventions'), 2000 ) ;
 
         //navige vers la page ShowIntreventions qui affiche toutes les interventions
-        setTimeout(()=>navigate('/ShowInterventions') , 2000) ;
+        
                                             
      } catch (error) {
 
       if (error.response && error.response.data && error.response.data.message) {
         SetErreur(error.response.data.message);
         // SetErreur("Verifier le remplissage des champs et la validité des données");
-        await setTimeout(()=> SetErreur('') , 6000 ) ;
+        await setTimeout(()=> SetErreur('') , 3000 ) ;
       
     } else {
         SetErreur("Erreur de connexion au serveur");
+        console.log(error);
     }
 
      }
    }
 
-  //  const ConfirmRegistreAndSenIntervention = (event , typeSend) => {
+    const ConfirmUpdateIntervention = (event) => {
+      swal.fire({
+        title: `Es-tu sûr de modifier l\'intervention ${id_Intervention} ?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: 'darkred',
+        cancelButtonColor: 'darkblue',
+        confirmButtonText: 'Oui',
+        width: '400px' 
 
-  //   swal.fire({
-  //     title: `${typeSend==="Envoyer" ? "Es-tu sûr de vouloir envoyer cette intervention ?" 
-  //                                    : "Es-tu sûr d'enregistrer cet intervention ?" }`,
-  //     icon: 'warning',
-  //     showCancelButton: true,
-  //     confirmButtonColor: 'darkred',
-  //     cancelButtonColor: 'darkblue',
-  //     confirmButtonText: 'Oui',
-  //     width: '400px' 
+      }).then((result) => {
+        if (result.isConfirmed) {
+          
+          UpdateIntervention(event);
+          swal.fire({
+            title: "Intervention est modifiée",
+            icon: "success",
+            showConfirmButton:false,
+            width: '400px' ,
+            timer:1000
+          });
+        }
+      });
+    }
+   
+   // fonction pour la convertion du date sous forme iso vers la forme DD-MM-YYYY
+  const convertirDate = (date_recup)=> {
+     const rawDate = date_recup;
+     const date = new Date(rawDate);
+     const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-        
-  //       try 
-  //       {
-  //         RegistreIntervention(typeSend , event);
-  //       }catch(error)
-  //       {
-  //         console.log(error);
-  //       }
-        
-  //       // swal.fire({
-  //       //   title: `${typeSend==="Envoyer" ? "L'intervention a été envoyée." 
-  //       //                                  : "L'intervention a été enregistrée." }`,
-  //       //   icon: "success",
-  //       //   showConfirmButton:false,
-  //       //   width: '400px' ,
-  //       //   timer:1000
-  //       // });
-  //     }
-  //   });
-  // }
+     return String(formattedDate) ;
+
+ }
+
   return (
     <div className='container-add-intervention'>
        {/* Header */}
        <PageHeader />
-
-      {/* container pour la formulaire et logo */}
+  {loading ? (
+       <PageChargement />
+  ):(
     <div className=" home-container">
+        {/* container pour la formulaire et logo */}
 
       {/* logo entreprise safarelec */}
       {/* <img src={logo} alt="SAFARELEC Logo" className="logo" /> */}
-      <h2>Remplir la formulaire d'intervention</h2>
+      <h2>Remplir le formulaire d'intervention</h2>
 
       {/* message pour gerer les erreur */}
        {Erreur && ( <h3 className='Message erreur'>‼ {Erreur} </h3>   )}
@@ -264,7 +300,7 @@ const PageIntervention = () => {
                 id="date_inter"
                 type="date" 
                 placeholder='Entre your name'
-                value={IntreventionInformation.date}
+                value={convertirDate(IntreventionInformation.date)}
                 required
                 onChange={(event)=>RetriveDataAndInitializechamp(event)}
           />
@@ -333,7 +369,13 @@ const PageIntervention = () => {
                   onChange={(event)=>RetriveDataAndInitializechamp(event)}
           >
             {Sections.map((section , index) =>
-              <option key={index} value={section.section_id}> {section.name}</option>
+              <option key     = {index} 
+                      value   = {section.section_id} 
+                      selected= {section.section_id == IntreventionInformation.section_id}
+              > 
+
+                                  {section.name}
+              </option>
             )}
 
          </select> 
@@ -429,6 +471,7 @@ const PageIntervention = () => {
                     name="comment" 
                     id="commentaire" 
                     placeholder="Entre commentaire for intrevention"   
+                    value={IntreventionInformation.comment}
                     className='Commentaire-text'
                     onChange={(event)=>RetriveDataAndInitializechamp(event)}
           >
@@ -438,20 +481,16 @@ const PageIntervention = () => {
 
         <div className='button-group'>
         <input 
-                  className="btn button-previous"
+                  className="btn button-previous-update-intervention"
                   type='button' 
                   value="Precedent"
                   onClick={PreviousSection}/>
         <input 
-                  className="btn button-suivant"
+                  className="btn button-update"
                   type='button' 
-                  value="Enregistrer"
-                  onClick={(e)=>{RegistreIntervention("Registre" , e)}}/>
-          <input 
-                  className="btn button-envoyer-direct"
-                  type='button' 
-                  value="Envoyer"
-                  onClick={(e)=>{RegistreIntervention("Envoyer" , e)}}/>
+                  value="Modifier"
+                  onClick={(e)=>ConfirmUpdateIntervention(e)}/>
+
         </div>
 
         </div>   )} 
@@ -459,6 +498,7 @@ const PageIntervention = () => {
        
         </form>
      </div>
+     )}
 
     {/* style depend a numero du section pour precise quelle style doit appliqué */}
      <style jsx>
@@ -478,7 +518,7 @@ const PageIntervention = () => {
     border-radius   : 5px;
     box-shadow      : 2px 2px 5px 3px gray;
     position        : absolute;
-    margin-top      :  ${(intreventionSection==2) ? 100 : 120 }px ;
+    margin-top      :  ${(intreventionSection==2) ? 130 : 150 }px ;
     }
 
      .welcome-section {
@@ -493,6 +533,7 @@ const PageIntervention = () => {
     margin          : auto ;
     margin-top      : 20px ;
     margin-bottom   : 0px ;
+    font-size       : 25px ;
 
   }
 
@@ -568,7 +609,7 @@ const PageIntervention = () => {
   border-radius         : 3px;
 }
 
-    .button-suivant , .button-previous , .button-envoyer-direct {
+    .button-suivant  ,  .button-update , .button-previous-update-intervention {
   color                 : white;
   background-color      : darkblue;
   font-weight           : normal;
@@ -579,13 +620,10 @@ const PageIntervention = () => {
   margin-bottom         : 10px ;
   }
 
-  .button-previous {
-  background-color      : darkred;
+  .button-update {
+  background-color      : red;
   }
 
-  .button-envoyer-direct {
-    background-color    : rgb(29, 104, 8);
-  }
 
   }
 
@@ -696,7 +734,7 @@ const PageIntervention = () => {
     margin           : 0px 0px ;
   }
 
-  .button-suivant , .button-previous , .button-envoyer-direct {
+  .button-suivant , .button-update , .button-previous-update-intervention {
   color              : white;
   background-color   : darkblue;
   font-weight        : normal;
@@ -706,12 +744,10 @@ const PageIntervention = () => {
   padding            :0px ;
   }
 
-  .button-previous {
+  .button-update {
   background-color   : darkred;
   }
-  .button-envoyer-direct {
-    background-color   : rgb(29, 104, 8);
-  }
+
    
   .commentaire {
   display              : flex;

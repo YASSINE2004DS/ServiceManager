@@ -98,23 +98,9 @@ const Intervention = sequelize.define('interventions', {
 })
 
 
-const Section = sequelize.define('sections', {
-
-    section_id: {
-        type: Sequelize.BIGINT,
-        primaryKey: true,
-        autoIncrement: true
-    },
-
-    name: {
-        type: Sequelize.STRING(50),
-        allowNull: false
-    },
-});
 
 
-export default {
-    Intervention,
-    Section
-}
+
+export default  Intervention ;
+
 

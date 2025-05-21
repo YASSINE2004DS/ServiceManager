@@ -100,29 +100,26 @@ h2 {
 
 }
 
-.button-suivant {
-  color              : white;
-  background-color   : darkblue;
-  font-weight        : bold;
-  height             : 45px;
-  width              : 120px;
-}
 
-.button-previous {
+.button-update {
   color              : white;
   background-color   : rgb(175, 15, 15);
   font-weight        : bold;
   height             : 45px;
   width              : 120px;
+  font-size          : 17px ;
 }
 
-.button-envoyer-direct{
+.button-previous-update-intervention {
   color              : white;
-  background-color   : rgb(29, 104, 8);
+  background-color   : darkblue ;
   font-weight        : bold;
   height             : 45px;
   width              : 120px;
+  font-size          : 17px ;
 }
+
+
 
 .commentaire {
   display            : flex;

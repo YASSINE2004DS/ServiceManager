@@ -65,7 +65,7 @@ const ValidateUpdatingIntervention = joi.object({
 
     comment : joi.string().max(3000),
 
-    validate : joi.string().max(50).default(true),
+    validate : joi.boolean().default(true),
 
     section_id: joi.number(),
 

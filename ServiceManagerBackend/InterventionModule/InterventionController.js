@@ -2,7 +2,7 @@ import IneterventionService from './InterventionService.js';
 
 
 /**
- * @class UserController
+ * @class InterventionController
  * @brief This class serves as the controller layer for Intervention-related HTTP requests.
  *        It delegates all Interevention operations (CRUD) to the corresponding methods in the InterventionService,
  *        ensuring a clear separation between the routing logic and the business logic.

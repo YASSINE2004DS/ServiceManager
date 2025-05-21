@@ -20,7 +20,10 @@ const PageInterventions = () => {
 
   const [Time , SetTime]                                      = useState([]); // tableau pour sauvegerder le time restant pour la modification
   const [Success , SetSuccess]                                = useState('');
-  const [loading , SetLoading]                                = useState(true);// variable qui indique le chargement des données
+  const [loading , SetLoading]                                = useState({    // variable qui indique le chargement des données
+                                                                  data : true ,
+                                                                  time : true 
+                                                                });
   const navigate                                              = useNavigate() ;
   const [Interventions , SetInterventions]                    = useState([]);
   const {user_Id}                                             = UserIdAndRole(token) ; //fonction permet de decodé le token et de recuperer le id et le role d'utilisateur
@@ -40,7 +43,7 @@ const PageInterventions = () => {
         );
 
         // indique que les données et chargé
-        SetLoading(false) ;
+        SetLoading(prev => ({...prev , data:false})) ;
       return responseIntreventions ;
 
      }catch(erreur){
@@ -115,12 +118,20 @@ const PageInterventions = () => {
     }
   }
 
+
   // handler permet de consulter les informations d'une intervention a travers le click sur le button voir plus
-  const ConsulterIntervention= (interventionId) => {
+  const ConsulterInterventionNavigate= (interventionId) => {
  
     //redirection ver la page /intervention/id_intervention
     navigate(`/intervention/${interventionId}`);
   }
+
+    // handler permet de consulter les informations d'une intervention a travers le click sur le button voir plus
+  const UpdateInterventionNavigate= (interventionId) => {
+ 
+      //redirection ver la page /intervention/id_intervention
+      navigate(`/UpdateIntervention/${interventionId}`);
+    }
 
  //hooks pour recuperer les interventions est l'initialis' dans une variable tableau
   useEffect( ()=> {
@@ -160,7 +171,6 @@ const PageInterventions = () => {
   
          // le temps terminé
         if (diff <= 0) {
-
           // envoie automatique de l'intervention si n'est pas encore envoyée
           EnvoyerIntervention(interv.intervention_id);
           //return une indication
@@ -181,6 +191,9 @@ const PageInterventions = () => {
     };
   
     updateTime(); //  Appel immédiat au montage sans attendre 1min
+
+    // upadte state time operation to chargement 
+    setTimeout(()=>SetLoading(prev => ({...prev , time:false})) , 1000); 
     const interval = setInterval(updateTime, 60000); // Ensuite toutes les 60 secondes
   
     return () => clearInterval(interval); // Nettoyage
@@ -206,7 +219,7 @@ const PageInterventions = () => {
       {/* header */}
         <PageHeader />
         
-        {loading ? (  
+        {loading.data ? (  
           
           // Page de chargement
           <PageChargement />
@@ -228,7 +241,7 @@ const PageInterventions = () => {
 
                       <div className='Info-time-send2'>
                       {interv.validate && <h5 style={{color:'green',}}>✅Send</h5>} 
-                      {Time[index] !== 'Termine' && <h5>⏳{Time[index]}</h5>}
+                      {!loading.time && Time[index] !== 'Termine' && <h5>⏳{Time[index]}</h5>}
                       </div>
 
                     </div>
@@ -240,14 +253,15 @@ const PageInterventions = () => {
               <div className='Data-inter Addstyle'>
 
                 <div className='Info-time-send Addstyle1'>
-                    <p className='p1'><span>Status :</span><span>{(interv.status)?"OUI" : "NON"}</span> </p>
-                    <p className='p2'><span>Section :</span><span>SPI</span> </p>
+                    <p className='p1'><span className='Type_Attribut'> <span>Status </span> <span>:</span> </span> <span>{(interv.status)?"OUI" : "NON"}</span> </p>
+                    <p className='p2'><span className='Type_Attribut'> <span>Section</span> <span>:</span> </span> <span className='Span2'>{interv.section.name}</span>                             </p>
                 </div>
 
                 <div className='Info-time-send Addstyle2'>
-                     <p className='p1'><span>Reception :</span><span>{(interv.reception)?"OUI" : "NON"}</span> </p>
-                    <p className='p2'><span>Type_Maintenance :</span><span>{interv.maintenance_type}</span> </p>
-                </div>     
+                     <p className='p1'><span className='Type_Attribut'> <span>Reception</span> <span>:</span> </span> <span >{(interv.reception)?"OUI" : "NON"}</span> </p>
+                     <p className='p2'><span className='Type_Attribut'> <span className='Type_M_Abr'>Type_M</span> <span className='Type_M'>Type_Maintenance </span> <span>:</span>   </span>  <span className='Span2'>{interv.maintenance_type}</span> </p>
+                </div>
+                 
 
               </div>
 
@@ -258,14 +272,17 @@ const PageInterventions = () => {
                   className=" button-consulter"
                   type='button' 
                   value="Voir plus"
-                  onClick={()=>ConsulterIntervention(interv.intervention_id)}/>
-               {(Time[index] !== 'Termine') &&  <input 
-                  className=" button-update"
+                  onClick={()=>ConsulterInterventionNavigate(interv.intervention_id)}/>
+
+                { !loading.time &&  (Time[index] !== 'Termine') &&  <input 
+                  className=" button-update-show"
                   type='button' 
                   value="Modifier"
-                  onClick={()=>{}}/>
-               }
-                {!(interv.validate) && (Time[index] !== 'Termine') && (<input 
+                  onClick={()=>UpdateInterventionNavigate(interv.intervention_id)}/>
+                 }
+
+               
+                {!loading.time && !(interv.validate) && (Time[index] !== 'Termine') && (<input 
                   className=" button-envoyer"
                   type='button' 
                   value="Envoyer"

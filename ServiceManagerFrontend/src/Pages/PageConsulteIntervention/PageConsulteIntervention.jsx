@@ -41,6 +41,7 @@ useEffect(() => {
             }
           }
         );
+        
         //Initialiser données recuperer dans la variable Intervention
         SetIntervention(response.data);
         SetLoading(false);
@@ -77,8 +78,8 @@ useEffect(() => {
    // fonction pour la convertion du date sous forme iso vers la forme DD-MM-YYYY
   const convertirDate = (date_recup)=> {
     const rawDate = date_recup;
-     const date = new Date(rawDate);
-     const formattedDate = `${String(date.getDate()).padStart(2, '0')}-
+    const date = new Date(rawDate);
+    const formattedDate = `${String(date.getDate()).padStart(2, '0')}-
                             ${String(date.getMonth() + 1).padStart(2, '0')}-
                             ${date.getFullYear()}`;
 
@@ -137,7 +138,7 @@ useEffect(() => {
                       </div> 
 
                                           {/* section 2 */}
-                        <div className='Section2'> 
+                        <div className='Section2 Section2ConfigHeight'> 
                         {/* //champ1 */}
                          <div className='Champ champOverflow'>
                             <span >Equipe </span>
@@ -146,7 +147,7 @@ useEffect(() => {
                                     {/* //champ2 */}
                          <div  className='Champ' >
                             <span>Section </span>
-                            <span>: spa</span>
+                            <span>: {Intervention.section.name}</span>
                          </div>
                                     {/* //champ3 */}
                           <div  className='Champ champOverflow'>
@@ -163,7 +164,7 @@ useEffect(() => {
 
                       
                                      {/* section 1 */}
-                    <div className='Section2'> 
+                    <div className='Section2 Section2All'> 
                         {/* //champ1 */}
                          <div className='Champ'>
                             <span>Type_maintenance </span>

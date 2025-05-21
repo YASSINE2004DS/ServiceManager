@@ -3,19 +3,26 @@ import validateDataInterevention  from './ValidatorInterevention.js';       // i
 const { ValidateUpdatingIntervention , ValidateCreatingIntervention } = validateDataInterevention; // destructure the variables for validate data from user
 
 // import the models from the database; 
-const {  Intervention } = Models ; 
+const {  Intervention , Section , User } = Models ; 
 
 class InterventionService {
     async getInterventions(req , res) {
         try {
             // Get all Agencies from the database.
-            const interventions = await Intervention.findAll();
+            const interventions = await Intervention.findAll({ 
+                                                         attributes: { exclude: ['updatedAt'] } ,
+                                                         include: {
+                                                                model: Section,
+                                                                attributes: ['name'] // <-- optionnel : liste des attributs à retourner
+                                                                  }
+                                                               
+                                                             });
 
             //return the Agencies informations
             res.json(interventions);
         } catch (error) {
             // handle error
-            res.status(500).json({ Error : error.message });
+            res.status(500).json({ message : error.message });
         }
     }
 
@@ -24,23 +31,31 @@ class InterventionService {
         try {
             // Check if the Interevention exist and valid.
             const interventionId = req.params.id_Intervention;
+            const userId = req.params.id;
 
             if(isNaN(Number(interventionId)))
-                return res.status(400).json({ Error: "Intervention id not valid!" });
+                return res.status(400).json({ message: "Intervention id not valid!" });
 
             // Get the Interevention from the database.
             const intervention = await Intervention.findOne({ 
-                                                    where: { intervention_id: interventionId } 
+                                                    where: { intervention_id: interventionId } ,
+                                                    attributes: { exclude: ['updatedAt'] } ,
+                                                    include: {
+                                                        model: Section,
+                                                        attributes: ['name'] // <-- optionnel : liste des attributs à retourner
+                                                      }
                                                 });
 
             // If the Interevention not exist.
-            if(!intervention) return res.status(400).json({ Error: `No Intervention has the id : ${interventionId}` });
+            if(!intervention) return res.status(400).json({ message: `No Intervention has the id : ${interventionId}` });
+
+            if(intervention.user_id != userId) return res.status(403).json({message : "Authorization failed"}) ;
 
             // Return the Interevention informations
-            return res.json(intervention);
+            return res.json(intervention );
         }catch (error) {
             // handle error
-            res.status(500).json({ Error : error.message });
+            res.status(500).json({ message : error.message });
         }
     }
 
@@ -51,22 +66,26 @@ class InterventionService {
             const userId = req.params.id;
 
             if(isNaN(Number(userId)))
-                return res.status(400).json({ Error: "Intervention id not valid!" });
+                return res.status(400).json({ message: "Intervention id not valid!" });
 
             // Get the Intreventions from the database.
             const intervention = await Intervention.findAll({ 
                                                                where: { user_id: userId }, 
-                                                               attributes: { exclude: ['createdAt', 'updatedAt'] }
+                                                               attributes: { exclude: ['updatedAt'] },
+                                                               include: {
+                                                                model: Section,
+                                                                attributes: ['name'] // <-- optionnel : liste des attributs à retourner
+                                                                  }
                                                             });
 
             // If the Intervention not exist.
-            if(!intervention) return res.status(400).json({ Error: `No Intervention has the id : ${userId}` });
+            if(!intervention) return res.status(400).json({ message: `No Intervention has the id : ${userId}` });
 
             // Return the Interevention informations
             return res.json(intervention);
         }catch (error) {
             // handle error
-            res.status(500).json({ Error : error.message });
+            res.status(500).json({ message : error.message });
         }
     }
 
@@ -77,7 +96,7 @@ class InterventionService {
 
             const { error } = ValidateCreatingIntervention.validate(req.body); // validate the data from user
              
-            if(error) return res.status(400).json({ Error: error.details[0].message }); // check if the data is valid
+            if(error) return res.status(400).json({ message: error.details[0].message }); // check if the data is valid
 
             //retreive the data from the request body
             const dataFromUser = req.body ;
@@ -87,7 +106,7 @@ class InterventionService {
                                                                 where : { intervention_id : dataFromUser.intervention_id }
                                                                });
             //check the interevention exist in the database
-            if(VerifyIntereventionExist) return res.json({Error : "Intervention demande already exists"});
+            if(VerifyIntereventionExist) return res.json({message : "Intervention demande already exists"});
 
             //Create the new interevention in the database
             const CreateNewIntervention = await Intervention.create({ 
@@ -116,7 +135,7 @@ class InterventionService {
           
             } catch (error) {
             // handle error
-            res.status(500).json({ Error : error.message });
+            res.status(500).json({ message : error.message });
             }
     }
 
@@ -126,7 +145,7 @@ class InterventionService {
 
             const { error } = ValidateUpdatingIntervention.validate(req.body); // validate the data from user
              
-            if(error) return res.status(400).json({ Error: error.details[0].message }); // check if the data is valid
+            if(error) return res.status(400).json({ message: error.details[0].message }); // check if the data is valid
              // retrieve the id from the request parameters
              const interventionId = req.params.id_Intervention ; // get the id from the request parameters
 
@@ -134,7 +153,7 @@ class InterventionService {
              const dataFromUser = req.body ;
 
             // Check if the id is valid 
-            if(isNaN(Number(interventionId))) return res.status(400).json({ Error: "Intervention id not valid!" });
+            if(isNaN(Number(interventionId))) return res.status(400).json({ message: "Intervention id not valid!" });
             
            // retreive the intervention from the database
             const intreventionExist = await Intervention.findOne({ 
@@ -143,7 +162,7 @@ class InterventionService {
          // req.params.id = interventionId; // set the id in the request parameters
 
             //check if the intervention exist in the database
-            if(!intreventionExist) return res.status(400).json({ Error: `No Intervention has the id : ${interventionId}` });
+            if(!intreventionExist) return res.status(400).json({ message: `No Intervention has the id : ${interventionId}` });
  
              if(dataFromUser.intervention_id) {
             // check if the  id intervention updated already exist in the database 
@@ -151,10 +170,12 @@ class InterventionService {
                                                                 where : { intervention_id : dataFromUser.intervention_id }
                                                                });
             // check if the id intervention updated already exist in the database and not equal to the id of the intervention we are updating
-            if( ( VerifyInterventionExist && dataFromUser.intervention_id != interventionId ) ) return res.json({Error : "Intervention demande already exists"});
+            if( ( VerifyInterventionExist && dataFromUser.intervention_id != interventionId ) ) return res.json({message : "Intervention demande already exists"});
              }
             // upadate the intervention in the database
-            const UpdateIntervention = await Intervention.update(dataFromUser , { where : { intervention_id : interventionId } });
+            const UpdateIntervention = await Intervention.update(dataFromUser , { 
+                                                                              where : { intervention_id : interventionId } ,
+                                                                                });
 
             let IntereventionUpdated // variable to store the updated intervention
 
@@ -162,19 +183,27 @@ class InterventionService {
             if(dataFromUser.intervention_id) { 
                 IntereventionUpdated = await Intervention.findOne({
                     where     : { intervention_id : dataFromUser.intervention_id },
-                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                    attributes: { exclude: ['updatedAt'] } ,
+                    include   : {
+                        model     : Section,
+                        attributes: ['name'] // <-- optionnel : liste des attributs à retourner
+                          }
                                                                   });
             }else{
              IntereventionUpdated = await Intervention.findOne({
                 where     : { intervention_id : interventionId },
-                attributes: { exclude: ['createdAt', 'updatedAt'] }
+                attributes: { exclude: ['updatedAt'] } ,
+                include   : {
+                    model: Section,
+                    attributes: ['name'] // <-- optionnel : liste des attributs à retourner
+                      }
                                                                 });
             }                                                     
-            if(UpdateIntervention) return res.json({Success : "Intervention demande updated successfully" , UpdateIntervention , IntereventionUpdated});
+            if(UpdateIntervention) return res.json({Success : "Intervention  updated successfully" , UpdateIntervention , IntereventionUpdated});
 
     }catch (error) {
             // handle error
-            res.status(500).json({ Error : error.message });
+            res.status(500).json({ message : error.message });
         }
     }
 
@@ -184,15 +213,15 @@ class InterventionService {
             const interventionId = req.params.id_Intervention;
 
             if(isNaN(Number(interventionId)))
-                return res.status(400).json({ Error: "Intervention id not valid!" });
+                return res.status(400).json({ message: "Intervention id not valid!" });
 
             // Get the Interevention from the database.
             const intervention = await Intervention.findOne({ 
-                                                    where: { intervention_id: interventionId } 
+                                                             where: { intervention_id: interventionId } 
                                                             });
 
             // If the Interevention not exist.
-            if(!intervention) return res.status(400).json({ Error: `No Intervention has the id : ${interventionId}` });
+            if(!intervention) return res.status(400).json({ message: `No Intervention has the id : ${interventionId}` });
 
             // Delete the Interevention from the database.
             await Intervention.destroy({ where: { intervention_id: interventionId } });
@@ -201,10 +230,11 @@ class InterventionService {
             return res.json({ Success: `Intervention with id : ${interventionId} deleted successfully!` });
         }catch (error) {
             // handle error
-            res.status(500).json({ Error : error.message });
+            res.status(500).json({ message : error.message });
         }
     }
-        
+
 }
+
 
 export default new InterventionService(); // export the instance of the class
