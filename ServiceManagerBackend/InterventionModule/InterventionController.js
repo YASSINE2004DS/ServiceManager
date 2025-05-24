@@ -14,17 +14,19 @@ import IneterventionService from './InterventionService.js';
  * @function deleteIntervention      : delet a Intereventions by his ID.
  */
 class InterventionController {
-    async getInterventions         (req, res) { return IneterventionService.getInterventions          (req, res)  ;}
+    async getInterventions         (req, res) { return IneterventionService.getInterventions           (req, res) ;}
 
-    async getInterventionById      (req, res) { return IneterventionService.getInterventionById       (req, res)  ;}  
+    async getInterventionById      (req, res) { return IneterventionService.getInterventionById        (req, res) ;}  
 
-    async getIntereventionByUserId (req, res) { return IneterventionService.getInterventionsByIdUser  (req, res)  ;}
+    async getIntereventionByUserId (req, res) { return IneterventionService.getInterventionsByIdUser   (req, res) ;}
 
     async createNewIntervention    (req, res) { return IneterventionService.createNewIntervention      (req, res) ;}
 
     async modifyIntervention       (req, res) { return IneterventionService.UpdateInterventionById     (req, res) ;}
  
-    async deleteIntervention       (req, res) { return IneterventionService.deleteInterventionById     (req, res) ;}
+    async deleteInterventionById   (req, res) { return IneterventionService.deleteInterventionById     (req, res) ;}
+
+    async deleteInterventions      (req, res) { return IneterventionService.deleteAll                  (req, res) ;}
 }
 
 export default new InterventionController();

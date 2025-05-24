@@ -1,4 +1,6 @@
 import React, { useEffect, useState }                from 'react';
+import { FontAwesomeIcon }                           from '@fortawesome/react-fontawesome';
+import { faSearch }                                  from '@fortawesome/free-solid-svg-icons';
 import './PageInterventions.css'
 import axios                                          from 'axios' ;
 import { useNavigate }                                from 'react-router-dom';
@@ -24,27 +26,51 @@ const PageInterventions = () => {
                                                                   data : true ,
                                                                   time : true 
                                                                 });
+ const [page, setPage]                                        = useState(1);
+ const [pages, setPages]                                      = useState(0);    
+ const [width, setWidth]                                      = useState(6);
+ const [search , SetSearch]                                   = useState('');                                                        
   const navigate                                              = useNavigate() ;
   const [Interventions , SetInterventions]                    = useState([]);
   const {user_Id}                                             = UserIdAndRole(token) ; //fonction permet de decodé le token et de recuperer le id et le role d'utilisateur
 
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    // Ajouter l'écouteur
+    window.addEventListener('resize', handleResize);
+
+    // Nettoyer l'écouteur à la destruction du composant
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   // fonction pour recuperer tout les intreventions de l'uitilisateur courant
   const RecupererInterventions =async ()=>{
-    try {
+    let limit = 6;
 
-      //requeste get pour recuperer toutes les intervention d'utilisateur par id (user_id) et une header "token" pour verifié l'authorization
-        const responseIntreventions =   await axios.get(
-            `http://localhost:8000/api/intervention/${user_Id}`,
-            {
-               headers: {
-                  authorization: `Bearer ${token}`
-               }
-            },
-        );
+    if (window.innerWidth > 700) {
+      limit = 9;
+    }
+    
+    try {
+      // Requête GET pour récupérer les interventions d'un utilisateur
+      const responseInterventions = await axios.get(
+        `http://localhost:8000/api/intervention/${user_Id}?page=${page}&limit=${limit}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
 
         // indique que les données et chargé
         SetLoading(prev => ({...prev , data:false})) ;
-      return responseIntreventions ;
+      return responseInterventions ;
 
      }catch(erreur){
 
@@ -139,7 +165,8 @@ const PageInterventions = () => {
 
       RecupererInterventions()
       .then(response=>{
-          SetInterventions(response.data);
+          SetInterventions(response.data.data);
+          setPages(response.data.pages);
          })
       .catch(erreur=>{
           console.log(erreur);
@@ -150,7 +177,7 @@ const PageInterventions = () => {
       console.log("erreur");
 
     }
-  }, []);
+  }, [page , width]);
 
   // hooks pour calculé le temps reste de la modification d'intervention (temps < 24) et ainsi pour l'envoie 
   //automatique si le temps dépasse 24h
@@ -203,9 +230,7 @@ const PageInterventions = () => {
  const convertirDate = (date_recup)=> {
     const rawDate = date_recup;
      const date = new Date(rawDate);
-     const formattedDate = `${String(date.getDate()).padStart(2, '0')}-
-                            ${String(date.getMonth() + 1).padStart(2, '0')}-
-                            ${date.getFullYear()}`;
+     const formattedDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`;
 
      return formattedDate ;
  }
@@ -220,10 +245,37 @@ const PageInterventions = () => {
         <PageHeader />
         
         {loading.data ? (  
-          
+   
           // Page de chargement
           <PageChargement />
          ) :(
+          <div className='Container-globale'>
+            
+              <div className='Container-search-pagination'>
+                  <div className="Container-pages">
+                      {[...Array(pages)].map((_, index) => (
+                      <button
+                           key={index}
+                          onClick={() => setPage(index + 1)}
+                          style={{backgroundColor:(page == index+ 1) ? '#7c7979 ' : '#a9a1a1' }}
+                      >
+                                  {index + 1}
+                      </button>
+                      ))}
+                  </div>
+                  <div className='Container-search'>
+                  <input
+                             type='search'
+                             name='search'
+                             placeholder='chercher par Numero intervention ou la date'
+                             onChange={(e)=> SetSearch(e.target.value)}
+                      />
+                      <FontAwesomeIcon 
+                                     icon={faSearch} 
+                                     className='icon-search'
+                                     />
+                  </div>
+              </div>
 
          <div className='Interventions-container'>
 
@@ -231,7 +283,11 @@ const PageInterventions = () => {
         {Success && <p className='MessageSend'>{Success}</p>} 
 
        {Interventions.map((interv , index)=>
-           <div key={index} className='Intervention-container'>
+
+            <div key={index} 
+                   className='Intervention-container'
+                   style={{display : (!search || (String(interv.intervention_id).includes(search) || String(convertirDate(interv.date)).includes(search)) ) ? 'block' : 'none'}}
+                    >
             
              {/* section pour le temps et numero d'intervention */}
                <div className='Data-inter'>
@@ -290,9 +346,11 @@ const PageInterventions = () => {
                 }
               </div>
            </div>
-          //  fin de la fonction map
-        )}  ; 
-    </div>  )}
+          )}
+          {/* //  fin de la fonction map
+     */}
+    </div>  
+     </div>)}
           
   </div>
   );

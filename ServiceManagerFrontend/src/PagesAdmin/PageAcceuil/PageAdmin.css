@@ -1,0 +1,134 @@
+body {
+    overflow            : hidden;
+}
+
+.Container-globales {
+    height              : 100%;
+    width               : 100%;
+    display             : flex;
+    flex-direction      : row ;
+    background          : linear-gradient(to bottom right, #f0f0f0, #ffffff);
+}
+
+.dashboard-container {
+  display               : flex;
+  flex-direction        : row;
+  height                : 100vh;
+  width                 : 100%;
+  font-family           : sans-serif;
+
+}
+
+/* Sidebar */
+.sidebar {
+  width                 : 220px;
+  height                : 100%;
+  background-color      : #f8f9fa;
+  border-right          : 1px solid #ddd;
+  padding               : 20px;
+  position              : fixed;
+     margin-top         : 80px; 
+}
+
+.sidebar-header {
+  font-size             : 1.5em;
+  font-weight           : bold;
+  margin-bottom         : 1rem;
+}
+
+.menu {
+  display               : flex;
+  flex-direction        : column;
+}
+
+.menu-item {
+  padding               : 10px;
+  margin-bottom         : 5px;
+  border                : none;
+  background            : none;
+  text-align            : left;
+  cursor                : pointer;
+}
+
+.menu-item.active {
+  background-color      : #e2e6ea;
+  font-weight           : bold;
+}
+
+/* Main content */
+.main-content {
+  height                :100%;
+  width                 : 100%;
+   margin-top           : 80px; 
+  flex                  : 1;
+  padding               :0px;
+  background            : linear-gradient(to bottom right, #f0f0f0, #ffffff); 
+  /* overflow-y: auto; */
+  margin-left           : 250px;
+
+}
+
+.main-title {
+  font-size             : 24px;
+  margin-bottom         : 20px;
+  text-transform        : capitalize;
+}
+
+.content-card {
+  background            : white;
+  padding               : 20px;
+  border-radius         : 8px;
+  box-shadow            : 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Button */
+.btn {
+  padding               : 10px 15px;
+  background-color      : #007bff;
+  border                : none;
+  border-radius         : 6px;
+  color                 : white;
+  cursor                : pointer;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction      : column;
+  }
+
+  .sidebar {
+    width               : 100%;
+    border-right        : none;
+    border-bottom       : 1px solid #ddd;
+    display             : flex;
+    flex-direction      : row;
+    overflow-x          : auto;
+    padding             : 10px;
+  }
+
+  .sidebar-header {
+    display             : none;
+  }
+
+  .menu {
+    flex-direction      : row;
+    gap                 : 10px;
+    flex                : 1;
+    justify-content     : space-around;
+  }
+
+  .menu-item {
+    padding             : 8px 12px;
+    font-size           : 14px;
+    white-space         : nowrap;
+  }
+
+  .main-content {
+    padding             : 15px;
+  }
+
+  .main-title {
+    font-size           : 20px;
+  }
+}

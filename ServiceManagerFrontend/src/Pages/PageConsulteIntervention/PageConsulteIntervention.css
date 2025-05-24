@@ -14,13 +14,13 @@
    }
 
   .Interventions-container-consulter {
-    height                  : 630px ;
-     width                  : 95%   ;
+    height                  : 700px ;
+     width                  : 80%   ;
    border-radius            : 5px   ;
    box-shadow               : 2px 2px 5px 3px gray;
    padding                  : 2px   ; 
    margin                   : auto;
-   margin-top               : 150px ;
+   margin-top               : 170px ;
 
   }
 
@@ -154,7 +154,7 @@
     box-shadow               : 2px 2px 5px 3px gray;
     padding                  : 2px ; 
    margin                    : auto ;
-    margin-top               : 120px ;
+    margin-top               : 20%;
     margin-bottom            : 5px ;
  
    }
@@ -230,8 +230,8 @@
     border-radius            : 5px;
     box-shadow               : 2px 2px 5px 3px gray;
     padding                  : 2px ; 
-   margin                    : auto ;
-    margin-top               : 100px ;
+    margin                   : auto ;
+    margin-top               : 20% ;
     margin-bottom            : 5px ;
  
    }

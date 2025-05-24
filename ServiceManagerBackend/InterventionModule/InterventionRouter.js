@@ -28,7 +28,7 @@ class IntereventionController {
     init() {
         // Define GET route for fetching all Interventions
         this.router.get('/' ,  
-                               AuthMiddleware.authorizeAdminOnly  ,
+
                                async (req, res) => {
                                return intereventionController.getInterventions(req, res);
                        }); 
@@ -63,10 +63,18 @@ class IntereventionController {
 
         // Define delete route for deleting a Intervention by id of a user Id
         this.router.delete('/:id/:id_Intervention', 
-                            AuthMiddleware.authorizeAdminOnly , 
+
                             async (req, res) => {
-                            return intereventionController.deleteIntervention(req, res);
+                            return intereventionController.deleteInterventionById(req, res);
                         });
+
+       
+        // Define delete route for deleting all interventions send from user
+        this.router.delete('/:id', 
+            
+                            async (req, res) => {
+                            return intereventionController.deleteInterventions(req, res);
+                        });                  
     }
 }
 
