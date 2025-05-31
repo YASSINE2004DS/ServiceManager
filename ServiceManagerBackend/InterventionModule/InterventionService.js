@@ -1,6 +1,7 @@
-import Models from '../DatabaseModule/ModelAssociations.js'; // import Models
+import Models                     from '../DatabaseModule/ModelAssociations.js'; // import Models
 import validateDataInterevention  from './ValidatorInterevention.js';       // import the variables for validate data from user 
 const { ValidateUpdatingIntervention , ValidateCreatingIntervention } = validateDataInterevention; // destructure the variables for validate data from user
+import { Op }                     from 'sequelize';
 
 // import the models from the database; 
 const {  Intervention , Section , User } = Models ; 
@@ -8,15 +9,43 @@ const {  Intervention , Section , User } = Models ;
 class InterventionService {
     async getInterventions(req , res) {
         try {
+            let  interventions ;
+            const Intervention_today = req.query.Intervention_today ;
+            const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+
+            const tomorrow = new Date(today);
+                        tomorrow.setDate(today.getDate() + 1);
             // Get all Agencies from the database.
-            const interventions = await Intervention.findAll({ 
-                                                         attributes: { exclude: ['updatedAt'] } ,
-                                                         include: {
+            if( Intervention_today ==='false') {
+                        interventions = await Intervention.findAll({ 
+                                                        where     :  {
+                                                                       validate : 1
+                                                                    },
+                                                        attributes: { exclude: ['updatedAt'] } ,
+                                                        include   : {
                                                                 model: Section,
                                                                 attributes: ['name'] // <-- optionnel : liste des attributs à retourner
                                                                   }
                                                                
                                                              });
+             }else {
+                        interventions = await Intervention.findAll({ 
+                                                        where     :  {
+                                                                       validate : 1 , 
+                                                                       date     : {
+                                                                                [Op.gte]: today,
+                                                                                [Op.lt]: tomorrow
+                                                                        }
+                                                                    },
+                                                        attributes: { exclude: ['updatedAt'] } ,
+                                                        include   : {
+                                                                model: Section,
+                                                                attributes: ['name'] // <-- optionnel : liste des attributs à retourner
+                                                                  }
+                                                               
+                                                             });
+             }                                                 
 
             //return the Agencies informations
             res.json(interventions);
@@ -64,25 +93,34 @@ class InterventionService {
         try {
             //reteive the id user from the request parameters    
             const userId = req.params.id;
+            const page = parseInt(req.query.page) || 1; // get the page number from the query string  
+            const limit =  parseInt(req.query.limit) || 1; // get the limit from the query string
+            const offset = (page - 1) * limit; // calculate the offset
 
             if(isNaN(Number(userId)))
                 return res.status(400).json({ message: "Intervention id not valid!" });
 
             // Get the Intreventions from the database.
-            const intervention = await Intervention.findAll({ 
+            const {count , rows} = await Intervention.findAndCountAll({ 
+                                                               limit: limit,
+                                                               offset: offset,
                                                                where: { user_id: userId }, 
                                                                attributes: { exclude: ['updatedAt'] },
                                                                include: {
                                                                 model: Section,
                                                                 attributes: ['name'] // <-- optionnel : liste des attributs à retourner
-                                                                  }
+                                                                  },
+                                                                order: [['createdAt', 'DESC']]
                                                             });
 
             // If the Intervention not exist.
-            if(!intervention) return res.status(400).json({ message: `No Intervention has the id : ${userId}` });
+            // if(!rows) return res.status(400).json({ message: `No Intervention has the id : ${userId}` });
 
             // Return the Interevention informations
-            return res.json(intervention);
+            return res.json({
+                pages : Math.ceil(count / limit), // calculate the number of pages
+                data  : rows, // return the data
+            });
         }catch (error) {
             // handle error
             res.status(500).json({ message : error.message });
@@ -212,8 +250,9 @@ class InterventionService {
             // Check if the Interevention exist and valid.
             const interventionId = req.params.id_Intervention;
 
-            if(isNaN(Number(interventionId)))
+            if(interventionId && isNaN(Number(interventionId)))
                 return res.status(400).json({ message: "Intervention id not valid!" });
+            if(interventionId){
 
             // Get the Interevention from the database.
             const intervention = await Intervention.findOne({ 
@@ -228,8 +267,24 @@ class InterventionService {
 
             // Return success message
             return res.json({ Success: `Intervention with id : ${interventionId} deleted successfully!` });
+
+            }
+
         }catch (error) {
             // handle error
+            res.status(500).json({ message : error.message });
+        }
+    }
+
+    async deleteAll(req , res) {
+
+        try {
+                await Intervention.destroy({where : {validate : 1}}) ;
+
+                return res.json({ Success: `Interventions deleted successfully!` }); 
+            
+        } catch (error) {
+                        // handle error
             res.status(500).json({ message : error.message });
         }
     }

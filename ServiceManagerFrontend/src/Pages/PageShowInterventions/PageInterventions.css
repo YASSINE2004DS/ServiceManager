@@ -1,3 +1,65 @@
+.Container-globale {
+  height            : 100vh;
+  width             : 100%;
+  display           : block;
+  margin-top        : 90px ;
+  overflow-x        : hidden;
+  
+}
+
+.Container-search-pagination
+{
+  width             : 100%;
+  height            : 90px ;
+  display           : flex;
+  /* background-color:#a9a1a1 */
+ 
+   
+}
+
+.Container-search {
+  width               : 25% ;
+  align-self          : center ;
+  margin              : auto;
+  display             : flex;
+  column-gap          : 10px;
+
+}
+
+.Container-search-pagination .Container-search input {
+ width                : 90%;
+  height              : 50px ;
+  border              : 1px solid darkblue ;
+  background-color    : #c7bfbf;
+  font-weight         : bold;
+}
+
+.Container-search-pagination .Container-search  .icon-search {
+font-size             : 22px ;
+margin-top            : 11px ;
+}
+
+.Container-pages
+{
+  display             : flex;
+  max-width           :40% ;
+  height              : 100%;
+  column-gap          : 10px ;
+  padding             : 0px 5%;
+  overflow-x          : auto;
+}
+
+.Container-pages button {
+ margin-top           : 10px;
+  height              : 80% ;
+  min-width           :100px ;
+  font-size           : 25px;
+  font-weight         : bold;
+  background-color    :#a9a1a1 ;
+  cursor              : pointer ;
+
+}
+
 .container-intreventions {
     height              : 100vh;
     width               : 100%;
@@ -8,67 +70,66 @@
 
   .Interventions-container {
 
-    width  : 100% ;
-    padding: 20px 0px 0px 30px;
-    margin-top : 80px ;
-    display : grid ;
-    grid-template-columns: repeat(3 , 1fr);
-    row-gap: 30px ;
+    width                 : 100% ;
+    padding               : 20px 0px 0px 30px;
+    display               : grid ;
+    grid-template-columns : repeat(3 , 1fr);
+    row-gap               : 30px ;
 
   }
   
   .Intervention-container {
-    height : 280px ;
-     width : 85% ;
-   background-color: rgb(255, 255, 255) ;
-   z-index: 1;
-   position: relative;
-   border-radius: 5px;
-   box-shadow          : 2px 2px 5px 3px gray;
-   padding:2px ;
+    height                : 280px ;
+     width                : 85% ;
+   background-color       : rgb(255, 255, 255) ;
+   z-index                : 1;
+   position               : relative;
+   border-radius          : 5px;
+   box-shadow             : 2px 2px 5px 3px gray;
+   padding                :2px ;
   
   }
   
   .Data-inter {
-    display: flex ;
-    flex-direction: column;
-    align-items: center;
-    gap : 0 ;
-    position: relative;
+    display               : flex ;
+    flex-direction        : column;
+    align-items           : center;
+    gap                   : 0 ;
+    position              : relative;
   }
 
   .Info-time-send {
-    display: flex;
+    display      : flex;
     justify-content: space-between;
-    width:95% ;
-    color:#857676
+    width        :95% ;
+    color        :#857676
 
   }
   .Info-time-send2 {
-    display: flex;
-   column-gap : 10px ;
-    width:50% ;
-    color:#020c53;
+    display       : flex;
+    column-gap    : 10px ;
+    width         :50% ;
+    color         :#020c53;
     justify-content: end;
     
 
   }
 
   .Addstyle1 , .Addstyle2 {
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    font-size:14 ;
-    font-weight: bold;
-    color : rgb(0, 0, 0) ;
-    width:100% ;
+    font-family   : Georgia, 'Times New Roman', Times, serif;
+    font-size     :14 ;
+    font-weight   : bold;
+    color         : rgb(0, 0, 0) ;
+    width         :100% ;
   }
 
   .p2 {
-    width:65% ;
+    width          :65% ;
 
   }
 
   .p1 {
-    width:35% ;
+    width           :35% ;
 
   }
 
@@ -92,8 +153,8 @@
 
 
   h3 {
-    margin-top : -10px ;
-    color :rgb(3, 42, 171)
+    margin-top          : -10px ;
+    color               :rgb(3, 42, 171)
   }
   
   .section2 {
@@ -226,6 +287,29 @@
 
   /* Responsive */
   @media (max-width: 1500px) {
+    .Container-search {
+      width               : 30%;
+      align-self          : center ;
+      margin              : auto;
+      display             : flex;
+      column-gap          : 10px;
+      margin-top          : 30px;
+    
+    }
+    
+    .Container-search-pagination .Container-search input {
+     width                : 90%;
+      height              : 38px ;
+      border              : 1px solid darkblue ;
+      background-color    : #c7bfbf;
+      font-weight         : bold;
+      font-size           : 14px ;
+    }
+
+    .Container-search-pagination .Container-search  .icon-search {
+      font-size             : 15px ;
+      margin-top            : 11px ;
+      }
 
     .Intervention-container {
       font-size: 13px;
@@ -263,6 +347,51 @@
 
   }
   @media (max-width: 1024px) {
+    .Container-pages
+    {
+      display             : flex;
+      max-width           : 40% ;
+      height              : 100%;
+      column-gap          : 10px ;
+      padding             : 0px 5%;
+      overflow-x          : auto;
+
+    }
+    
+    .Container-pages button {
+     margin-top           : 10px;
+      height              : 80% ;
+      min-width           : 60px ;
+      font-size           : 18px;
+      font-weight         : bold;
+      background-color    :#a9a1a1 ;
+      cursor              : pointer ;
+    
+    }
+
+    .Container-search {
+      width               : 38%;
+      align-self          : center ;
+      margin              : auto;
+      display             : flex;
+      column-gap          : 10px;
+      margin-top          : 18px;
+    
+    }
+    
+    .Container-search-pagination .Container-search input {
+     width                : 90%;
+      height              : 35px ;
+      border              : 1px solid darkblue ;
+      background-color    : #c7bfbf;
+      font-weight         : bold;
+      font-size           : 14px ;
+    }
+
+    .Container-search-pagination .Container-search  .icon-search {
+      font-size             : 15px ;
+      margin-top            : 11px ;
+      }
 
     .Intervention-container {
       font-size: 10px;
@@ -272,6 +401,51 @@
   }
 
   @media (max-width: 800px) {
+    .Container-pages
+    {
+      display             : flex;
+      max-width           : 30% ;
+      height              : 100%;
+      column-gap          : 10px ;
+      padding             : 0px 5%;
+      overflow-x          : auto;
+
+    }
+    
+    .Container-pages button {
+     margin-top           : 10px;
+      height              : 60% ;
+      min-width           : 60px ;
+      font-size           : 18px;
+      font-weight         : bold;
+      background-color    :#a9a1a1 ;
+      cursor              : pointer ;
+    
+    }
+
+    .Container-search {
+      width               : 30%;
+      align-self          : center ;
+      margin              : auto;
+      display             : flex;
+      column-gap          : 10px;
+      margin-top          : 15px;
+    
+    }
+    
+    .Container-search-pagination .Container-search input {
+     width                : 90%;
+      height              : 35px ;
+      border              : 1px solid darkblue ;
+      background-color    : #c7bfbf;
+      font-weight         : bold;
+      font-size           : 9px ;
+    }
+
+    .Container-search-pagination .Container-search  .icon-search {
+      font-size             : 15px ;
+      margin-top            : 11px ;
+      }
 
     .Intervention-container {
       font-size: 8px;
@@ -281,6 +455,7 @@
   }
 
   @media (max-width: 700px) {
+
 
     .container-intreventions {
       width               : 100%;
@@ -321,6 +496,60 @@
 
 
   @media (max-width: 470px) {
+
+    .Container-search-pagination
+    {
+  width             : 100%;
+  height            : 100px ;
+  display           : flex;
+  flex-direction    : column;
+  row-gap           : 10px;
+  }
+
+  .Container-search {
+    width               : 85% ;
+    align-self          : center ;
+    margin              : auto;
+    display             : flex;
+    column-gap          : 10px;
+    margin-top          : 5px;
+  
+  }
+  
+  .Container-search-pagination .Container-search input {
+   width                : 90%;
+    height              : 35px ;
+    border              : 1px solid darkblue ;
+    background-color    : #c7bfbf;
+    font-weight         : bold;
+    font-size           : 14px ;
+  }
+  
+  .Container-search-pagination .Container-search  .icon-search {
+  font-size             : 22px ;
+  margin-top            : 11px ;
+  }
+
+  .Container-pages
+{
+  display             : flex;
+  max-width           : 98% ;
+  height              : 100%;
+  column-gap          : 10px ;
+  padding             : 0px 5%;
+  overflow-x          : auto;
+}
+
+.Container-pages button {
+ margin-top           : 10px;
+  height              : 80% ;
+  min-width           : 50px ;
+  font-size           : 18px;
+  font-weight         : bold;
+  background-color    :#a9a1a1 ;
+  cursor              : pointer ;
+
+}
     .Interventions-container {
      grid-template-columns: 1fr;
 

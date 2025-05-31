@@ -28,7 +28,7 @@ const PageIntervention = () => {
     const [Sections , SetSections]                              =  useState([]) ;
     const [loading , SetLoading]                                =  useState(true);// variable qui indique le chargement des données
     const {id_Intervention}                                     =  useParams();   // variable pour recuperer les parametre de l'url
-    const {user_Id}                                             =  UserIdAndRole(token) ; //fonction permet de decodé le token et de recuperer le id et le role d'utilisateur
+    const {user_Id , role}                                      =  UserIdAndRole(token) ; //fonction permet de decodé le token et de recuperer le id et le role d'utilisateur
     const navigate                                              =  useNavigate(); // pour le navigation entre les pages
 
     
@@ -162,7 +162,10 @@ const PageIntervention = () => {
       // SetSuccess(response.data.Success);
 
       // message apparitre pendent 2s seulement
+      if(role==='user')
          setTimeout( navigate('/ShowInterventions'), 2000 ) ;
+      else
+        setTimeout( navigate('/admin/interventions'), 2000 ) ;
 
         //navige vers la page ShowIntreventions qui affiche toutes les interventions
         

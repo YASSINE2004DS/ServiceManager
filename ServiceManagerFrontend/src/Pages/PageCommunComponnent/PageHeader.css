@@ -3,7 +3,7 @@
     height : 80px ;
     width : 100% ;
     justify-content: space-between;
-    background-color: #a9a1a1;
+    background-color: lightgray ;
     position : fixed  ;
     z-index: 2;
   }

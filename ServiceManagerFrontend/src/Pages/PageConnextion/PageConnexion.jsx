@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState }                                   from 'react';
 
-import logo from '../../Shared/Assets/safarelec-logo.png';
+import logo                                           from '../../Shared/Assets/safarelec-logo.png';
 import './PageConnexion.css' ;
+import {VerifierExpiredToken , UserIdAndRole , token} from '../Authentification/Authentification' // import deux fonctions un pour la verifications
+
 
 
 /**
@@ -18,9 +20,10 @@ import './PageConnexion.css' ;
  */
 const PageConnexion = () => {
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [email, setEmail]                       = useState('');
+    const [password, setPassword]                 = useState('');
+    const [error, setError]                       = useState('');
+    
 
     // Handle form submission using async/await
     const handleSubmit = async (e) => {
@@ -47,9 +50,14 @@ const PageConnexion = () => {
             if(response.ok){
                 // Set the token in the local storage
                 localStorage.setItem('token', data.token);
+                 const {role} =  UserIdAndRole(data.token) ; 
 
+                 if(role==='user')
                 // Redirect to the home page
-                window.location.href = '/ShowInterventions';
+                    window.location.href = '/ShowInterventions';
+                else
+                    window.location.href = '/admin/interventions';
+
             } else {
                 // Set the error message
                 setError(data.message);
