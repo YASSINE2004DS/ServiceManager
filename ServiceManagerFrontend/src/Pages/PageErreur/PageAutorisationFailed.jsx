@@ -8,7 +8,7 @@ import { useNavigate }                from 'react-router-dom';
 const PageErreur = () => {
     const navigate = useNavigate();
   return (
-    <div className='container'>
+    <div className='container-error-management'>
         <div className="home-container">
 
             <img src={logo} alt="SAFARELEC Logo" className="logo" />

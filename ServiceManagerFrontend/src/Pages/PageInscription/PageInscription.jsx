@@ -82,7 +82,7 @@ const PageInscription = () => {
     };
 
     return (
-        <div className='container'>
+        <div className='container-singUp'>
             {/* Main wrapper for the registration page content */}
             <div className="home-container">
                 {/* Company branding element */}
@@ -164,7 +164,7 @@ const PageInscription = () => {
                     />       
                     
                     {/* Form submission button */}
-                    <button className="button">Sign Up</button>
+                    <button className="button-sing_up">Sign Up</button>
                 </form>
             </div>
         </div>

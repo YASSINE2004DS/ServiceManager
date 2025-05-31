@@ -1,0 +1,370 @@
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #FFF;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    display:block ;
+    overflow: hidden;
+}
+
+.header-section {
+    text-align: center;
+    margin-bottom: 40px;
+
+}
+
+h1 {
+    font-size: 2.5em;
+    color: var(--text-color);
+    font-weight: 600;
+      color:  #005580;
+}
+
+.add-section-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: #F0F2F5;
+}
+
+.form-group {
+    flex-grow: 1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    /* color: var(--text-color); */
+    color:darkblue;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--success-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.button.primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+.button.primary:hover { background-color: #45a049; transform: translateY(-1px); }
+
+.button.secondary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+.button.secondary:hover { background-color: #5a6268; transform: translateY(-1px); }
+
+.button.success {
+    background-color: var(--success-color);
+    color: white;
+}
+.button.success:hover { background-color: #0069D9; transform: translateY(-1px); }
+
+
+.search-section {
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 5px 10px;
+    /* background-color: var(--card-background); */
+    background-color:  #F0F2F5;;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.search-bar input {
+    border: none;
+    flex-grow: 1;
+    padding: 8px;
+    font-size: 1em;
+}
+
+.search-bar input:focus {
+    outline: none;
+}
+
+.search-icon {
+    color: var(--secondary-color);
+    margin-left: 10px;
+    font-size: 1.2em;
+}
+
+
+.section-list-container {
+    margin-top: 30px;
+}
+
+.section-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 20px;
+}
+
+.section-card {
+    background-color: var(--card-background);
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.section-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.section-title {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: var(--text-color);
+    flex-grow: 1;
+}
+
+.section-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: var(--secondary-color);
+    font-size: 1.1em;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 20%;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.icon-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.edit-button {
+  background-color: var(--success-color);
+}
+
+.delete-button {
+  background-color: rgb(238, 29, 6);
+}
+
+.delete-button:hover {
+     background-color: rgb(221, 80, 64);
+}
+
+.edit-button:hover {
+  background-color: rgb(144, 197, 241);
+}
+
+.container .Mesaage-etat {
+  position: absolute;
+  top:100px ;
+  left :40% ;
+  max-width :40% ;
+  height: auto;
+  color: white;
+ padding: 10px 20px;
+  z-index: 2000;
+  background-color: red;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* --- Toast Notifications Styles --- */
+.toast-container {
+  position: fixed;
+  top: 20px; /* Position en haut de la page */
+  right: 20px;
+  z-index: 2000; /* Assurez-vous qu'il est au-dessus de tout */
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espacement entre les toasts */
+}
+
+.toast-notification {
+  position: fixed;
+  top : 90px ;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border-radius: 8px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  min-width: 280px;
+  max-width: 400px;
+  animation: slideIn 0.5s forwards, fadeOut 0.5s 2.5s forwards; /* Animations */
+}
+
+.toast-notification.toast-success {
+  background-color: #4CAF50; /* Couleur verte pour le succès */
+}
+
+.toast-notification.toast-error {
+  background-color: #f44336; /* Couleur rouge pour l'erreur */
+}
+
+.toast-notification.toast-info {
+  background-color: #2196F3; /* Couleur bleue pour l'info */
+}
+
+.toast-icon {
+  font-size: 1.5em;
+  margin-right: 15px;
+}
+
+.toast-message {
+  flex-grow: 1;
+  font-size: 1em;
+  font-weight: 500;
+}
+
+.toast-close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2em;
+  margin-left: 15px;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.toast-close-btn:hover {
+  opacity: 1;
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(50%);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+/* --- Media Queries pour la responsivité : Comportement du menu mobile --- */
+@media (max-width: 768px) {
+    .dashboard-layout {
+        flex-direction: column; /* Le layout reste en colonne pour le main-content */
+    }
+
+    .sidebar {
+        position: fixed; /* Reste collé à la fenêtre */
+        top: 0;
+        left: 0;
+        width: var(--sidebar-width); /* Le menu a une largeur fixe */
+        height: 100%;
+        transform: translateX(-100%); /* MASQUÉ par défaut */
+        z-index: 1000; /* Au-dessus de tout */
+        box-shadow: 4px 0 10px rgba(0,0,0,0.3); /* Ombre plus prononcée quand ouvert */
+        transition: transform 0.3s ease-in-out; /* Animation pour l'apparition/disparition */
+        padding-top: 20px; /* Moins de padding en haut pour le mobile */
+    }
+
+    .sidebar.open {
+        transform: translateX(0); /* APPARAÎT quand la classe 'open' est ajoutée */
+    }
+
+    .main-content {
+        padding-top: 80px; /* Ajoute de l'espace en haut pour le bouton hamburger */
+    }
+
+    .menu-toggle {
+        display: block; /* Affiche le bouton hamburger sur mobile */
+        position: fixed; /* Reste fixe en haut à gauche */
+        top: 20px;
+        left: 20px;
+        z-index: 1001; /* Au-dessus du sidebar quand il est ouvert */
+        background-color: var(--sidebar-bg);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        font-size: 1.5em;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        transition: background-color 0.2s ease, transform 0.3s ease;
+    }
+
+    /* Optionnel: Changer l'icône du hamburger en croix lorsque le menu est ouvert */
+    .menu-toggle.active i::before {
+        content: "\f00d"; /* Code unicode pour l'icône de croix (fa-times) de Font Awesome */
+    }
+
+    /* Le reste des media queries de l'implémentation précédente reste pertinent */
+    .container {
+        padding: 15px;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .section-grid {
+        grid-template-columns: 1fr;
+    }
+    .add-section-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .actions {
+        width: 100%;
+        justify-content: stretch;
+    }
+    .button {
+        flex-grow: 1;
+    }
+}

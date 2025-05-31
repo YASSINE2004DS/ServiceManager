@@ -1,4 +1,4 @@
-.container {
+.container-cnx {
     height          :  100vh;
     width           : 100%;
     display         : flex ;
@@ -74,7 +74,7 @@
     color           : #005580;
   }
 
-  .button {
+  .button-cnx {
     background-color: #4ca1af;
     transition      : background 0.3s ease;
     padding         : 12px 24px;
@@ -88,7 +88,7 @@
     color           : white ;
   }
 
-  .button:hover {
+  .button-cnx:hover {
     background-color: #3b8b9d;
   }
 
@@ -104,13 +104,40 @@
   }
   
   /* Responsive */
-  @media (max-width: 600px) {
-    .welcome-section h1 {
+  @media (max-width: 700px) {
+    .home-container-connexion  {
+        width: 80% ;
+    }
+    .welcome-section-form
+    {
+       width:100%;
+    }
+    .welcome-section-form label 
+    {
+      font-size           : 14px;
+      padding: 3px;
+    }
+
+    .welcome-section-form .Input-Form 
+    {
+      font-size           : 14px ;
+
+    }
+
+    .welcome-section-form h1 {
       font-size           : 20px;
+
     }
-    .welcome-section .Message {
-      margin-top: 18% ;
+    .welcome-section-form .Message {
+      margin-top          : 18% ;
     }
+
+    .welcome-section-form input {
+      height              : 25px ;
+      width :90%;
+    }
+
+
   
   }
   

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import './PageAdmin.css';
 import PageHeader from '../../Pages/PageCommunComponnent/PageHeader'; // import page qui contient le header
 // import PageChargement from '../../Pages/PageCommunComponnent/PageChargement'; // import page de chargement
 import ShowIntervention                               from '../PageShowIntervention/ShowIntervention.jsx'
+import SectionManagement                               from '../SectionManagement/SectionManagement.jsx'
 import { useParams , useNavigate } from 'react-router-dom';
 
 const menuItems = [
@@ -16,8 +17,33 @@ const menuItems = [
 export default function AdminDashboard() {
   const {Page}               = useParams() ;
   const navigate             = useNavigate() ;
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  console.log(Page);
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+    useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768 && isSidebarOpen) {
+        setIsSidebarOpen(false);
+        document.body.style.overflow = '';
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isSidebarOpen]);
+
+  // Gérer le scroll du body quand le sidebar est ouvert/fermé sur mobile
+  useEffect(() => {
+    if (window.innerWidth <= 768) {
+      document.body.style.overflow = isSidebarOpen ? 'hidden' : '';
+    } else {
+      document.body.style.overflow = ''; // S'assurer que le scroll est activé sur desktop
+    }
+  }, [isSidebarOpen]);
+
 
   const renderContent = () => {
     switch (Page) {
@@ -37,24 +63,41 @@ export default function AdminDashboard() {
   return (
     <div className="Container-globales">
       <PageHeader />
-      <div className="dashboard-container">
-        <aside className="sidebar">
-          <div className="sidebar-header">Admin</div>
-          <nav className="menu">
-            {menuItems.map((item) => (
-              <button
-                key={item.key}
-                onClick={() => navigate(`/admin/${item.key}` , {replace:true})}
-                className={`menu-item ${Page === item.key ? 'active' : ''}`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </nav>
+    <div className="dashboard-layout">
+        <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
+            <div className="sidebar-header">
+                <h2>Admin</h2>
+            </div>
+            <nav className="sidebar-nav">
+                <ul>
+                {menuItems.map((item) => (
+                    <li  key={item.key}>
+                          <a 
+                          href={`/admin/${item.key}`}
+                          className={`nav-item  ${Page === item.key ? 'active' : ''}`}>{item.label}
+                          </a>
+                    </li>
+
+                      ))}
+                </ul>
+            </nav>
         </aside>
-        <main className="main-content">
-          {/* <h1 className="main-title"></h1>
-          <div className="content-card">{renderContent()}</div> */}
+
+
+
+        {/* // style={{marginLeft:0}} */}
+        <main className="main-content">  
+            <button   className={`menuToggle ${isSidebarOpen ? 'active' : ''}`}
+                      onClick={toggleSidebar}
+                      aria-label="Toggle Menu"
+            >
+
+                <svg style={{height:30}} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" classNameName="size-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+          {/* <h1 classNameName="main-title"></h1>
+          <div classNameName="content-card">{renderContent()}</div> */}
           {renderContent()}
         </main>
       </div>
@@ -66,17 +109,14 @@ function GestionUtilisateurs() {
   return (
     <div>
       <p>Liste des utilisateurs et gestion CRUD ici.</p>
-      <button className="btn">Ajouter un utilisateur</button>
+      <button classNameName="btn">Ajouter un utilisateur</button>
     </div>
   );
 }
 
 function GestionSections() {
   return (
-    <div>
-      <p>Liste des sections et gestion CRUD ici.</p>
-      <button className="btn">Ajouter une section</button>
-    </div>
+      <SectionManagement />
   );
 }
 
@@ -90,7 +130,7 @@ function GestionAgences() {
   return (
     <div>
       <p>Liste des agences et gestion CRUD ici.</p>
-      <button className="btn">Ajouter une agence</button>
+      <button classNameName="btn">Ajouter une agence</button>
     </div>
   );
 }

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" class="nav-item">Utilisateurs</a></li>
+                    <li><a href="#" class="nav-item active">Sections</a></li>
+                    <li><a href="#" class="nav-item">Interventions</a></li>
+                    <li><a href="#" class="nav-item">Agences</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <button class="menu-toggle" aria-label="Toggle Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="container">
+                <header class="header-section">
+                    <h1>Gestion des Sections</h1>
+                </header>
+
+                <section class="add-section-form">
+                    <div class="form-group">
+                        <label for="sectionNameInput">Nom de section :</label>
+                        <input type="text" id="sectionNameInput" placeholder="Ajouter une nouvelle section">
+                    </div>
+                    <div class="actions">
+                        <button class="button primary">Ajouter</button>
+                        <button class="button secondary">Annuler</button>
+                        <button class="button success">Modifier</button>
+                    </div>
+                </section>
+
+                <section class="search-section">
+                    <div class="search-bar">
+                        <input type="text" placeholder="chercher par Numéro Intervention ou la date.">
+                        <svg  className="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                         </svg>
+
+                    </div>
+                </section>
+
+                <section class="section-list-container">
+                    <div class="section-grid">
+                        <div class="section-card">
+                            <span class="section-title">Section Name 1</span>
+                            <div class="section-actions">
+                                <button class="icon-button edit-button" aria-label="Modifier la section">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="icon-button delete-button" aria-label="Supprimer la section">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="section-card">
+                            <span class="section-title">Section Name 2</span>
+                            <div class="section-actions">
+                                <button class="icon-button edit-button" aria-label="Modifier la section">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="icon-button delete-button" aria-label="Supprimer la section">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="section-card">
+                            <span class="section-title">Section Name 3</span>
+                            <div class="section-actions">
+                                <button class="icon-button edit-button" aria-label="Modifier la section">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="icon-button delete-button" aria-label="Supprimer la section">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="section-card">
+                            <span class="section-title">Section Name 4</span>
+                            <div class="section-actions">
+                                <button class="icon-button edit-button" aria-label="Modifier la section">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="icon-button delete-button" aria-label="Supprimer la section">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="section-card">
+                            <span class="section-title">Section Name 5</span>
+                            <div class="section-actions">
+                                <button class="icon-button edit-button" aria-label="Modifier la section">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="icon-button delete-button" aria-label="Supprimer la section">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="section-card">
+                            <span class="section-title">Section Name 6</span>
+                            <div class="section-actions">
+                                <button class="icon-button edit-button" aria-label="Modifier la section">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="icon-button delete-button" aria-label="Supprimer la section">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content'); // Ajouté pour gestion des clics extérieurs
+            const body = document.body; // Pour empêcher le scroll du body quand le menu est ouvert
+
+            if (menuToggle && sidebar && mainContent) {
+                menuToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('open');
+                    menuToggle.classList.toggle('active'); // Pour changer l'icône si désiré
+                    // Empêcher le scroll du body quand le menu est ouvert sur mobile
+                    if (sidebar.classList.contains('open') && window.innerWidth <= 768) {
+                        body.style.overflow = 'hidden';
+                    } else {
+                        body.style.overflow = '';
+                    }
+                });
+
+                // Fermer le menu si on clique en dehors quand il est ouvert sur mobile
+                mainContent.addEventListener('click', (event) => {
+                    // Vérifier si le clic n'est pas sur le menu-toggle lui-même
+                    if (sidebar.classList.contains('open') && window.innerWidth <= 768 && !sidebar.contains(event.target) && event.target !== menuToggle && !menuToggle.contains(event.target)) {
+                        sidebar.classList.remove('open');
+                        menuToggle.classList.remove('active');
+                        body.style.overflow = ''; // Réactiver le scroll du body
+                    }
+                });
+
+                // Gérer le redimensionnement pour masquer le menu mobile si l'écran est trop grand
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768 && sidebar.classList.contains('open')) {
+                        sidebar.classList.remove('open');
+                        menuToggle.classList.remove('active');
+                        body.style.overflow = '';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

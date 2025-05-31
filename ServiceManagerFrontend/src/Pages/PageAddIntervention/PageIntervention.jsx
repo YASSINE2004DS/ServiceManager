@@ -2,6 +2,8 @@ import React, { useState , useEffect}                from 'react';
 import './PageIntervention.css';                                                                       // import fichier css
 import axios                                          from 'axios' ;
 import swal                                           from 'sweetalert2'
+import {ConfirmeOperation}                            from '../../Shared/Components/SweetAlert'
+import {ErrorManagement}                              from '../../Shared/Components/MessageManagement'
 import { useNavigate }                                from 'react-router-dom';
 import PageHeader                                     from '../PageCommunComponnent/PageHeader'     // import page qui contient le header
 import {VerifierExpiredToken , UserIdAndRole , token} from '../Authentification/Authentification' // import deux fonctions un pour la verifications
@@ -34,7 +36,7 @@ const PageIntervention = () => {
       reference                 : ''     ,
       post                      : ''     ,
       maintenance_type          : 'PREVENTIF' ,
-      status                    :false  ,
+      status                    : false  ,
       work_order_number         : ''     ,
       work_autorisation_number  : ''     ,
       planification             : false  ,
@@ -43,7 +45,7 @@ const PageIntervention = () => {
       end_time                  : ''     ,
       comment                   : ' '    ,
       validate                  : false  ,
-      section_id                :  1     ,
+      section_id                :   null    ,
       user_id                   :  user_Id 
    });
 
@@ -107,18 +109,18 @@ const PageIntervention = () => {
     SetIntreventionInformation(prev => ({ ...prev, [name]: valeurBoll }));
   }
 
-   // fonction pour sauvegarder l'intervention dans la BD
-   const RegistreIntervention = async (Type_Validate , event) => {
-    event.preventDefault(); // pour eviter l'envoi de formulaire
-     try {
 
-      //preciser le type d'evenement envoyer ou enregistrer
-      if(Type_Validate==="Envoyer")
-        SetIntreventionInformation(prev => ({ ...prev, validate: true }));
-        
-      // requete pour le sauvegarde avec une header pour verifier l'authorization
-       const response = await axios.post(
-        'http://localhost:8000/api/intervention',
+   const SendNewIntrevention = async (Type , etat=false ) => {
+    
+              // sauvegarder l'intervention dans BD
+              if(Type==='Envoyer')
+                IntreventionInformation.validate = true ;
+              else
+                  IntreventionInformation.validate = false ;
+
+              // console.log(JSON.stringify(IntreventionInformation)); return ;
+          const response =  await axios.post(
+        `http://localhost:8000/api/intervention?etat=${etat}`,
          IntreventionInformation, // directement l'objet
         {
           headers: {
@@ -126,63 +128,51 @@ const PageIntervention = () => {
           }
         },
       );
-      SetErreur('');
-      SetSuccess(response.data.Success);
 
-      // message apparitre pendent 2s seulement
-        await setTimeout(()=> SetSuccess('') , 3000 ) ;
+        SetSuccess(response.data.Success);
 
         //navige vers la page ShowIntreventions qui affiche toutes les interventions
-        setTimeout(()=>navigate('/ShowInterventions') , 2000) ;
-                                            
-     } catch (error) {
+        setTimeout(()=>navigate('/ShowInterventions') , 1000) ;
+   }
 
-      if (error.response && error.response.data && error.response.data.message) {
+
+   // fonction pour sauvegarder l'intervention dans la BD
+   const RegistreIntervention = async (Type_Validate , event) => {
+
+               event.preventDefault(); // pour eviter l'envoi de formulaire
+        //     await SetIntreventionInformation(prev => ({ ...prev, validate: false }));
+        //     if(Type_Validate=='Envoyer')
+        // await SetIntreventionInformation(prev => ({ ...prev, validate: true }));
+     try {
+             await axios.post(
+        `http://localhost:8000/api/intervention?etat=${false}`,
+         IntreventionInformation, // directement l'objet
+        {
+          headers: {
+            authorization: `Bearer ${token}`
+          }
+        },
+      );
+
+          ConfirmeOperation(`Es-tu sûr de ${Type_Validate} la nouvelle intervention ${IntreventionInformation.intervention_id} ?`,
+                              '',
+                              ()=>SendNewIntrevention(Type_Validate , true)
+
+                          );
+     }catch(error) {
+
+      if ( error.response.data.message) {
         SetErreur(error.response.data.message);
         // SetErreur("Verifier le remplissage des champs et la validité des données");
-        await setTimeout(()=> SetErreur('') , 6000 ) ;
-      
+     
     } else {
+
         SetErreur("Erreur de connexion au serveur");
     }
 
      }
-   }
+  }
 
-  //  const ConfirmRegistreAndSenIntervention = (event , typeSend) => {
-
-  //   swal.fire({
-  //     title: `${typeSend==="Envoyer" ? "Es-tu sûr de vouloir envoyer cette intervention ?" 
-  //                                    : "Es-tu sûr d'enregistrer cet intervention ?" }`,
-  //     icon: 'warning',
-  //     showCancelButton: true,
-  //     confirmButtonColor: 'darkred',
-  //     cancelButtonColor: 'darkblue',
-  //     confirmButtonText: 'Oui',
-  //     width: '400px' 
-
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-        
-  //       try 
-  //       {
-  //         RegistreIntervention(typeSend , event);
-  //       }catch(error)
-  //       {
-  //         console.log(error);
-  //       }
-        
-  //       // swal.fire({
-  //       //   title: `${typeSend==="Envoyer" ? "L'intervention a été envoyée." 
-  //       //                                  : "L'intervention a été enregistrée." }`,
-  //       //   icon: "success",
-  //       //   showConfirmButton:false,
-  //       //   width: '400px' ,
-  //       //   timer:1000
-  //       // });
-  //     }
-  //   });
-  // }
   return (
     <div className='container-add-intervention'>
        {/* Header */}
@@ -191,13 +181,11 @@ const PageIntervention = () => {
       {/* container pour la formulaire et logo */}
     <div className=" home-container">
 
-      {/* logo entreprise safarelec */}
-      {/* <img src={logo} alt="SAFARELEC Logo" className="logo" /> */}
       <h2>Remplir la formulaire d'intervention</h2>
 
       {/* message pour gerer les erreur */}
-       {Erreur && ( <h3 className='Message erreur'>‼ {Erreur} </h3>   )}
-       {Success && (<h3 className='Message success'>‼ {Success} </h3>   )}  
+
+       {(Erreur && ErrorManagement(null , Erreur , "error" , SetErreur)) || (Success && ErrorManagement(null , Success , "success" , SetSuccess))  }
 
       {/* container pour le header h2 et la formaulaire */}
       {/* <div className="welcome-section"> */}
@@ -324,12 +312,12 @@ const PageIntervention = () => {
                 
           />  
 
-           <label for="Status">
+           <label for="section">
               Section :
           </label>
           <select 
-                  id="Status"
-                  name='status'
+                  id="section"
+                  name='section_id'
                   onChange={(event)=>RetriveDataAndInitializechamp(event)}
           >
             {Sections.map((section , index) =>
@@ -391,8 +379,8 @@ const PageIntervention = () => {
                   onChange={(event)=>RetriveDataAndInitializechampTypeBool(event)}
                   >
 
-            <option selected={ IntreventionInformation.planification}> PL </option>
-            <option selected={!IntreventionInformation.planification}> NPL </option>
+            <option  value="PL" selected={ IntreventionInformation.planification}> PL </option>
+            <option  value="NPL" selected={!IntreventionInformation.planification}> NPL </option>
          </select>
 
           <label for="Status">
@@ -402,8 +390,9 @@ const PageIntervention = () => {
                   id="Status"
                   name='status'
                   onChange={(event)=>RetriveDataAndInitializechampTypeBool(event)}>
-            <option selected={ IntreventionInformation.status  }> OUI </option>
-            <option selected={ !IntreventionInformation.status }> NON </option>
+                    
+            <option value="OUI" selected={ IntreventionInformation.status  }> OUI </option>
+            <option value="NON" selected={ !IntreventionInformation.status }> NON </option>
          </select>
 
          <label for="Reception">
@@ -414,8 +403,8 @@ const PageIntervention = () => {
                   name='reception' 
                   onChange={(event)=>RetriveDataAndInitializechampTypeBool(event)}       
           >
-            <option selected={ IntreventionInformation.reception }> OUI </option>
-            <option selected={ !IntreventionInformation.reception}> NON </option>
+            <option  value="OUI" selected={ IntreventionInformation.reception }> OUI </option>
+            <option  value="NON" selected={ !IntreventionInformation.reception}> NON </option>
          </select>
 
         </div>
