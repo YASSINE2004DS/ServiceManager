@@ -1,11 +1,15 @@
 import React from 'react';
 import './PageAccueil.css';
 import logo from '../../Shared/Assets/safarelec-logo.png';
+import { useNavigate } from 'react-router-dom';
 // import img1 from './Assets/img1.jpg';
 // import img2 from './Assets/img2.jpg';
 // import img3 from './Assets/img3.jpg'; // tu peux en ajouter autant que tu veux
 
 const PageAccueil = () => {
+
+    const navigate = useNavigate();
+
   return (
     <div className='container'>
     <div className="home-container">
@@ -35,8 +39,8 @@ const PageAccueil = () => {
       <div className="welcome-sectione">
         <h1>Welcome to Service Intrevention Manager  </h1>
         <div className="button-groupe">
-          <button className="btn login">Login</button>
-          <button className="btn signup">Sign Up</button>
+          <button className="btn login" onClick={() => navigate('/login')}>Login</button>
+          <button className="btn signup" onClick={() => navigate('/sign_up')}>Sign Up</button>
         </div>
       </div>
     </div>
