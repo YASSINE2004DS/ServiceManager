@@ -102,11 +102,6 @@ class UserService {
         if (error)
             return res.status(400).json({ Error: error.details[0].message });
 
-         // check if the email is already exist.
-        const UserCompteExist = await User.findOne({ where: { email: value.email } });
-
-         // If the email already exist and the user id is not the same as the current user id.
-        if (UserCompteExist && UserCompteExist.user_id !== userId) return res.status(400).json({ Error: 'Email already in use!' });
 
         // Hash the password if exist
         if (value.password)

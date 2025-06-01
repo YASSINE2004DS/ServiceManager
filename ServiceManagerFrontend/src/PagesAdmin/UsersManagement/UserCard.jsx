@@ -6,9 +6,7 @@ const UserCard = ({ id, first_name, last_name, email, role, agency, users, setUs
     const [editedUser, setEditedUser] = useState({
         first_name,
         last_name,
-        email,
         role,
-        agency,
     });
 
     const handleChange = (e) => {
@@ -19,12 +17,35 @@ const UserCard = ({ id, first_name, last_name, email, role, agency, users, setUs
         }));
     };
 
-    const handleSave = () => {
-        const updatedUsers = users.map((user) =>
-            user.id === id ? { ...user, ...editedUser } : user
-        );
-        setUsers(updatedUsers);
-        setIsEditing(false);
+    const handleSave = async () => {
+        try {
+            const { agency, email, ...userToSend } = editedUser;
+            const response = await fetch(`http://localhost:8000/api/user/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}` // si tu utilises un token
+                },
+                body: JSON.stringify(userToSend),
+            });
+    
+            const data = await response.json();
+    
+            if (!response.ok) {
+                alert(data.Error || 'Failed to update user');
+                return;
+            }
+    
+            // Mettre à jour l'utilisateur dans le tableau
+            const updatedUsers = users.map((user) =>
+                user.id === id ? { ...user, ...editedUser } : user
+            );
+            setUsers(updatedUsers);
+            setIsEditing(false);
+        } catch (error) {
+            console.error('Error while updating user:', error);
+            alert('Unexpected error while updating user.');
+        }
     };
 
     const handleCancel = () => {
@@ -59,13 +80,6 @@ const UserCard = ({ id, first_name, last_name, email, role, agency, users, setUs
                             onChange={handleChange}
                             placeholder="Last name"
                         />
-                        <input
-                            type="email"
-                            name="email"
-                            value={editedUser.email}
-                            onChange={handleChange}
-                            placeholder="Email"
-                        />
                     </>
                 ) : (
                     <>
@@ -87,13 +101,7 @@ const UserCard = ({ id, first_name, last_name, email, role, agency, users, setUs
                             onChange={handleChange}
                             placeholder="Role"
                         />
-                        <input
-                            type="text"
-                            name="agency"
-                            value={editedUser.agency}
-                            onChange={handleChange}
-                            placeholder="Agency"
-                        />
+
                     </>
                 ) : (
                     <>

@@ -23,7 +23,7 @@ const updateUserSchema = Joi.object(
 
     password:   Joi.string().min(5).max(200),
 
-    role:       Joi.string().valid('Admin', 'User'),
+    role:       Joi.string().valid('admin', 'user'),
 });
 
 const loginUserSchema = Joi.object(
