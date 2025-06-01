@@ -7,12 +7,14 @@ import SectionManagement from '../SectionManagement/SectionManagement.jsx';
 import AgenceManagement from '../AgenceManagement/AgenceManagement.jsx';
 import { useParams, useNavigate } from 'react-router-dom';
 import UsersManagement from '../UsersManagement/UsersManagement.jsx';
+import ComptesNonActive from '../ComptesNonActiveManagement/ComptesNonActive.jsx';
 
 const menuItems = [
     { key: 'utilisateurs', label: 'Utilisateurs' },
     { key: 'sections', label: 'Sections' },
     { key: 'interventions', label: 'Interventions' },
     { key: 'agences', label: 'Agences' },
+    { key: 'comptesNonActive', label: 'Comptes non actifs' },
 ];
 
 export default function AdminDashboard() {
@@ -55,6 +57,8 @@ export default function AdminDashboard() {
                 return <GestionInterventions />;
             case 'agences':
                 return <GestionAgences />;
+            case 'comptesNonActive':
+                return <GestionComptesNonActive />;
             default:
                 return null;
         }
@@ -114,6 +118,10 @@ export default function AdminDashboard() {
             </div>
         </div>
     );
+}
+
+function GestionComptesNonActive() {
+    return <ComptesNonActive />;
 }
 
 function GestionUtilisateurs() {
