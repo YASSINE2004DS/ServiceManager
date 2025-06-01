@@ -1,10 +1,12 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState , useEffect }                 from 'react';
 import './PageAdmin.css';
-import PageHeader from '../../Pages/PageCommunComponnent/PageHeader'; // import page qui contient le header
+import PageHeader                                      from '../../Pages/PageCommunComponnent/PageHeader'; // import page qui contient le header
 // import PageChargement from '../../Pages/PageCommunComponnent/PageChargement'; // import page de chargement
-import ShowIntervention                               from '../PageShowIntervention/ShowIntervention.jsx'
+import ShowIntervention                                from '../PageShowIntervention/ShowIntervention.jsx'
 import SectionManagement                               from '../SectionManagement/SectionManagement.jsx'
-import { useParams , useNavigate } from 'react-router-dom';
+import AgenceManagement                                from '../AgenceManagement/AgenceManagement.jsx'
+import { useParams , useNavigate }                     from 'react-router-dom';
+
 
 const menuItems = [
   { key: 'utilisateurs', label: 'Utilisateurs' },
@@ -128,9 +130,6 @@ function GestionInterventions() {
 
 function GestionAgences() {
   return (
-    <div>
-      <p>Liste des agences et gestion CRUD ici.</p>
-      <button classNameName="btn">Ajouter une agence</button>
-    </div>
+    <AgenceManagement />
   );
 }

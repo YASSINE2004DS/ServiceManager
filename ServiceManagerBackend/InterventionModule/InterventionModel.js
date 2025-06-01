@@ -1,6 +1,8 @@
 import Sequelize, { INTEGER } from 'sequelize';         // to use the sequelize library
 import sequelize from '../DatabaseModule/ConnectDB.js'; // to connect to the database
 
+
+
 const Intervention = sequelize.define('interventions', {
 
     intervention_id: {

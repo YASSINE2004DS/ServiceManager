@@ -85,6 +85,7 @@ const SectionManagement = () =>
                     name : WillEditSection ,
                 }
                );
+                   break ;
                     break;
 
                 case 'Supprimer':

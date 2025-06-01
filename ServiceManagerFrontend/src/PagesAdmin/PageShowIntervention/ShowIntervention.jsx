@@ -11,6 +11,7 @@ import PageChargement                                 from '../../Pages/PageComm
 import {VerifierExpiredToken , UserIdAndRole , token} from '../../Pages/Authentification/Authentification' // import deux fonctions un pour la verifications
                                                                                                   //de token et l'autre pour decode le token ainsi le 
                                                                                                   //token 
+                                                                                                  
 const PageInterventions = () => {
 
     const navigate            = useNavigate() ;

@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import intereventionController from './InterventionController.js';
-
 import AuthMiddleware from '../AuthModule/AuthMiddleware.js'; //the authentication operations.
 
 
