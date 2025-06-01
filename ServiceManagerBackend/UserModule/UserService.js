@@ -135,7 +135,9 @@ class UserService {
             }
 
             // Delete the user from the database.
+            console.log('Deleting user:', userId);
             await user.destroy();
+            console.log('User deleted');
 
             // Send a success response.
             return res.status(200).json({ message: 'User deleted successfully' });
