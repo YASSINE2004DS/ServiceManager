@@ -1,10 +1,19 @@
+.container-intreventions {
+    height              : 100%;
+    width               : 100%;
+    display             : flex;
+    flex-direction      : row ;
+    background          : linear-gradient(to bottom right, #f0f0f0, #ffffff);
+  }
+
 .Container-globale {
-  height            : 100vh;
+  height            : 100%;
   width             : 100%;
   display           : block;
   margin-top        : 90px ;
-  overflow-x        : hidden;
-  
+  overflow          : hidden;
+  box-sizing        : border-box;  
+  padding           : 20px 0px;
 }
 
 .Container-search-pagination
@@ -23,15 +32,22 @@
   margin              : auto;
   display             : flex;
   column-gap          : 10px;
+  background-color    : #c7bfbf; ;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  padding:4px ;
 
 }
 
 .Container-search-pagination .Container-search input {
  width                : 90%;
   height              : 50px ;
-  border              : 1px solid darkblue ;
+  /* border              : 1px solid darkblue ; */
   background-color    : #c7bfbf;
+  outline: none;
+  border: none;
   font-weight         : bold;
+  
 }
 
 .Container-search-pagination .Container-search  .icon-search {
@@ -60,16 +76,9 @@ margin-top            : 11px ;
 
 }
 
-.container-intreventions {
-    height              : 100vh;
-    width               : 100%;
-    display             : flex;
-    flex-direction      : row ;
-    background          : linear-gradient(to bottom right, #f0f0f0, #ffffff);
-  }
-
   .Interventions-container {
 
+    height                : 100% ;
     width                 : 100% ;
     padding               : 20px 0px 0px 30px;
     display               : grid ;
@@ -270,6 +279,11 @@ margin-top            : 11px ;
     color              : green;
   }
 
+  .NotExistData {
+  position              : absolute ;
+  top                   :50% ;
+  left                  : 50%;
+}
   /* Animations */
   @keyframes fadeIn {
     from {
@@ -304,6 +318,7 @@ margin-top            : 11px ;
       background-color    : #c7bfbf;
       font-weight         : bold;
       font-size           : 14px ;
+      border              : none ;
     }
 
     .Container-search-pagination .Container-search  .icon-search {
@@ -386,6 +401,8 @@ margin-top            : 11px ;
       background-color    : #c7bfbf;
       font-weight         : bold;
       font-size           : 14px ;
+      border              : none ;
+
     }
 
     .Container-search-pagination .Container-search  .icon-search {
@@ -398,6 +415,16 @@ margin-top            : 11px ;
       height   : 180px ; 
  
     }
+
+        .button-consulter  , .button-update-show , .button-envoyer{
+      font-weight        : normal;
+      height             : 20px;
+      width              : 45px;
+      font-size          : 9px;
+      padding            : 1px  ;
+      left               : 0px;
+    }
+
   }
 
   @media (max-width: 800px) {
@@ -435,11 +462,13 @@ margin-top            : 11px ;
     
     .Container-search-pagination .Container-search input {
      width                : 90%;
-      height              : 35px ;
+      height              : 25px ;
       border              : 1px solid darkblue ;
       background-color    : #c7bfbf;
       font-weight         : bold;
       font-size           : 9px ;
+      border              : none ;
+
     }
 
     .Container-search-pagination .Container-search  .icon-search {
@@ -452,6 +481,16 @@ margin-top            : 11px ;
       height   : 150px ; 
  
     }
+
+        .button-consulter  , .button-update-show , .button-envoyer{
+      font-weight        : normal;
+      height             : 20px;
+      width              : 45px;
+      font-size          : 9px;
+      padding            : 1px  ;
+      left               : 0px;
+    }
+
   }
 
   @media (max-width: 700px) {
@@ -513,21 +552,24 @@ margin-top            : 11px ;
     display             : flex;
     column-gap          : 10px;
     margin-top          : 5px;
+    height              : 23px;
   
   }
   
   .Container-search-pagination .Container-search input {
    width                : 90%;
-    height              : 35px ;
+    height              : 25px ;
     border              : 1px solid darkblue ;
     background-color    : #c7bfbf;
     font-weight         : bold;
-    font-size           : 14px ;
+    font-size           : 12px ;
+    outline             : none;
+    border              : none;
   }
   
   .Container-search-pagination .Container-search  .icon-search {
-  font-size             : 22px ;
-  margin-top            : 11px ;
+  font-size             : 15px ;
+  margin-top            : 5px ;
   }
 
   .Container-pages
@@ -542,7 +584,7 @@ margin-top            : 11px ;
 
 .Container-pages button {
  margin-top           : 10px;
-  height              : 80% ;
+  height              : 70% ;
   min-width           : 50px ;
   font-size           : 18px;
   font-weight         : bold;
@@ -578,9 +620,6 @@ margin-top            : 11px ;
       font-size          : 9px;
       padding            : 1px  ;
       left               : 0px;
-
-
-
     }
   }
 

@@ -1,5 +1,7 @@
 import joi from 'joi';
 
+
+
 const ValidateCreatingIntervention = joi.object({
     intervention_id: joi.number().required(),
 

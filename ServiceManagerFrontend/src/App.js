@@ -12,7 +12,8 @@ import Interventions                                          from './Pages/Page
 import Intervention_id                                        from './Pages/PageConsulteIntervention/PageConsulteIntervention.jsx';
 import UpdateIntervention                                     from './Pages/PageUpdateIntervention/PageUpdateIntervention.jsx';
 import PageEmail                                              from './Pages/PageEmail/PageEmail.jsx';
-import Admin                                                  from './PagesAdmin/PageAcceuil/PageAdmin.jsx';
+import Admin                                                  from './PagesAdmin/PageAcceuil/PageAdmin.jsx';      
+
 
     function App() {
       const Authentifier = localStorage.getItem('token'); // recuperer le token d'authentification

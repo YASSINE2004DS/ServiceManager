@@ -3,6 +3,8 @@ import validateDataInterevention  from './ValidatorInterevention.js';       // i
 const { ValidateUpdatingIntervention , ValidateCreatingIntervention } = validateDataInterevention; // destructure the variables for validate data from user
 import { Op }                     from 'sequelize';
 
+
+
 // import the models from the database; 
 const {  Intervention , Section , User } = Models ; 
 
@@ -11,6 +13,7 @@ class InterventionService {
         try {
             let  interventions ;
             const Intervention_today = req.query.Intervention_today ;
+            const validateIntervention = req.query.validate || 1 ;
             const today = new Date();
                         today.setHours(0, 0, 0, 0);
 
@@ -18,9 +21,10 @@ class InterventionService {
                         tomorrow.setDate(today.getDate() + 1);
             // Get all Agencies from the database.
             if( Intervention_today ==='false') {
+
                         interventions = await Intervention.findAll({ 
                                                         where     :  {
-                                                                       validate : 1
+                                                                       validate : parseInt(validateIntervention)
                                                                     },
                                                         attributes: { exclude: ['updatedAt'] } ,
                                                         include   : {
@@ -74,11 +78,14 @@ class InterventionService {
                                                         attributes: ['name'] // <-- optionnel : liste des attributs à retourner
                                                       }
                                                 });
+            const User_courant = await User.findOne({
+                                                       where : {user_id : userId }
+                                                    })
 
             // If the Interevention not exist.
             if(!intervention) return res.status(400).json({ message: `No Intervention has the id : ${interventionId}` });
 
-            if(intervention.user_id != userId) return res.status(403).json({message : "Authorization failed"}) ;
+            if(intervention.user_id != userId && User_courant.role !== 'admin') return res.status(403).json({message : "Authorization failed"}) ;
 
             // Return the Interevention informations
             return res.json(intervention );
@@ -132,6 +139,12 @@ class InterventionService {
 
           try {
 
+            let etat ;
+             if(req.query.etat)
+                 etat = req.query.etat==='true' ? 1 : 0 ;
+            else 
+                 etat = 1 ;
+
             const { error } = ValidateCreatingIntervention.validate(req.body); // validate the data from user
              
             if(error) return res.status(400).json({ message: error.details[0].message }); // check if the data is valid
@@ -144,8 +157,10 @@ class InterventionService {
                                                                 where : { intervention_id : dataFromUser.intervention_id }
                                                                });
             //check the interevention exist in the database
-            if(VerifyIntereventionExist) return res.json({message : "Intervention demande already exists"});
+            if(VerifyIntereventionExist) return res.status(400).json({message : "Intervention demande déja exists"});
 
+             if(etat)
+             {
             //Create the new interevention in the database
             const CreateNewIntervention = await Intervention.create({ 
                 intervention_id      : dataFromUser.intervention_id,
@@ -169,11 +184,15 @@ class InterventionService {
                                                                          });
 
              //check if the interevention is created in the database
-            if(CreateNewIntervention) return res.json({Success : "Intervention demande created successfully" , Interevntion : CreateNewIntervention});
+            if(CreateNewIntervention) return res.status(200).json({Success : `Intervention ${dataFromUser.intervention_id} a été ajouter` , Interevntion : CreateNewIntervention});
           
+             }else {
+               return res.status(200).json('');
+             }
+
             } catch (error) {
             // handle error
-            res.status(500).json({ message : error.message });
+            return res.status(500).json({ message : error.message });
             }
     }
 
@@ -182,7 +201,12 @@ class InterventionService {
          try{
 
             const { error } = ValidateUpdatingIntervention.validate(req.body); // validate the data from user
-             
+             let etat ;
+             if(req.query.etat)
+                 etat = req.query.etat==='true' ? 1 : 0 ;
+            else 
+                 etat = 1 ;
+
             if(error) return res.status(400).json({ message: error.details[0].message }); // check if the data is valid
              // retrieve the id from the request parameters
              const interventionId = req.params.id_Intervention ; // get the id from the request parameters
@@ -208,8 +232,11 @@ class InterventionService {
                                                                 where : { intervention_id : dataFromUser.intervention_id }
                                                                });
             // check if the id intervention updated already exist in the database and not equal to the id of the intervention we are updating
-            if( ( VerifyInterventionExist && dataFromUser.intervention_id != interventionId ) ) return res.json({message : "Intervention demande already exists"});
+            if( ( VerifyInterventionExist && dataFromUser.intervention_id != interventionId ) ) return res.status(400).json({message : "Intervention demande déja exists"});
              }
+
+             if(etat)
+             {
             // upadate the intervention in the database
             const UpdateIntervention = await Intervention.update(dataFromUser , { 
                                                                               where : { intervention_id : interventionId } ,
@@ -237,8 +264,10 @@ class InterventionService {
                       }
                                                                 });
             }                                                     
-            if(UpdateIntervention) return res.json({Success : "Intervention  updated successfully" , UpdateIntervention , IntereventionUpdated});
-
+            if(UpdateIntervention) return res.status(200).json({Success : `Intervention ${interventionId}  a été Modifier` , UpdateIntervention , IntereventionUpdated});
+        }else {
+            return res.status(200).json('');
+        }
     }catch (error) {
             // handle error
             res.status(500).json({ message : error.message });

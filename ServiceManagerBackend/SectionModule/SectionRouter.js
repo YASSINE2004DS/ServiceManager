@@ -59,4 +59,3 @@ class SectionController {
 }
 
 export default new SectionController().router; // Export only the router instance, not the class itself
-

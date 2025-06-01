@@ -70,7 +70,7 @@ const PageConnexion = () => {
     }
 
     return  (
-                <div className='container'>
+                <div className='container-cnx'>
                         
                     <div className="home-container-connexion">
 
@@ -117,7 +117,7 @@ const PageConnexion = () => {
                             />
                         
                             {/* Submit button */}
-                            <button className="button">Sign In</button>
+                            <button className="button-cnx">Sign In</button>
                         </form>
                     </div>
                 </div>

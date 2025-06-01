@@ -6,6 +6,7 @@ import axios                                          from 'axios' ;
 import { useNavigate }                                from 'react-router-dom';
 import PageHeader                                     from '../PageCommunComponnent/PageHeader'
 import PageChargement                                 from '../PageCommunComponnent/PageChargement'
+import {ErrorManagement}                              from '../../Shared/Components/MessageManagement'
 import {VerifierExpiredToken , UserIdAndRole , token} from '../Authentification/Authentification' // import deux fonctions un pour la verifications
                                                                                                   //de token et l'autre pour decode le token ainsi le 
                                                                                                   //token 
@@ -188,7 +189,7 @@ const PageInterventions = () => {
 
         /*parcourir toutes les temps des interventions et l'initialise le temps reste de chaque intervention dans une case correspond a l'index d'intervention dans
         le tableau Time */
-        const updatedTimes = Interventions.map((interv) => {
+        const updatedTimes = Interventions.map((interv , index) => {
 
        //calculé  le temps d'autorization de modification , le 1000 pour la convertion en ms
         const target = new Date(interv.createdAt).getTime() + 24 * 60 * 60 * 1000;
@@ -198,8 +199,11 @@ const PageInterventions = () => {
   
          // le temps terminé
         if (diff <= 0) {
+
+          if(Time[index] !== 'Termine')
           // envoie automatique de l'intervention si n'est pas encore envoyée
           EnvoyerIntervention(interv.intervention_id);
+          
           //return une indication
           return 'Termine';
         } else {
@@ -220,7 +224,7 @@ const PageInterventions = () => {
     updateTime(); //  Appel immédiat au montage sans attendre 1min
 
     // upadte state time operation to chargement 
-    setTimeout(()=>SetLoading(prev => ({...prev , time:false})) , 1000); 
+    setTimeout(()=>SetLoading(prev => ({...prev , time:false})) , 0); 
     const interval = setInterval(updateTime, 60000); // Ensuite toutes les 60 secondes
   
     return () => clearInterval(interval); // Nettoyage
@@ -237,8 +241,7 @@ const PageInterventions = () => {
 
 
   return (
-
-   
+  
     <div className='container-intreventions'>
 
       {/* header */}
@@ -250,7 +253,10 @@ const PageInterventions = () => {
           <PageChargement />
          ) :(
           <div className='Container-globale'>
-            
+            {Success &&  ErrorManagement(null ,Success , "success" , ()=>{} )}
+                        {Interventions.length == 0 && 
+               <h2 className='NotExistData'>Aucune intervention trouvée.</h2>
+            }
               <div className='Container-search-pagination'>
                   <div className="Container-pages">
                       {[...Array(pages)].map((_, index) => (
@@ -280,7 +286,7 @@ const PageInterventions = () => {
          <div className='Interventions-container'>
 
              {/* message si l'intervention est bien envoyée */}
-        {Success && <p className='MessageSend'>{Success}</p>} 
+        {/* {Success && <p className='MessageSend'>{Success}</p>}  */}
 
        {Interventions.map((interv , index)=>
 

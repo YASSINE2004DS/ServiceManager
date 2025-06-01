@@ -48,23 +48,29 @@ class SectionService {
         try {
             //retreive the data from the request body
             const dataFromUser = req.body ;
+            const etat =  req.query.etat==='true' ? 1 : 0  || 0 ; 
 
             //Get the interevention from the database
             const VerifySectionExist =  await Section.findOne({
                                                                 where : { name : dataFromUser.name }
                                                                });
             //check the interevention exist in the database
-            if(VerifySectionExist) return res.json({message : "Section already exists"});
+            if(VerifySectionExist) return res.status(400).json({message : "Section déja exists"});
 
             //Create the new interevention in the database
+            if( etat) {
             const CreateNewSection = await Section.create({ 
                 name                 : dataFromUser.name
             });
  
   
              //check if the interevention is created in the database
-            if(CreateNewSection) return res.json({Success : "Section created successfully" , Section : CreateNewSection});
+            if(CreateNewSection) return res.status(201).json({Success : `Section ${dataFromUser.name} est été  ajouter` , Section : CreateNewSection});
           
+            }
+            else {
+                return res.status(200).json('');
+            }
             } catch (error) {
             // handle error
             res.status(500).json({ message : error.message });
@@ -75,6 +81,7 @@ class SectionService {
         try{
             // retrieve the id from the request parameters
             const sectionId = req.params.id_Section ; // get the id from the request parameters
+            const etat =  req.query.etat==='true' ? 1 : 0  || 0 ; 
 
             //retrieve the data from the request body
             const dataFromUser = req.body ;
@@ -96,8 +103,11 @@ class SectionService {
                                                                 where : { name : dataFromUser.name }
                                                                });
             // check if the name updated already exist in the database and not equal to the id of the section we are updating
-            if( ( VerifySectionExist && VerifySectionExist.section_id != sectionId ) ) return res.json({message : "Section already exists"});
+            if( ( VerifySectionExist && VerifySectionExist.section_id != sectionId ) ) return res.status(400).json({message : "Section already exists"});
              }
+
+            if(etat)
+            {
             // upadate the section in the database
             const UpdateSection = await Section.update(dataFromUser , { where : { section_id : sectionId } });
 
@@ -115,7 +125,10 @@ class SectionService {
                 attributes: { exclude: ['updatedAt'] }
                                                                 });
             }                                                     
-            if(UpdateSection) return res.json({Success : "Section updated successfully" , UpdateSection , SectionUpdated});
+            if(UpdateSection) return res.status(200).json({Success : "Section a été modifier" , UpdateSection , SectionUpdated});
+          }else {
+            return res.status(200).json('');
+          }
         }catch (error) {    
             // handle error
             res.status(500).json({ message : error.message });
@@ -126,6 +139,7 @@ class SectionService {
         try {
             // Check if the Interevention exist and valid.
             const sectionId = req.params.id_Section;
+            const etat =  req.query.etat==='true' ? 1 : 0  || 0 ; 
 
             if(isNaN(Number(sectionId)))
                 return res.status(400).json({ message: "Section id not valid!" });
@@ -138,11 +152,17 @@ class SectionService {
             // If the Interevention not exist.
             if(!section) return res.status(400).json({ message: `No Section has the id : ${sectionId}` });
 
-            // Delete the Interevention from the database.
-            await Section.destroy({ where: { section_id: sectionId } });
+             if(etat) {
 
+             // Delete the Interevention from the database.
+            await Section.destroy({ where: { section_id: sectionId } });
             // Return success message
-            return res.json({ Success: `Section with id : ${sectionId} deleted successfully!` });
+            return res.status(200).json({ Success: `Section  ${section.name} a été supprimer!` });
+
+             }else
+
+               return res.status(200).json('');
+            
         }catch (error) {
             // handle error
             res.status(500).json({ message : error.message });

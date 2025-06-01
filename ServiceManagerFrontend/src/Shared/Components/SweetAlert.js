@@ -23,6 +23,9 @@ import swal          from 'sweetalert2'
         if (result.isConfirmed) {
           
           {handler(idIntervention)}
+
+          if(String(titleReponse).trim() != '')
+          {
           swal.fire({
             title: titleReponse,
             icon: "success",
@@ -30,6 +33,7 @@ import swal          from 'sweetalert2'
             width:  width + 'px' ,
             timer:timer
           });
+        }
         }
       });
     }

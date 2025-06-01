@@ -11,7 +11,10 @@ import PageChargement                                 from '../../Pages/PageComm
 import {VerifierExpiredToken , UserIdAndRole , token} from '../../Pages/Authentification/Authentification' // import deux fonctions un pour la verifications
                                                                                                   //de token et l'autre pour decode le token ainsi le 
                                                                                                   //token 
+                                                                                                  
 const PageInterventions = () => {
+
+    const navigate            = useNavigate() ;
 
     // hooks pour verifié l'authentification et l'expiration du token
     useEffect(( )=> {
@@ -20,44 +23,130 @@ const PageInterventions = () => {
             navigate('/RequiredAuthentification');
             return ;
         }
+      const { role} = UserIdAndRole(token);
+
+        if(role !== 'admin')
+           navigate('/AuthorizationFailed');
      } , []);
 
-  const [Time , SetTime]                                      = useState([]); // tableau pour sauvegerder le time restant pour la modification
   const [Success , SetSuccess]                                = useState('');
   const [loading , SetLoading]                                = useState({    // variable qui indique le chargement des données
                                                                   data : true ,
                                                                   time : true 
                                                                 });
  const [InterventionToday, SetInterventionToday]              = useState(false);   
- const [width, setWidth]                                      = useState(6);
  const [search , SetSearch]                                   = useState('');                                                        
-  const navigate                                              = useNavigate() ;
   const [Interventions , SetInterventions]                    = useState([]);
+  const [InterventionsNotValidate , SetInterventionsNotValidate] = useState([]);
   const {user_Id}                                             = UserIdAndRole(token) ; //fonction permet de decodé le token et de recuperer le id et le role d'utilisateur
 
 
-  useEffect(() => {
-    const handleResize = () => {
-      setWidth(window.innerWidth);
-    };
+  // handler permettre d'envoyer l'intervention => changement sur le champ validate
+  const EnvoyerIntervention = async (id_intervention) => {
+    try {
 
-    // Ajouter l'écouteur
-    window.addEventListener('resize', handleResize);
+          //recuperer l'intervention pour verifier est ce que n'est pas déje envoyée
+          const response = await axios.get(
+              `http://localhost:8000/api/intervention/${user_Id}/${id_intervention}`,
+            {
+              headers: {
+                authorization: `Bearer ${token}`
+              }
+            },     
+         );
+        const intervention = response.data ;
 
-    // Nettoyer l'écouteur à la destruction du composant
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+         // si l'intervention n'est pas envoyée
+        if(!intervention.validate)
+      {
+          await axios.patch(
+            `http://localhost:8000/api/intervention/${user_Id}/${id_intervention}?etat=true`,
+            {
+                 validate:true 
+            } ,
+            {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            },   
+          ) ;
+
+        console.log("success send Intrevention");
+
+    }
+    } catch (error)
+    {
+      // les cas des errurs envoyé au niveau de backend
+      if(error.response && error.response.data && error.response.data.message)
+      {
+        console.log(error.response.data.message);
+      }else {
+
+        console.log("erreur send intervention" , error);
+      }
+      
+    }
+  }
+
+    //  pour l'envoie automatique si le temps dépasse 24h
+    useEffect(() => {
+    //   const updateTime =async  () => {
+
+    // try {
+    //   // Requête GET pour récupérer les interventions d'un utilisateur
+    //   const responseInterventions = await axios.get(
+    //     `http://localhost:8000/api/intervention?Intervention_today=${false}&validate=0`,
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`
+    //       }
+    //     }
+    //   )
+    //   .then(response=>{
+    //       SetInterventionsNotValidate(response.data);
+    //      })
+    //   .catch(erreur=>{
+    //       console.log(erreur);
+    //    });
+
+    //  }catch(erreur){
+
+    //   console.log(erreur);
+    //   return ;
+    //  }
+    //     const now = new Date(); // la date courrant
+
+    //       /*parcourir toutes les temps des interventions et l'initialise le temps reste de chaque intervention dans une case correspond a l'index d'intervention dans
+    //       le tableau Time */
+    //       const updatedTimes = InterventionsNotValidate.map(async (interv) =>  {
+  
+    //      //calculé  le temps d'autorization de modification , le 1000 pour la convertion en ms
+    //       const target = new Date(interv.createdAt).getTime() + 24 * 60 * 60 * 1000;
+  
+    //       //calculer le temps entre  time courrant  et time d'autorization
+    //       const diff = target - now.getTime();
+    
+    //        // le temps terminé
+    //       if (diff <= 0) {
+
+    //         await EnvoyerIntervention(interv.intervention_id);
+            
+            
+    //         //return une indication
+    //         return 'Termine';
+    //       }
+
+    //     });
+       
+    //   };
+     
+    //   updateTime(); //  Appel immédiat au montage sans attendre 1min
+  
+    }, []);
 
   // fonction pour recuperer tout les intreventions de l'uitilisateur courant
   const RecupererInterventions =async ()=>{
-    // let limit = 6;
-
-    // if (window.innerWidth > 700) {
-    //   limit = 9;
-    // }
-    
+        
     try {
       // Requête GET pour récupérer les interventions d'un utilisateur
       const responseInterventions = await axios.get(
@@ -144,6 +233,58 @@ const PageInterventions = () => {
   useEffect( ()=> {
     try {
 
+    const updateTime =async  () => {
+
+    try {
+      // Requête GET pour récupérer les interventions d'un utilisateur
+      const responseInterventions = await axios.get(
+        `http://localhost:8000/api/intervention?Intervention_today=${false}&validate=0`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      .then(response=>{
+          SetInterventionsNotValidate(response.data);
+         })
+      .catch(erreur=>{
+          console.log(erreur);
+       });
+
+     }catch(erreur){
+
+      console.log(erreur);
+      return ;
+     }
+        const now = new Date(); // la date courrant
+
+          /*parcourir toutes les temps des interventions et l'initialise le temps reste de chaque intervention dans une case correspond a l'index d'intervention dans
+          le tableau Time */
+          const updatedTimes = InterventionsNotValidate.map(async (interv) =>  {
+  
+         //calculé  le temps d'autorization de modification , le 1000 pour la convertion en ms
+          const target = new Date(interv.createdAt).getTime() + 24 * 60 * 60 * 1000;
+  
+          //calculer le temps entre  time courrant  et time d'autorization
+          const diff = target - now.getTime();
+    
+           // le temps terminé
+          if (diff <= 0) {
+
+            await EnvoyerIntervention(interv.intervention_id);
+            
+            
+            //return une indication
+            return 'Termine';
+          }
+
+        });
+       
+      };
+     
+      updateTime(); //  Appel immédiat au montage sans attendre 1min
+
       RecupererInterventions()
       .then(response=>{
           SetInterventions(response.data);
@@ -157,7 +298,7 @@ const PageInterventions = () => {
       console.log("erreur");
 
     }
-  }, [InterventionToday , width]);
+  }, [InterventionToday]);
   
 // fonction pour la convertion du date 
  const convertirDate = (date_recup)=> {
