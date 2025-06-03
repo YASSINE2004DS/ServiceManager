@@ -19,6 +19,7 @@ import InterventionRoute      from './InterventionModule/InterventionRouter.js';
 import EmailRoute             from './EmailModule/EmailRouter.js'; // import Email Route
 import SectionRouter          from './SectionModule/SectionRouter.js';
 
+app.use(express.static('public')); 
 app.use('/api/user'             ,  UserRoute);
 app.use('/api/agency'           ,  AgencyRoute);
 app.use('/api/intervention'     ,  InterventionRoute);

@@ -46,11 +46,17 @@ class AgencyRouter {
                                 return AgencyController.getAgencyById(req, res);
                        });
 
-        // Define put route to modify a agency by id
+        // Define put route to modify a agency by id updateCourantAgency
         this.router.patch('/:id', 
                                   AuthMiddleware.authorizeAdminOnly , 
                                   async (req, res) => {
                                   return AgencyController.updateAgency(req, res);
+                        });
+
+        this.router.patch('/:id/set-current', 
+                          AuthMiddleware.authorizeAdminOnly , 
+                          async (req, res) => {
+                          return AgencyController.updateCourantAgency(req, res);
                         });
 
         // Define delete route for deleting a agency by id

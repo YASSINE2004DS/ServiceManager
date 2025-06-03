@@ -19,11 +19,6 @@ const Email = sequelize.define('emails', {
         allowNull: false
     },
 
-    status: {
-        type: Sequelize.STRING(100),
-        allowNull: false
-    },
-
     source_user_id: {
         type: Sequelize.BIGINT,
         allowNull: false,
