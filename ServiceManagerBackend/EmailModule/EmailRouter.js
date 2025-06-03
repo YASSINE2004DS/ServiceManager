@@ -3,7 +3,6 @@ import { Router } from 'express'; // Required to create route handlers.
 import EmailController from './EmailController.js'; // the email controller.
 import AuthMiddleware from '../AuthModule/AuthMiddleware.js'; //the authentication operations.
 import upload from '../UploadsMiddlwire/uploadsFiles.js'; // Assuming this is used for file uploads, but not in this code snippet
-import multer from 'multer';
 
 
 /**

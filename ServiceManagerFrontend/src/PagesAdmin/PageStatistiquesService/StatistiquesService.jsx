@@ -64,13 +64,6 @@ const Dashboard = () => {
     recupererStatistiques();
   } , []);
  
-
-
-  // Données pour Recharts (format différent de Chart.js)
-  // const chartData = [
-  //   { name: 'Réalisées'    , value: (dashboardStats.sectionRealisees / (dashboardStats.sectionRealisees + dashboardStats.sectionNonRealisees ))*100 }, 
-  //   { name: 'Non Réalisées', value: (dashboardStats.sectionNonRealisees / (dashboardStats.sectionRealisees + dashboardStats.sectionNonRealisees ))*100  }, 
-  // ];
   console.log(JSON.stringify(chartData));
 
   return (
