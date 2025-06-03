@@ -5,14 +5,16 @@ import PageHeader                                      from '../../Pages/PageCom
 import ShowIntervention                                from '../PageShowIntervention/ShowIntervention.jsx'
 import SectionManagement                               from '../SectionManagement/SectionManagement.jsx'
 import AgenceManagement                                from '../AgenceManagement/AgenceManagement.jsx'
+import StatistiquesServives                            from '../PageStatistiquesService/StatistiquesService.jsx'
 import { useParams , useNavigate }                     from 'react-router-dom';
 
 
 const menuItems = [
-  { key: 'utilisateurs', label: 'Utilisateurs' },
-  { key: 'sections', label: 'Sections' },
-  { key: 'interventions', label: 'Interventions' },
-  { key: 'agences', label: 'Agences' },
+  { key: 'statistiques', label: 'Statistiques'     },
+  { key: 'utilisateurs', label: 'Utilisateurs'     },
+  { key: 'sections',     label: 'Sections'         },
+  { key: 'interventions',label: 'Interventions'    },
+  { key: 'agences', label: 'Agences'               },
 ];
 
 
@@ -57,6 +59,8 @@ export default function AdminDashboard() {
         return <GestionInterventions />;
       case 'agences':
         return <GestionAgences />;
+      case 'statistiques':
+         return <StatistiquesServives />
       default:
         return null;
     }

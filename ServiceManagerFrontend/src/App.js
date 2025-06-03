@@ -13,7 +13,7 @@ import Intervention_id                                        from './Pages/Page
 import UpdateIntervention                                     from './Pages/PageUpdateIntervention/PageUpdateIntervention.jsx';
 import PageEmail                                              from './Pages/PageEmail/PageEmail.jsx';
 import Admin                                                  from './PagesAdmin/PageAcceuil/PageAdmin.jsx';      
-
+import Graphic                                                from './PagesAdmin/PageStatistiquesService/StatistiquesService.jsx'
 
     function App() {
       const Authentifier = localStorage.getItem('token'); // recuperer le token d'authentification
@@ -33,7 +33,7 @@ import Admin                                                  from './PagesAdmin
               <Route path="/RequiredAuthentification"               element={ Authentifier ?   < RequireAuthentification />      : <Navigate to="/login" /> }   /> 
               <Route path="*"                                       element={                  < PageErreur              />                                 }   /> 
               <Route path="/sendemail"                              element={ Authentifier ?   < PageEmail               />      : <Navigate to="/login" /> }   />
-
+              <Route path="/graphic"                                element={ Authentifier ?   < Graphic                 />      : <Navigate to="/login" /> }   />
            </Routes>
         </Router>
       );
