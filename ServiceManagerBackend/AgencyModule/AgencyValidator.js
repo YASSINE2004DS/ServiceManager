@@ -4,13 +4,19 @@ import Joi from 'joi';
 const VerifyDataAgencyCreating = Joi.object({
     name: Joi.string().min(2).max(50).required(),
   
-    adresse: Joi.string().max(60),  // validate adress
+    adress: Joi.string().max(60).allow('' , null),  // validate adress
   
-    start_time: Joi.string().pattern(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
-      .message('start_time must be in HH:mm format'),
-  
-    end_time: Joi.string().pattern(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
-      .message('end_time must be in HH:mm format'),
+    start_time: Joi.string().allow('' , null)
+    .pattern(new RegExp('^([0-1]?[0-9]|2[0-3]):[0-5][0-9](:00)?$')).
+    messages({
+      'string.pattern.base': 'start_time doit être au format HH:mm (par exemple, 09:30 ou 14:00).'
+    }),
+
+   end_time: Joi.string().allow('' , null)
+    .pattern(new RegExp('^([0-1]?[0-9]|2[0-3]):[0-5][0-9](:00)?$')).
+    messages({
+      'string.pattern.base': 'end_time doit être au format HH:mm (par exemple, 09:30 ou 14:00).'
+    }),
   
     current: Joi.string().default(1)
   });
@@ -20,15 +26,21 @@ const VerifyDataAgencyupdating = Joi.object(
 {
     name: Joi.string().min(2).max(50),
   
-    adresse: Joi.string().max(60), 
+    adress: Joi.string().max(60).allow('' , null), 
   
-    start_time: Joi.string().pattern(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
-      .message('start_time must be in HH:mm format'),
+    start_time: Joi.string().allow('' , null)
+    .pattern(new RegExp('^([0-1]?[0-9]|2[0-3]):[0-5][0-9](:00)?$')).
+    messages({
+      'string.pattern.base': 'start_time doit être au format HH:mm (par exemple, 09:30 ou 14:00).'
+    }),
+
+   end_time: Joi.string().allow('' , null)
+    .pattern(new RegExp('^([0-1]?[0-9]|2[0-3]):[0-5][0-9](:00)?$')).
+    messages({
+      'string.pattern.base': 'end_time doit être au format HH:mm (par exemple, 09:30 ou 14:00).'
+    }),
   
-    end_time: Joi.string().pattern(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
-      .message('end_time must be in HH:mm format'),
-  
-    current: Joi.string().default(1)
+    current: Joi.string()
 });
 
 

@@ -7,6 +7,7 @@ class AgencyService {
 
     async getAgencies(req , res) {
         try {
+
             // Get all Agencies from the database.
             const agencies = await Agency.findAll();
 
@@ -51,8 +52,17 @@ class AgencyService {
         // validate the data
         const { error } = VerifyDataAgencyCreating.validate(req.body); 
 
+                let etat ;
+
+         if(req.query.etat)
+         {
+            etat = req.query.etat.toLowerCase()==='true' ? 1 : 0 ; // convert etat to 1 or 0
+         }
+         else 
+            etat = 1 ;
+
         // check if the data is valid
-        if (error) return res.status(400).json({ Error: error.details[0].message });
+        if (error) return res.status(400).json({ message : error.details[0].message });
 
         // find Agency by name
         const findAgency = await Agency.findOne({ 
@@ -60,9 +70,17 @@ class AgencyService {
                                                 });
 
          // verify exist Agency
-        if (findAgency)   return res.status(400).json({ Error: 'Agency already exists' });             
+        if (findAgency)   return res.status(400).json({ message : 'Agency already exists' });             
  
         try {
+             if(etat) {
+
+            Agency.update({
+                current: 0 // set all agencies to not current
+            }, {
+                where: {} // update all records
+            });
+
             // Created the new Agency
             const agency = await Agency.create({    
                 name           : req.body.name,
@@ -73,19 +91,68 @@ class AgencyService {
             });
 
             // return Success response
-            res.status(201).json({ message: 'Agency created successfully', agency });
+            res.status(201).json({ Success: 'Agency created successfully', agency });
+
+            }else {
+                return res.status(201).json('');
+            }
+
         } catch (error) {
 
             res.status(500).json({ Error : error.message });
         }
     }
 
+
+    // handler to update the current agency
+    /**
+     * Update the current agency.
+     * @param {Object} req - The request object.
+     * @param {Object} res - The response object.
+     * @returns {Object} - Returns a success message if the agency is updated successfully.
+     * @throws {Object} - Returns an error message if there is an error during the update process.
+     * @description This function updates the current agency by setting all agencies to not current and then setting the specified agency as current.
+     */
+    
+    async updateAgencyCourant (req , res) {
+
+        const Id_agency = req.params.id;
+        try {
+            // Set all agencies to not current
+            await Agency.update({
+                current: 0 // set all agencies to not current
+            }, {
+                where: {} // update all records
+            });
+
+            await Agency.update({
+                current: 1 // set all agencies to not current
+            }, {
+                where: {agency_id : Id_agency} // update all records
+            });
+          
+            // Return success response
+            return res.status(200).json({ Success: 'Agency modifié avec succées' });
+        } catch (error) {
+            // handle error
+            return res.status(500).json({ message: error.message });
+        }
+    }
+
     async UpdateAgency(req , res) {
         // validate the data
         const { error } = VerifyDataAgencyupdating.validate(req.body); 
+        let etat ;
+
+         if(req.query.etat)
+         {
+            etat = req.query.etat.toLowerCase()==='true' ? 1 : 0 ; // convert etat to 1 or 0
+         }
+         else 
+            etat = 1 ;
 
         // check if the data is valid
-        if (error) return res.status(400).json({ Error: error.details[0].message });
+        if (error) return res.status(400).json({ message: error.details[0].message });
 
         //retrieve agency id from parameter
         const agencyId = req.params.id;
@@ -114,6 +181,7 @@ class AgencyService {
             if(findAgency && findAgency.agency_id !== parseInt(agencyId) ) return res.status(400).json({ Error: 'Agency already exists'});
           }
 
+           if(etat) {
           // update the agency
             const agency = await Agency.update({
                 name            : req.body.name,
@@ -130,7 +198,12 @@ class AgencyService {
                                              });                               
 
             // return Success response
-            res.status(200).json({ message: 'Agency updated successfully', agency , agencyupdated });
+            res.status(200).json({ Success: 'Agency updated successfully', agency , agencyupdated });
+
+            }else {
+
+                return res.status(200).json('');
+            }
         } catch (error) {
             // handle error
             res.status(500).json({ Error : error.message });

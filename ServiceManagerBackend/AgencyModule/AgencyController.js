@@ -16,15 +16,17 @@ import agencyService from './AgencyService.js' // import AgencyService from Agen
 //class AgencyController is a controller class that handles the requests and responses for the Agency module
 class AgencyController
 {
-    async getAllAgency (req , res)   { return await agencyService.getAgencies  (req , res)   ;}
+    async getAllAgency        (req , res)  { return await agencyService.getAgencies        (req , res)      ;}
 
-    async getAgencyById (req , res)  { return await agencyService.getAgencyById (req , res)  ;}
+    async getAgencyById       (req , res)  { return await agencyService.getAgencyById      (req , res)      ;}
 
-    async createAgency (req , res)   { return await agencyService.createAgency  (req , res)    ;}
+    async createAgency        (req , res)  { return await agencyService.createAgency       (req , res)      ;}
 
-    async updateAgency (req , res)   { return await agencyService.UpdateAgency  (req , res)    ;} 
+    async updateAgency        (req , res)  { return await agencyService.UpdateAgency       (req , res)      ;} 
 
-    async deleteAgency (req , res)    { return await agencyService.deleteAgency (req , res)    ;}
+    async deleteAgency        (req , res)  { return await agencyService.deleteAgency       (req , res)      ;}
+
+    async updateCourantAgency (req , res)  { return await agencyService.updateAgencyCourant (req , res)     ;}
 }
 
 export default new AgencyController(); // Export an instance of the AgencyController Class.

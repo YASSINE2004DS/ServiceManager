@@ -1,18 +1,16 @@
-.email-inputs{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Page principale : centrer verticalement/horizontalement */
+.page-email {
+
+      height            : 100%;
+    width               : 100%;
+    display             : flex;
+    justify-content     : center;
+    flex-direction      : row ;
+    background          : linear-gradient(to bottom right, #f0f0f0, #ffffff);
 }
 
-.container{
-    height          :  100vh;
-    width           : 100%;
-    display         : flex ;
-    justify-content : center;
-    align-items     : center;
-}
-
-.container-email {
+/* Carte blanche */
+.email-card {
     display         : flex;
     flex-direction  : column;
     align-items     : center;
@@ -23,45 +21,159 @@
     color           : #333;
     text-align      : center;
     width           : 60%;
-    height          : 75%;
+    height          : auto;
     border-radius   : 5px;
     box-shadow      : 2px 2px 5px 3px gray;
     position        : absolute;
+    top             : 110px ;
+    box-sizing      : border-box;
+    margin-bottom   : 30px ;
+
+}
+
+/* Header : logo + titre */
+.email-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.email-logo {
+  max-width: 120px;
+  height: auto;
+  margin-bottom: 0.5rem;
+}
+
+.email-title {
+  font-size: 1.5rem;
+  color:rgb(6, 85, 88) ;
+  margin: 0;
+}
+
+/* Formulaire */
+.email-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Message d’erreur */
+.email-error {
+  color: #d9534f;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+/* Groupe de champ (label + input) */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.input-label {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: darkblue;
+}
+
+.input-field,
+.textarea-field,
+.input-file {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Styles spécifiques au textarea */
+.textarea-field {
+  resize: vertical;
+}
+
+/* Conteneur du bouton */
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+/* Bouton d’envoi */
+.send-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.send-button:hover {
+  background-color: #0056b3;
+}
+
+/* Container personnalisé pour input file */
+.custom-file-input {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 42px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  font-size: 0.95rem;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Input invisible mais fonctionnel */
+.custom-file-input input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* Label visible */
+.custom-file-input .file-label {
+  position: relative;
+  display: block;
+  padding: 0.6rem 1rem;
+  z-index: 1;
+  color: #555;
+  pointer-events: none;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Responsivité */
+@media (max-width: 760px) {
+  .email-card {
+    padding: 1.5rem;
+    width : 90% ;
   }
 
-.email-label{
-    margin-right: 20px;
-    margin-top: 12px
-}
+  .send-button {
+    width: 100%;
+    text-align: center;
+  }
 
-.email-container{
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-
-}
-
-.email-textarea{
-    width: 200px;
-    height: 150px;
-    border-radius: 10px;
-    padding: 10px;
-}
-
-.email-button{
-    width: 219px;
-    height: 40px;
-    border-radius: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-
-.error-message {
-    color: red;
-    font-weight: bold;
-    margin-top: 10px;
+  .button-container {
+    justify-content: center;
+  }
 }

@@ -2,6 +2,9 @@ import { Router } from 'express'; // Required to create route handlers.
 
 import EmailController from './EmailController.js'; // the email controller.
 import AuthMiddleware from '../AuthModule/AuthMiddleware.js'; //the authentication operations.
+import upload from '../UploadsMiddlwire/uploadsFiles.js'; // Assuming this is used for file uploads, but not in this code snippet
+import multer from 'multer';
+
 
 /**
  * @class EmailRouter
@@ -22,10 +25,12 @@ class EmailRouter {
     }
 
     init() {
+
         // Define POST route for creating new email
         this.router.post    (
                                 '/',
                                 AuthMiddleware.authenticate,
+                                upload.single('document'), // Assuming file upload is needed, but not used in this snippet
                                 async (req, res) => { return EmailController.createEmail(req, res);}
                             );
 

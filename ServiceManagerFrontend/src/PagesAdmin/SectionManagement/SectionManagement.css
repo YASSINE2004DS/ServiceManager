@@ -183,20 +183,20 @@ input[type="text"]:focus {
     background-color: rgba(0, 0, 0, 0.05);
 }
 
-.edit-button {
+/* .edit-button {
   background-color: var(--success-color);
 }
 
 .delete-button {
   background-color: rgb(238, 29, 6);
-}
+} */
 
 .delete-button:hover {
      background-color: rgb(221, 80, 64);
 }
 
 .edit-button:hover {
-  background-color: rgb(144, 197, 241);
+  background-color: var(--success-color);
 }
 
 .container .Mesaage-etat {
