@@ -15,6 +15,7 @@ import PageEmail                                              from './Pages/Page
 import Admin                                                  from './PagesAdmin/PageAcceuil/PageAdmin.jsx';      
 import Graphic                                                from './PagesAdmin/PageStatistiquesService/StatistiquesService.jsx'
 
+
     function App() {
       const Authentifier = localStorage.getItem('token'); // recuperer le token d'authentification
       return (

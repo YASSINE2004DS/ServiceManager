@@ -39,6 +39,22 @@ class UserRouter {
                                 async (req, res) => { return UserController.createUser(req, res);  }
                             );
 
+        // Define GET route for fetching all inactive users
+        this.router.get     (
+                                '/inactive',
+                                AuthMiddleware.authenticate,
+                                AuthMiddleware.authorizeAdminOnly,
+                                async (req, res) => { return UserController.geInActivetUsers(req, res); }
+                            );
+
+        // Define POST route for make user active
+        this.router.post    (
+                                '/active/:id',
+                                AuthMiddleware.authenticate,
+                                AuthMiddleware.authorizeAdminOnly,
+                                async (req, res) => { return UserController.makeUserActive(req, res);   }
+                            );
+
         // Define POST route for login
         this.router.post    (
                                 '/login',
@@ -82,6 +98,8 @@ class UserRouter {
                                 AuthMiddleware.authorizeAdminOnly,
                                 async (req, res) => { return UserController.deleteUser(req, res);  }
                             );
+        
+
 
         
 

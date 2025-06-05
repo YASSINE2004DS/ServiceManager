@@ -29,7 +29,7 @@ app.use('/api/statistiques'     ,  StatistiquesRouter);
 
 
 // Connect to the database
-sequelize.sync()
+sequelize.sync({})
     .then(() => {
             console.log('Good.');
             app.listen(3000, () => {
