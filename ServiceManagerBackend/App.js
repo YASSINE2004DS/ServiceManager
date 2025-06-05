@@ -4,10 +4,8 @@ import dotenv from 'dotenv';
 
 // database connection
 import sequelize from './DatabaseModule/ConnectDB.js';
-import Models from './DatabaseModule/ModelAssociations.js'
 import cors from 'cors';
 
-const { User, Agency, Email, Intervention, Section} = Models;
 
 const app = express();
 app.use(express.json());
@@ -18,6 +16,7 @@ import AgencyRoute            from './AgencyModule/AgencyRouter.js';  // import 
 import InterventionRoute      from './InterventionModule/InterventionRouter.js'; // import Intervention Route
 import EmailRoute             from './EmailModule/EmailRouter.js'; // import Email Route
 import SectionRouter          from './SectionModule/SectionRouter.js';
+import StatistiquesRouter     from './StatistiquesService/RouterStatistiques.js'; // import Statistics Route
 
 app.use(express.static('public')); 
 app.use('/api/user'             ,  UserRoute);
@@ -25,6 +24,7 @@ app.use('/api/agency'           ,  AgencyRoute);
 app.use('/api/intervention'     ,  InterventionRoute);
 app.use('/api/email'            ,  EmailRoute);
 app.use('/api/section'          ,  SectionRouter);
+app.use('/api/statistiques'     ,  StatistiquesRouter);
 
 
 
