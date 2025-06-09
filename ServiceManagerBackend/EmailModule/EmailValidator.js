@@ -10,4 +10,4 @@ const createEmailSchema = Joi.object({
 
 export default {
     createEmailSchema,
-}; 
+};

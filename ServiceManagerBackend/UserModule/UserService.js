@@ -197,6 +197,7 @@ class UserService {
                 user: {
                     id: user._id,
                     email: user.email,
+                    active: user.active,
                 },
             });
         } catch (error) {
@@ -231,6 +232,26 @@ class UserService {
         // TODO: Implement the logout function.
     }
 
+    async isActive(req, res) {
+        // Get the user from the database
+        // Check if the user exist and valid.
+        const userId = req.params.id;
+        if (isNaN(Number(userId))) return res.status(400).json({ Error: 'User id not valid!' });
+
+        // Get the user from the database.
+        const user = await User.findOne({
+            where: { user_id: userId },
+            attributes: { exclude: ['password'] },
+        });
+
+        // If the user not exist.
+        if (!user) return res.status(400).json({ Error: `No user has the id : ${userId}` });
+
+        const isActive = user.active;
+
+        return res.status(200).json({ active: isActive });
+    }
+
     handleError(error, res) {
         // Using switch case to handle different error types.
         switch (error.name) {
@@ -245,12 +266,10 @@ class UserService {
 
             case 'SequelizeUniqueConstraintError':
                 // Handles unique constraint violations (e.g., duplicate email).
-                return res
-                    .status(400)
-                    .json({
-                        Error: 'Unique constraint violation: ',
-                        description: error.errors[0].message,
-                    });
+                return res.status(400).json({
+                    Error: 'Unique constraint violation: ',
+                    description: error.errors[0].message,
+                });
 
             case 'SequelizeForeignKeyConstraintError':
                 // Handles foreign key constraint violations (e.g., non-existent agency_id).

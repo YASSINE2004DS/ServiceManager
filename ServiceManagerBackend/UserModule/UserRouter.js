@@ -98,10 +98,11 @@ class UserRouter {
                                 AuthMiddleware.authorizeAdminOnly,
                                 async (req, res) => { return UserController.deleteUser(req, res);  }
                             );
-        
 
-
-        
+        this.router.get  (
+                                '/isActive/:id',
+                                async (req, res) => { return UserController.isActive(req, res);  }
+                            );
 
     }
 }

@@ -13,26 +13,30 @@ import Intervention_id                                        from './Pages/Page
 import UpdateIntervention                                     from './Pages/PageUpdateIntervention/PageUpdateIntervention.jsx';
 import PageEmail                                              from './Pages/PageEmail/PageEmail.jsx';
 import Admin                                                  from './PagesAdmin/PageAcceuil/PageAdmin.jsx';
+import PageInactiveAccount                                    from './Pages/PageInactiveAccount/PageInactiveAccount.jsx';
+import useActive from './Shared/Components/useActive.js';
 
 
     function App() {
       const Authentifier = localStorage.getItem('token'); // recuperer le token d'authentification
+
       return (
         <Router>
            <Routes>
 
               <Route path="/"                                       element={ Authentifier ?   < Acceuil                 />      : <Navigate to="/login" /> }   />
-              <Route path="/sign_up"                                element={                  < SingUp                  />                                 }   />    
-              <Route path="/login"                                  element={                  < Login                   />                                 }   />    
-              <Route path="/ShowInterventions"                      element={ Authentifier ?   < Interventions           />      : <Navigate to="/login" /> }   />  
-              <Route path="/AddIntervention"                        element={ Authentifier ?   < Intervention            />      : <Navigate to="/login" /> }   /> 
+              <Route path="/sign_up"                                element={                  < SingUp                  />                                 }   />
+              <Route path="/login"                                  element={                  < Login                   />                                 }   />
+              <Route path="/ShowInterventions"                      element={ Authentifier ?   < Interventions           />      : <Navigate to="/login" /> }   />
+              <Route path="/AddIntervention"                        element={ Authentifier ?   < Intervention            />      : <Navigate to="/login" /> }   />
               <Route path="/intervention/:id_Intervention"          element={ Authentifier ?   < Intervention_id         />      : <Navigate to="/login" /> }   />
-              <Route path="/UpdateIntervention/:id_Intervention"    element={ Authentifier ?   < UpdateIntervention      />      : <Navigate to="/login" /> }   /> 
-              <Route path="/admin/:Page"                            element={ Authentifier ?   < Admin                   />                   : <Navigate to="/login" /> }   />               
-              <Route path="/AuthorizationFailed"                    element={ Authentifier ?   < AuthorizationFailed     />      : <Navigate to="/login" /> }   /> 
-              <Route path="/RequiredAuthentification"               element={ Authentifier ?   < RequireAuthentification />      : <Navigate to="/login" /> }   /> 
-              <Route path="*"                                       element={                  < PageErreur              />                                 }   /> 
+              <Route path="/UpdateIntervention/:id_Intervention"    element={ Authentifier ?   < UpdateIntervention      />      : <Navigate to="/login" /> }   />
+              <Route path="/admin/:Page"                            element={ Authentifier ?   < Admin                   />                   : <Navigate to="/login" /> }   />
+              <Route path="/AuthorizationFailed"                    element={ Authentifier ?   < AuthorizationFailed     />      : <Navigate to="/login" /> }   />
+              <Route path="/RequiredAuthentification"               element={ Authentifier ?   < RequireAuthentification />      : <Navigate to="/login" /> }   />
+              <Route path="*"                                       element={                  < PageErreur              />                                 }   />
               <Route path="/sendemail"                              element={ Authentifier ?   < PageEmail               />      : <Navigate to="/login" /> }   />
+              <Route path='/inactiveAccount'                        element={                  <PageInactiveAccount      />                                 }   />
 
            </Routes>
         </Router>
