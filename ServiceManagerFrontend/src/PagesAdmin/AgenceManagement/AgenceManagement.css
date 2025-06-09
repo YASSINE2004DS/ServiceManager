@@ -1,0 +1,593 @@
+/* src/App.css */
+
+/* Variables CSS globales */
+:root {
+  --primary-color: #4CAF50; /* Vert pour ajouter */
+  --secondary-color: #6C757D; /* Gris pour texte secondaire/boutons */
+  --success-color: #007BFF; /* Bleu pour modifier/succès */
+  --danger-color: #DC3545; /* Rouge pour supprimer/erreur */
+  --text-color: #343A40; /* Couleur de texte principale */
+  --background-color: #F8F9FA; /* Arrière-plan général */
+  --card-background: #FFFFFF; /* Arrière-plan des cartes/modales */
+  --form-bg: #F0F2F5; /* Arrière-plan des formulaires */
+  --border-color: #E9ECEF; /* Couleur des bordures */
+  --shadow-color: rgba(0, 0, 0, 0.1); /* Couleur des ombres */
+  --sidebar-width: 250px; /* Largeur de la barre latérale */
+  --sidebar-bg: #343A40; /* Arrière-plan de la barre latérale */
+  --sidebar-text: #F8F9FA; /* Couleur du texte de la barre latérale */
+  --sidebar-active-bg: #007BFF; /* Arrière-plan actif de la barre latérale */
+  --sidebar-hover-bg: #495057; /* Arrière-plan au survol de la barre latérale */
+}
+
+/* Styles de base du corps de la page */
+body {
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  background-color: var(--background-color);
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* --- Mise en page principale du tableau de bord (sidebar + main content) --- */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* -------------------- Styles de la barre latérale (Sidebar) -------------------- */
+.sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  padding: 20px 0;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  flex-shrink: 0;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+
+  transition: transform 0.3s ease-in-out;
+}
+
+.sidebar-header {
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 20px;
+}
+
+.sidebar-header h2 {
+  font-size: 1.8em;
+  color: white;
+  margin: 0;
+  font-weight: 700;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav .nav-item {
+  display: block;
+  padding: 15px 20px;
+  color: var(--sidebar-text);
+  text-decoration: none;
+  font-size: 1.1em;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  border-left: 5px solid transparent;
+}
+
+.sidebar-nav .nav-item:hover {
+  background-color: var(--sidebar-hover-bg);
+  border-left-color: var(--sidebar-active-bg);
+  color: white;
+}
+
+.sidebar-nav .nav-item.active {
+  background-color: var(--sidebar-active-bg);
+  border-left-color: var(--sidebar-active-bg);
+  color: white;
+  font-weight: 600;
+}
+
+/* -------------------- Styles du contenu principal (Main Content) -------------------- */
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  position: relative;
+  margin-left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
+  box-sizing: border-box;
+}
+
+/* -------------------- Styles du bouton de menu mobile (Menu Toggle) -------------------- */
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: var(--sidebar-bg);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 1.5em;
+  cursor: pointer;
+  z-index: 1001;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background-color 0.2s ease, transform 0.3s ease;
+}
+
+.menu-toggle.active {
+  background-color: var(--sidebar-active-bg);
+}
+
+.menu-toggle.active .fa-bars::before {
+  content: "\f00d";
+}
+
+/* -------------------- Styles des conteneurs de page et sections communes -------------------- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--card-background);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.header-section {
+  display: flex; /* Utilise flexbox pour aligner titre et bouton */
+  justify-content: space-between; /* Espace entre les éléments */
+  align-items: center; /* Centre verticalement */
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-color); /* Ligne de séparation */
+}
+
+.header-section h1 {
+  font-size: 2.5em;
+  color:  #005580;
+  font-weight: 600;
+  margin: 0; /* Supprime la marge par défaut des h1 */
+}
+
+/* -------------------- Styles des formulaires (Add/Edit) -------------------- */
+.add-edit-form { /* Nouvelle classe pour les formulaires dans les modales */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 20px;
+}
+
+.form-group {
+  flex-grow: 1;
+  min-width: 200px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: black ;
+}
+
+.add-edit-form input[type="text"],
+.add-edit-form input[type="time"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  font-size: 1em;
+  box-sizing: border-box;
+}
+
+.add-edit-form input[type="text"]:focus,
+.add-edit-form input[type="time"]:focus {
+  outline: none;
+  border-color: var(--success-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px; /* Espace au-dessus des boutons d'action du formulaire */
+  width: 100%; /* S'assure que les boutons prennent toute la largeur */
+  justify-content: flex-end; /* Aligne les boutons à droite */
+}
+
+.button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.button.primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+.button.primary:hover { background-color: #45a049; transform: translateY(-1px); }
+
+.button.secondary {
+  background-color: var(--secondary-color);
+  color: white;
+}
+.button.secondary:hover { background-color: #5a6268; transform: translateY(-1px); }
+
+.button.success {
+  background-color: var(--success-color);
+  color: white;
+}
+.button.success:hover { background-color: #0069D9; transform: translateY(-1px); }
+
+
+/* -------------------- Styles de la barre de recherche -------------------- */
+.search-section {
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  padding: 5px 10px;
+  background-color: var(--card-background);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.search-bar input {
+  border: none;
+  flex-grow: 1;
+  padding: 8px;
+  font-size: 1em;
+}
+
+.search-bar input:focus {
+  outline: none;
+}
+
+.search-icon {
+  color: var(--secondary-color);
+  margin-left: 10px;
+  font-size: 1.2em;
+}
+
+/* -------------------- Styles des tableaux (Tables) -------------------- */
+.table-container {
+  overflow-x: auto; /* Permet le défilement horizontal sur les petits écrans */
+  margin-top: 20px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse; /* Supprime l'espace entre les cellules */
+  margin-top: 20px;
+  background-color: var(--card-background);
+  border-radius: 8px;
+  overflow: hidden; /* Pour que les bords arrondis s'appliquent */
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.data-table th,
+.data-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.data-table th {
+  background-color: var(--form-bg); /* Fond pour l'en-tête du tableau */
+  font-weight: 600;
+  color: var(--text-color);
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+
+.data-table tbody tr:nth-child(even) { /* Alternance de couleurs pour les lignes */
+  background-color: #f9f9f9;
+}
+
+.data-table tbody tr:hover {
+  background-color: #eef; /* Effet de survol sur les lignes */
+}
+
+.table-actions {
+  display: flex;
+  gap: 5px;
+  justify-content: center; /* Centre les boutons dans la cellule */
+}
+
+/* Boutons d'icône dans le tableau (réutilisation des styles existants) */
+.icon-button {
+  background: none;
+  border: none;
+  color: var(--secondary-color);
+  font-size: 1.1em;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.icon-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.edit-button:hover {
+  color: var(--success-color);
+}
+
+.delete-button:hover {
+  color: var(--danger-color);
+}
+
+.set-current-button { /* Pour le bouton "Définir comme courante" (étoile cliquable) */
+  background-color: lightgray;
+  border-radius: 10px;
+
+}
+.set-current-button:hover {
+  background-color: rgb(39, 201, 255)
+}
+
+.current-indicator-table { /* Pour l'étoile de l'agence courante dans le tableau */
+  color: green;
+  font-size: 1.2em;
+  margin-right: 5px;
+}
+
+
+/* -------------------- Styles des modales (Dialog Boxes) -------------------- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Fond semi-transparent */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1500; /* Au-dessus du contenu principal, mais en dessous des toasts */
+}
+
+.modal-content {
+  background-color: var(--card-background);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  max-width: 500px; /* Largeur maximale de la modale */
+  width: 90%; /* Prend 90% de la largeur sur les petits écrans */
+  position: relative;
+  animation: fadeInScale 0.3s ease-out; /* Animation d'apparition */
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.8em;
+  color: var(--text-color);
+}
+
+.modal-close-button {
+  background: none;
+  border: none;
+  font-size: 1.8em;
+  color: var(--secondary-color);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.modal-close-button:hover {
+  color: var(--danger-color);
+}
+
+/* -------------------- Styles des notifications Toast -------------------- */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast-notification {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border-radius: 8px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  min-width: 280px;
+  max-width: 400px;
+  animation: slideIn 0.5s forwards, fadeOut 0.5s 2.5s forwards;
+}
+
+.toast-notification.toast-success {
+  background-color: var(--primary-color);
+}
+
+.toast-notification.toast-error {
+  background-color: var(--danger-color);
+}
+
+.toast-notification.toast-info {
+  background-color: #2196F3;
+}
+
+.toast-icon {
+  font-size: 1.5em;
+  margin-right: 15px;
+}
+
+.toast-message {
+  flex-grow: 1;
+  font-size: 1em;
+  font-weight: 500;
+}
+
+.toast-close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2em;
+  margin-left: 15px;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.toast-close-btn:hover {
+  opacity: 1;
+}
+
+/* Animations des toasts */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+/* -------------------- Media Queries pour la responsivité -------------------- */
+@media (max-width: 768px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    height: 100%;
+    transform: translateX(-100%);
+    z-index: 1000;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease-in-out;
+    padding-top: 20px;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding-top: 80px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .container {
+    padding: 15px;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .header-section {
+    flex-direction: column; /* Empile titre et bouton sur mobile */
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .header-section h1 {
+      font-size: 2em; /* Taille de titre plus petite sur mobile */
+  }
+
+  .add-edit-form { /* Ajustement du formulaire dans la modale sur mobile */
+    padding: 15px;
+    gap: 10px;
+  }
+  .form-group {
+      min-width: unset; /* Retire le min-width pour s'adapter */
+      width: 100%;
+  }
+
+  .actions {
+    flex-direction: column; /* Empile les boutons d'action */
+    justify-content: stretch;
+  }
+  .button {
+    flex-grow: 1;
+  }
+
+  /* Responsive pour les toasts sur mobile */
+  .toast-container {
+    top: auto;
+    bottom: 20px;
+    left: 10px;
+    right: 10px;
+    width: auto;
+    align-items: center;
+  }
+
+  .toast-notification {
+    width: 100%;
+    box-sizing: border-box;
+    animation: slideInBottom 0.5s forwards, fadeOut 0.5s 2.5s forwards;
+  }
+
+  @keyframes slideInBottom {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}

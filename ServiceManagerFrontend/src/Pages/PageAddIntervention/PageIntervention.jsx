@@ -26,6 +26,8 @@ const PageIntervention = () => {
   const {user_Id}                                              = UserIdAndRole(token) ; //fonction permet de decodé le token et de recuperer le id et le role d'utilisateur
   const [Erreur , SetErreur]                                   = useState('');//variable pour les erreur
   const [Success , SetSuccess]                                 = useState('');//variable pour la validatin de creation
+  const [info , Setinfo]                                       = useState('');//variable pour la validatin de creation
+
   const navigate                                               = useNavigate() ;
   
   const [IntreventionInformation , SetIntreventionInformation] = useState //variable objet pour sauvegarder les données saisie
@@ -118,7 +120,6 @@ const PageIntervention = () => {
               else
                   IntreventionInformation.validate = false ;
 
-              // console.log(JSON.stringify(IntreventionInformation)); return ;
           const response =  await axios.post(
         `http://localhost:8000/api/intervention?etat=${etat}`,
          IntreventionInformation, // directement l'objet
@@ -140,9 +141,7 @@ const PageIntervention = () => {
    const RegistreIntervention = async (Type_Validate , event) => {
 
                event.preventDefault(); // pour eviter l'envoi de formulaire
-        //     await SetIntreventionInformation(prev => ({ ...prev, validate: false }));
-        //     if(Type_Validate=='Envoyer')
-        // await SetIntreventionInformation(prev => ({ ...prev, validate: true }));
+
      try {
              await axios.post(
         `http://localhost:8000/api/intervention?etat=${false}`,
@@ -153,6 +152,12 @@ const PageIntervention = () => {
           }
         },
       );
+
+        if(!IntreventionInformation.status && IntreventionInformation.comment===' ')
+        {
+          Setinfo("Commentaire est obligatoire en cas de status 'NON' " );
+          return ;
+        }
 
           ConfirmeOperation(`Es-tu sûr de ${Type_Validate} la nouvelle intervention ${IntreventionInformation.intervention_id} ?`,
                               '',
@@ -185,7 +190,10 @@ const PageIntervention = () => {
 
       {/* message pour gerer les erreur */}
 
-       {(Erreur && ErrorManagement(null , Erreur , "error" , SetErreur)) || (Success && ErrorManagement(null , Success , "success" , SetSuccess))  }
+       {(Erreur && ErrorManagement(null , Erreur , "error" , SetErreur)) ||
+        (Success && ErrorManagement(null , Success , "success" , SetSuccess)) ||
+        (info && ErrorManagement(null , info , "info" , Setinfo)) 
+      }
 
       {/* container pour le header h2 et la formaulaire */}
       {/* <div className="welcome-section"> */}

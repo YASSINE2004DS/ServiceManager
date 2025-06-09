@@ -1,0 +1,247 @@
+/* src/App.css (ou src/styles/Dashboard.css) */
+
+:root {
+  /* Couleurs principales */
+  --primary-color: #6a5acd; /* Un violet doux */
+  --secondary-color: #4682b4; /* Un bleu acier */
+  --text-color: #333;
+  --light-text-color: #666;
+  --background-color: #f4f6f8; /* Fond de page léger */
+  --card-background: #ffffff;
+  --border-color: #e0e0e0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif; /* Utilisez une police moderne comme Inter (importez-la depuis Google Fonts) */
+  background-color: var(--background-color);
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
+}
+
+.dashboard-page {
+  padding: 5px 25px;
+  max-width: 1200px; /* Limite la largeur pour une meilleure lisibilité sur grand écran */
+  margin: 0 auto; /* Centre la page */
+}
+
+.dashboard-title-stats {
+  font-size: 2.2em;
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* --- Grille des cartes de statistiques --- */
+.stats-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* S'adapte au contenu, min 220px */
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background-color: var(--card-background);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.stat-icon-wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0; /* Empêche l'icône de rétrécir */
+}
+
+.stat-icon {
+  font-size: 2.2em;
+  color: white;
+}
+
+/* Couleurs des icônes pour chaque type de carte */
+.stat-icon-wrapper.users { background-color: #6a5acd; /* Violet */ }
+.stat-icon-wrapper.sections { background-color: #ffa500; /* Orange */ }
+.stat-icon-wrapper.agencies { background-color: #4682b4; /* Bleu acier */ }
+.stat-icon-wrapper.interventions { background-color: #20b2aa; /* Vert-bleu */ }
+
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 2.5em;
+  font-weight: 700;
+  color: var(--text-color);
+  line-height: 1.1;
+}
+
+
+.stat-label {
+  font-size: 1.1em;
+  color: var(--light-text-color);
+  font-weight: 500;
+  margin-top: 5px;
+}
+
+/* Styles spécifiques pour le graphique */
+.chart-card {
+  background-color: var(--card-background);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  padding: 25px;
+  height: 400px; /* Hauteur fixe pour le conteneur du graphique */
+  display: flex; /* Utilisez flexbox pour centrer le titre si désiré */
+  flex-direction: column; /* Empile le titre et le graphique */
+  justify-content: center;
+  align-items: center;
+}
+
+.chart-title {
+  font-size: 1.5em;
+  color: var(--text-color);
+  margin-bottom: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Responsivité pour le graphique */
+@media (max-width: 992px) {
+  .chart-card {
+    height: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .chart-card {
+    height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-card {
+    height: 250px;
+  }
+  .chart-title {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+  }
+}
+
+
+/* --- Responsivité --- */
+@media (max-width: 992px) {
+  .dashboard-page {
+    padding: 20px;
+  }
+  .dashboard-title {
+    font-size: 1.8em;
+  }
+  .stats-cards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Ajuste la taille minimale */
+    gap: 20px;
+  }
+  .stat-card {
+    padding: 20px;
+  }
+  .stat-icon-wrapper {
+    width: 50px;
+    height: 50px;
+  }
+  .stat-icon {
+    font-size: 1.8em;
+  }
+  .stat-value {
+    font-size: 2em;
+  }
+  .stat-label {
+    font-size: 1em;
+  }
+  .chart-card {
+    height: 350px; /* Légèrement plus petit sur tablette */
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-page {
+    padding: 15px;
+  }
+  .dashboard-title {
+    font-size: 1.6em;
+    margin-bottom: 20px;
+  }
+  .stats-cards-grid {
+    grid-template-columns: 1fr; /* Une colonne par défaut sur mobile */
+    gap: 15px;
+  }
+  .stat-card {
+    flex-direction: row; /* Garde en ligne */
+    align-items: center;
+    padding: 15px;
+  }
+  .stat-icon-wrapper {
+    width: 45px;
+    height: 45px;
+  }
+  .stat-icon {
+    font-size: 1.6em;
+  }
+  .stat-value {
+    font-size: 1.8em;
+  }
+  .stat-label {
+    font-size: 0.9em;
+  }
+  .chart-card {
+    height: 300px; /* Plus petit sur mobile */
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-page {
+    padding: 10px;
+  }
+  .dashboard-title {
+    font-size: 1.4em;
+    margin-bottom: 15px;
+  }
+  .stat-card {
+    padding: 12px;
+    gap: 15px;
+  }
+  .stat-icon-wrapper {
+    width: 40px;
+    height: 40px;
+  }
+  .stat-icon {
+    font-size: 1.4em;
+  }
+  .stat-value {
+    font-size: 1.6em;
+  }
+  .stat-label {
+    font-size: 0.8em;
+  }
+  .chart-card {
+    height: 250px;
+    padding: 10px;
+  }
+}

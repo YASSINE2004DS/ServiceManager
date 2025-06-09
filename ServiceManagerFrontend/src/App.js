@@ -12,9 +12,9 @@ import Interventions                                          from './Pages/Page
 import Intervention_id                                        from './Pages/PageConsulteIntervention/PageConsulteIntervention.jsx';
 import UpdateIntervention                                     from './Pages/PageUpdateIntervention/PageUpdateIntervention.jsx';
 import PageEmail                                              from './Pages/PageEmail/PageEmail.jsx';
-import Admin                                                  from './PagesAdmin/PageAcceuil/PageAdmin.jsx';
 import PageInactiveAccount                                    from './Pages/PageInactiveAccount/PageInactiveAccount.jsx';
-import useActive from './Shared/Components/useActive.js';
+import Admin                                                  from './PagesAdmin/PageAcceuil/PageAdmin.jsx';      
+import Graphic                                                from './PagesAdmin/PageStatistiquesService/StatistiquesService.jsx'
 
 
     function App() {
@@ -36,8 +36,8 @@ import useActive from './Shared/Components/useActive.js';
               <Route path="/RequiredAuthentification"               element={ Authentifier ?   < RequireAuthentification />      : <Navigate to="/login" /> }   />
               <Route path="*"                                       element={                  < PageErreur              />                                 }   />
               <Route path="/sendemail"                              element={ Authentifier ?   < PageEmail               />      : <Navigate to="/login" /> }   />
+              <Route path="/graphic"                                element={ Authentifier ?   < Graphic                 />      : <Navigate to="/login" /> }   />
               <Route path='/inactiveAccount'                        element={                  <PageInactiveAccount      />                                 }   />
-
            </Routes>
         </Router>
       );

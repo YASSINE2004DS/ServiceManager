@@ -232,7 +232,8 @@ const PageIntervention = () => {
        {/* {Erreur && ( <h3 className='Message erreur'>‼ {Erreur} </h3>   )}
        {Success && (<h3 className='Message success'>‼ {Success} </h3>   )}   */}
 
-       {(Erreur && ErrorManagement(null , Erreur , "error" , SetErreur)) || (Success && ErrorManagement(null , Success , "success" , SetSuccess))}
+       {(Erreur && ErrorManagement(null , Erreur , "error" , SetErreur)) || 
+       (Success && ErrorManagement(null , Success , "success" , SetSuccess))}
 
       {/* container pour le header h2 et la formaulaire */}
       {/* <div className="welcome-section"> */}
