@@ -1,7 +1,5 @@
 import joi from 'joi';
 
-
-
 const ValidateCreatingIntervention = joi.object({
     intervention_id: joi.number().required(),
 
@@ -20,7 +18,7 @@ const ValidateCreatingIntervention = joi.object({
     work_order_number: joi.number().required(),
 
     work_autorisation_number: joi.number().required(),
-     
+
     planification: joi.boolean().required().default(false),
 
     reception: joi.boolean().required().default(true),
@@ -29,13 +27,13 @@ const ValidateCreatingIntervention = joi.object({
 
     end_time: joi.string().required(),
 
-    comment : joi.string().max(3000) , 
+    comment: joi.string().max(3000),
 
-    validate : joi.boolean().required().default(true),
+    validate: joi.boolean().required().default(true),
 
     section_id: joi.number().required(),
 
-    user_id: joi.number().required()
+    user_id: joi.number().required(),
 });
 
 const ValidateUpdatingIntervention = joi.object({
@@ -56,7 +54,7 @@ const ValidateUpdatingIntervention = joi.object({
     work_order_number: joi.number(),
 
     work_autorisation_number: joi.number(),
-     
+
     planification: joi.boolean().default(true),
 
     reception: joi.boolean().default(true),
@@ -65,14 +63,14 @@ const ValidateUpdatingIntervention = joi.object({
 
     end_time: joi.string(),
 
-    comment : joi.string().max(3000),
+    comment: joi.string().max(3000),
 
-    validate : joi.boolean().default(true),
+    validate: joi.boolean().default(false),
 
     section_id: joi.number(),
 
-    user_id: joi.number()
-});   
+    user_id: joi.number(),
+});
 
 export default { ValidateCreatingIntervention, ValidateUpdatingIntervention };
 // This code defines two Joi validation schemas for creating and updating an intervention entity.

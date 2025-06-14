@@ -16,7 +16,10 @@ const { User, Agency } = Models;
 class UserService {
     async getUsers(req, res) {
         try {
-            const users = await User.findAll({ attributes: { exclude: ['password'] } });
+            const users = await User.findAll({
+                attributes: { exclude: ['password'] },
+                order: [['createdAt', 'DESC']], // Trier par date de création
+            });
             res.json(users);
         } catch (error) {
             res.status(500).json({ Error: error.message });
@@ -24,37 +27,26 @@ class UserService {
     }
 
     async createUser(req, res) {
-        // Validate the user informations.
         const { error, value } = createUserSchema.validate(req.body);
-        if (error) return res.status(400).json({ Error: error.details[0].message });
-
-        // Check if the email is already existe.
-        const existingUser = await User.findOne({ where: { email: value.email } });
-        if (existingUser) return res.status(400).json({ Error: 'Email already in use!' });
-
-        // hash the password.
-        const hashedPassword = await bcrypt.hash(value.password, 10);
-
-        // Get the current agency
-        const currentAgency = await Agency.findOne({ where: { current: true } });
-        if (!currentAgency) return res.status(400).json({ Error: 'No Agency is in active' });
-
-        // Create the new user.
+        if (error) {
+            return res.status(400).json({ Error: error.details[0].message });
+        }
         try {
+            const existingUser = await User.findOne({ where: { email: value.email } });
+            if (existingUser) {
+                return res.status(409).json({ Error: 'Email déjà utilisé!' });
+            }
+            const hashedPassword = await bcrypt.hash(value.password, 10);
+            const currentAgency = await Agency.findOne({ where: { current: true } });
+            if (!currentAgency) {
+                return res.status(404).json({ Error: 'aucune agence active' });
+            }
             const user = await User.create({
-                first_name: value.first_name,
-                last_name: value.last_name,
-                email: value.email,
+                ...value,
                 password: hashedPassword,
-                role: value.role,
                 agency_id: currentAgency.agency_id,
             });
-
-            res.status(201).json({
-                message: 'User Created Successfully',
-                userId: user.user_id,
-                email: user.email,
-            });
+            res.status(201).json({ message: 'User created successfully', userId: user.user_id });
         } catch (error) {
             this.handleError(error, res);
         }
@@ -182,11 +174,12 @@ class UserService {
 
             // Check if the user exist.
             const user = await User.findOne({ where: { email: email } });
-            if (!user) return res.status(401).json({ message: 'User does not exist!' });
+            if (!user) return res.status(401).json({ message: "Email n'existe pas!" });
 
             // Check if the password is correct.
             const isPasswordValid = await bcrypt.compare(password, user.password);
-            if (!isPasswordValid) return res.status(401).json({ message: 'Invalid password!' });
+            if (!isPasswordValid)
+                return res.status(401).json({ message: 'Mot de passe incorrect!' });
 
             // Generate the jwt token.
             const token = await AuthMiddleware.generateToken(user);
@@ -195,8 +188,9 @@ class UserService {
                 message: 'Connexion réussie',
                 token,
                 user: {
-                    id: user._id,
+                    id: user.user_id,
                     email: user.email,
+                    role: user.role,
                     active: user.active,
                 },
             });

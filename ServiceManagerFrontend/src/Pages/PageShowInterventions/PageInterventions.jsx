@@ -8,6 +8,7 @@ import PageHeader                                     from '../PageCommunComponn
 import PageChargement                                 from '../PageCommunComponnent/PageChargement'
 import {ErrorManagement}                              from '../../Shared/Components/MessageManagement'
 import {VerifierExpiredToken , UserIdAndRole , token} from '../Authentification/Authentification' // import deux fonctions un pour la verifications
+import Header from '../PageCommunComponnent/PageHeader';
                                                                                                   //de token et l'autre pour decode le token ainsi le 
                                                                                                   //token 
 const PageInterventions = () => {
@@ -245,7 +246,7 @@ const PageInterventions = () => {
     <div className='container-intreventions'>
 
       {/* header */}
-        <PageHeader />
+      <Header />
         
         {loading.data ? (  
    
