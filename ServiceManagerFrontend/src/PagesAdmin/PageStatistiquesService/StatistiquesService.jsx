@@ -17,52 +17,23 @@ const Dashboard = () => {
   const [chartData , setCharData]             = useState([]);
   const [loading , setLoading]                = useState(true);
 
-  useEffect(()=> {
+  useEffect(() => {
     const recupererStatistiques = async () => {
-    try {
-        const response =  await fetch('http://localhost:8000/api/statistiques',
-                           {
-                            method : 'GET'
-                           }
-                           
-        );
-
-        if(!response.ok)
-        {
-         const errorData = await response.json().catch(() => ({ message: 'Erreur Serveur' })); // Tente de lire le corps JSON de l'erreur
-         throw new Error(`Erreur HTTP: ${response.status} - ${errorData.message || response.statusText}`);
+      try {
+        const response = await fetch('http://localhost:8000/api/statistiques');
+        if (!response.ok) {
+          throw new Error(`Erreur HTTP: ${response.status}`);
         }
-        
         const data = await response.json();
         setDashboardStats(data);
-
-        //total des interventions
-        const totalSections = (data.sectionRealisees + data.sectionNonRealisees);
-
-        if (totalSections === 0) {
-           // Si le total est zéro, toutes les sections sont à zéro pourcent
-          setCharData([
-              { name: 'Réalisées', value: 0 },
-              { name: 'Non Réalisées', value: 0 },
-          ]);
-
-       } else {
-          setCharData([
-                  { name: 'Réalisées', value: (data.sectionRealisees / totalSections) * 100 },
-                  { name: 'Non Réalisées', value: (data.sectionNonRealisees / totalSections) * 100 },
-          ]);
-         }
-        
-         setLoading(false);
-        console.log("statistiques bien recuperer");
-
-    } catch (error) {
-
-      console.log("Erreur : " + error.message);
-    }
-  }
+        setLoading(false);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des statistiques:", error);
+        setLoading(false);
+      }
+    };
     recupererStatistiques();
-  } , []);
+  }, []);
  
   console.log(JSON.stringify(chartData));
 

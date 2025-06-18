@@ -1,0 +1,79 @@
+----------------------------------------------------PROJECT GUIDELINES--------------------------------------------------
+
+1. Component Logic Separation
+- Each React component must contain no logic.
+- For example, if the component name is "Component", there should be a single custom hook called "useComponent" that contains all the logic.
+- No logic related to the component should exist inside the component file itself.
+- All logic must be placed inside the file named "Component.hook.ts".
+
+2. Backend Communication and API Calls
+- All communication with backend services and API calls must be handled in a dedicated file named "components.services.ts".
+- No literal values (strings, numbers, etc.) should be hard-coded inside logic files.
+- All literals such as API endpoint names and constants must be defined inside the file "components.constants.ts".
+
+3. Utility Functions
+- Utility functions specific to each component must be placed inside the file "components.utils.ts".
+
+4. Project Structure and Naming
+- The general structure is as follows:
+  - Each page must have a main component representing that page, named exactly as the page. For example, the "Welcome" page component must be named "Welcome".
+  - All sub-components related to that page must be inside a folder named "Components".
+  - Inside the "Components" folder, there should be a subfolder named after the page (e.g., Components/Welcome).
+
+5. Styling Rules
+- The component files themselves must never contain any styles, including Tailwind CSS classes or any other styles.
+- All styles must be defined in a separate file, e.g., "components.styles.ts".
+- Tailwind CSS is the styling framework to be used for all styles.
+
+6. TypeScript Typing
+- Since TypeScript is a typed language, all types defined by the programmer must be declared in the file "component.types.ts".
+
+7. Testing
+- All tests related to a component must be placed in the file "components.test.ts".
+
+8. Feature Isolation and Sharing
+- Each feature in the project represents an independent entity that contains its own business logic.
+- Any code shared between components should be placed inside a shared folder within that feature.
+
+9. Code Comments and Documentation
+- Inside all functions, comments must be clear and explicit.
+- Comments should explain the purpose and logic, but do not need to explain every single line.
+- Comments should be written in simple English at an A1 or A2 language level for clarity.
+
+10. Function Documentation Format
+- Every utility function must have documentation in the following format:
+
+  /**
+   * @function functionName
+   * @description Brief explanation of what the function does
+   *
+   * @returns {Type} Description of return value
+   *
+   * @author Ayyoub El Kouri
+   * @date 13/06/2025
+   * @lastUpdate 13/06/2025
+   */
+
+11. React Component Documentation Format
+- Every React component must have documentation like this:
+
+  /**
+   * @component ComponentName
+   * @description Brief explanation of what the component does
+   *
+   * @dependencies List any dependencies or related components/hooks
+   *
+   * @author Ayyoub El Kouri
+   * @date 13/06/2025
+   * @lastUpdate 13/06/2025
+   */
+
+12. Documentation Requirement for All Functions
+- When we say every function must be documented, this means:
+  - Any function, whether a custom hook, utility function, or regular function, must have clear and thorough documentation.
+  - The documentation should be well-written, detailed, and professional.
+
+---
+
+This guide is designed to keep the codebase clean, maintainable, and professional.
+Please follow it strictly throughout the project.

@@ -1,0 +1,14 @@
+:root {
+    /* Dark theme colors */
+    --dark-bg-primary: #1a1a1a;
+    --dark-bg-secondary: #2d2d2d;
+    --dark-text-primary: #ffffff;
+    --dark-text-secondary: #b3b3b3;
+    --dark-accent-primary: #007fff;
+    --dark-accent-secondary: #00b300;
+    --dark-border: #404040;
+    --dark-shadow: rgba(0, 0, 0, 0.3);
+
+    /* Transitions */
+    --transition-speed: 0.3s;
+}

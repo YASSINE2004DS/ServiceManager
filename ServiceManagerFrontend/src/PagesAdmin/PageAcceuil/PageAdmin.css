@@ -1,229 +1,77 @@
-
-
 :root {
-    --primary-color: #4CAF50; /* Vert pour ajouter */
-    --secondary-color: #6C757D; /* Gris pour annuler */
-    --success-color: #007BFF; /* Bleu pour modifier */
-    --danger-color: #DC3545; /* Rouge pour supprimer */
-    --text-color: #343A40;
-    --background-color: #F8F9FA;
-    --card-background: #FFFFFF;
-    --border-color: #E9ECEF;
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    --sidebar-width: 300px;
-    --sidebar-bg: #343A40;
-    --sidebar-text: #F8F9FA;
-    --sidebar-active-bg: #007BFF;
-    --sidebar-hover-bg: #495057;
+    --primary-color: #0d6efd;
+    --sidebar-bg: #1e1e2f;
+    --sidebar-text: #ffffff;
+    --sidebar-hover: #34344a;
+    --sidebar-active: #0d6efd;
+    --main-bg: #f4f6f8;
 }
 
-
-.Container-globales {
-    height              : 100%;
-    width               : 100%;
-    display             : flex;
-    flex-direction      : row ;
-    background          : linear-gradient(to bottom right, #f0f0f0, #ffffff);
+.admin-dashboard-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--main-bg);
 }
 
-body {
-    font-family: 'Segoe UI', 'Roboto', sans-serif;
-    background-color: var(--background-color);
-    margin: 0;
-    padding: 0;
-    color: var(--text-color);
-    /* overflow            : hidden; */
-}
-
-/* --- Mise en page du tableau de bord (sidebar + main content) --- */
 .dashboard-layout {
     display: flex;
-    min-height: 100vh;
-    width: 100%;
-    background-color: var(--background-color);
-    margin-top: 80px ;
+    flex: 1;
+    overflow: hidden;
 }
 
 .sidebar {
-    width: var(--sidebar-width);
+    width: 260px;
     background-color: var(--sidebar-bg);
     color: var(--sidebar-text);
-    padding: 20px 0;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-    flex-shrink: 0; /* Important pour éviter qu'il ne se réduise */
-
-    /* NOUVEAU: Pour rendre le sidebar fixe */
-    position: fixed; /* Reste fixe par rapport à la fenêtre */
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    height: 100vh;
+    top: 0;
     left: 0;
-    height: 100vh; /* Prend toute la hauteur de la vue */
-    overflow-y: auto; /* Permet le défilement si le contenu du sidebar est trop long */
-
-    transition: transform 0.3s ease-in-out; /* Pour l'animation responsive sur mobile */
+    z-index: 1000;
 }
 
 .sidebar-header {
-    text-align: center;
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    margin-bottom: 20px;
-}
-
-.sidebar-header h2 {
-    font-size: 1.8em;
-    color: white;
-    margin: 0;
-    font-weight: 700;
-}
-
-.sidebar-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar-nav .nav-item {
-    display: block;
-    padding: 15px 20px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 30px;
     color: var(--sidebar-text);
-    text-decoration: none;
-    font-size: 1.1em;
-    transition: background-color 0.2s ease, color 0.2s ease;
-    border-left: 5px solid transparent;
 }
 
-.sidebar-nav .nav-item:hover {
-    background-color: var(--sidebar-hover-bg);
-    border-left-color: var(--sidebar-active-bg);
-    color: white;
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Augmenter l'espace entre les éléments */
 }
 
-.sidebar-nav .nav-item.active {
-    background-color: var(--sidebar-active-bg);
-    border-left-color: var(--sidebar-active-bg);
-    color: white;
-    font-weight: 600;
+.nav-item {
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    font-size: 1rem;
+}
+
+.nav-item:hover {
+    background-color: var(--sidebar-hover);
+    transform: translateX(5px);
+}
+
+.nav-item.active {
+    background-color: var(--sidebar-active);
+    color: #fff;
+    font-weight: bold;
 }
 
 .main-content {
     flex-grow: 1;
-    padding: 20px;
-    position: relative; /* Pour positionner le menu-toggle */
-
-    /* NOUVEAU: Marge pour laisser de la place au sidebar fixe */
-    margin-left: var(--sidebar-width);
-    width: calc(100% - var(--sidebar-width)); /* S'assurer qu'il prend l'espace restant */
-    box-sizing: border-box;   /*Important pour inclure le padding dans la largeur*/
-}
-
-.menuToggle {
-  display: none; /* Caché par défaut sur les grands écrans */
-  position: fixed; /* Reste fixe en haut à gauche de la fenêtre */
-  top: 90px;
-  left: 20px;
-  background-color: var(--sidebar-bg);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 15px;
-  font-size: 1.5em;
-  cursor: pointer;
-  z-index: 1001; /* Au-dessus de tout */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  transition: background-color 0.2s ease, transform 0.3s ease;
-}
-
-.menuToggle.active {
-  background-color: var(--sidebar-active-bg); /* Changement de couleur quand actif */
-}
-
-.menuToggle.active .fa-bars::before {
-  content: "\f00d"; /* Code unicode pour l'icône de croix (fa-times) de Font Awesome */
-}
-
-
-/* Responsive pour les toasts (optionnel, si vous voulez les positionner différemment sur mobile) */
-@media (max-width: 600px) {
-  .toast-container {
-    top: auto;
-    bottom: 20px; /* Position en bas de la page sur mobile */
-    left: 10px;
-    right: 10px;
-    width: auto;
-    align-items: center; /* Centrer les toasts */
-  }
-
-  .toast-notification {
-    width: 100%; /* Prend toute la largeur disponible */
+    margin-left: 260px;
+    padding: 20px; /* Réduire le padding pour une meilleure responsivité */
+    overflow-y: auto;
+    height: 100vh;
     box-sizing: border-box;
-    animation: slideInBottom 0.5s forwards, fadeOut 0.5s 2.5s forwards;
-  }
-
-  @keyframes slideInBottom {
-    from {
-      transform: translateY(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-}
-
-/* --- Media Queries pour la responsivité : Comportement du menu mobile --- */
-@media (max-width: 768px) {
-  .dashboard-layout {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    position: fixed;
-    left: 0;
-    margin-top: 80px ;
-    width: var(--sidebar-width);
-    height: 100%;
-    transform: translateX(-100%); /* MASQUÉ par défaut */
-    z-index: 1000;
-    box-shadow: 4px 0 10px rgba(0,0,0,0.3);
-    transition: transform 0.3s ease-in-out;
-    padding-top: 20px;
-  }
-
-  .sidebar.open {
-    transform: translateX(0); /* APPARAÎT quand la classe 'open' est ajoutée */
-  }
-
-  .main-content {
-  
-    margin-left: 0px; /* Pas de marge gauche sur mobile */
-    padding-top: 80px; /* Ajoute de l'espace en haut pour le bouton hamburger */
-    width: 100%; /* Prend toute la largeur disponible */
-    box-sizing: border-box;
-
-  }
-
-  .menuToggle {
-    display: block; /* Affiche le bouton hamburger sur mobile */
-  }
-
-  .container {
-    padding: 15px;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  .sectionGrid {
-    grid-template-columns: 1fr;
-  }
-  .addSectionForm {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .actions {
-    width: 100%;
-    justify-content: stretch;
-  }
-  .button {
-    flex-grow: 1;
-  }
 }

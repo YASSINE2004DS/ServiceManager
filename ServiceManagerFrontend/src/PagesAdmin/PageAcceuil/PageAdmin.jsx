@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './PageAdmin.css';
+
 import PageHeader from '../../Pages/PageCommunComponnent/PageHeader'; // import page qui contient le header
 // import PageChargement from '../../Pages/PageCommunComponnent/PageChargement'; // import page de chargement
 import ShowIntervention                                from '../PageShowIntervention/ShowIntervention.jsx'
@@ -29,43 +30,20 @@ const menuItems = [
 export default function AdminDashboard() {
     const { Page } = useParams();
     const navigate = useNavigate();
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-    const toggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen);
-    };
-
-    useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth > 768 && isSidebarOpen) {
-                setIsSidebarOpen(false);
-                document.body.style.overflow = '';
-            }
-        };
-
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, [isSidebarOpen]);
-
-    // Gérer le scroll du body quand le sidebar est ouvert/fermé sur mobile
-    useEffect(() => {
-        if (window.innerWidth <= 768) {
-            document.body.style.overflow = isSidebarOpen ? 'hidden' : '';
-        } else {
-            document.body.style.overflow = ''; // S'assurer que le scroll est activé sur desktop
-        }
-    }, [isSidebarOpen]);
 
     const renderContent = () => {
+        if (!menuItems.some((item) => item.key === Page)) {
+            return <div>Page non trouvée. Veuillez sélectionner un élément valide.</div>;
+        }
         switch (Page) {
             case 'utilisateurs':
-                return <GestionUtilisateurs />;
+                return <UsersManagement />;
             case 'sections':
-                return <GestionSections />;
+                return <SectionManagement />;
             case 'interventions':
-                return <GestionInterventions />;
+                return <ShowIntervention />;
             case 'agences':
-                return <GestionAgences />;
+                return <AgenceManagement />;
             case 'comptesNonActive':
                 return <GestionComptesNonActive />;
             case 'statistiques':
@@ -77,7 +55,7 @@ export default function AdminDashboard() {
             case 'Exportation':
                  return <Exportation />
             default:
-                return null;
+                return <div>Sélectionnez un élément du menu</div>;
         }
     };
 
@@ -90,6 +68,7 @@ export default function AdminDashboard() {
         <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
             <div className="sidebar-header">
                 <h2>Admin</h2>
+
             </div>
             <nav className="sidebar-nav">
                 <ul>
@@ -127,24 +106,4 @@ export default function AdminDashboard() {
   </div>
 
     );
-}
-
-function GestionComptesNonActive() {
-    return <ComptesNonActive />;
-}
-
-function GestionUtilisateurs() {
-    return <UsersManagement />;
-}
-
-function GestionSections() {
-    return <SectionManagement />;
-}
-
-function GestionInterventions() {
-    return <ShowIntervention />;
-}
-
-function GestionAgences() {
-    return <AgenceManagement />;
 }

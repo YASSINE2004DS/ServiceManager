@@ -11,6 +11,7 @@
   
   .compte-card_info p {
     margin: 4px 0;
+    font-size: 1rem; /* Augmenter la taille de la police */
   }
   
   .compte-card_button {
@@ -26,4 +27,3 @@
   .compte-card_button:hover {
     background-color: #45a045;
   }
-  

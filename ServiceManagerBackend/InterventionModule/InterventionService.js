@@ -108,25 +108,19 @@ class InterventionService {
                 return res.status(400).json({ message: "Intervention id not valid!" });
 
             // Get the Intreventions from the database.
-            const {count , rows} = await Intervention.findAndCountAll({ 
-                                                               limit: limit,
-                                                               offset: offset,
-                                                               where: { user_id: userId }, 
-                                                               attributes: { exclude: ['updatedAt'] },
-                                                               include: {
+            const interventions = await Intervention.findAll({where: { user_id: userId } ,
+                                                            attributes: { exclude: ['updatedAt'] } ,
+                                                            include: {
                                                                 model: Section,
                                                                 attributes: ['name'] // <-- optionnel : liste des attributs à retourner
-                                                                  },
-                                                                order: [['createdAt', 'DESC']]
+                                                              },
                                                             });
-
             // If the Intervention not exist.
             // if(!rows) return res.status(400).json({ message: `No Intervention has the id : ${userId}` });
 
             // Return the Interevention informations
             return res.json({
-                pages : Math.ceil(count / limit), // calculate the number of pages
-                data  : rows, // return the data
+                interventions, // return the data
             });
         }catch (error) {
             // handle error
