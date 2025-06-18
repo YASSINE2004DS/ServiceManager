@@ -7,18 +7,23 @@ import SectionManagement                               from '../SectionManagemen
 import AgenceManagement                                from '../AgenceManagement/AgenceManagement.jsx'
 import StatistiquesServives                            from '../PageStatistiquesService/StatistiquesService.jsx'
 import { useParams , useNavigate }                     from 'react-router-dom';
-import UsersManagement from '../UsersManagement/UsersManagement.jsx';
-import ComptesNonActive from '../ComptesNonActiveManagement/ComptesNonActive.jsx';
+import UsersManagement                                 from '../UsersManagement/UsersManagement.jsx';
+import ComptesNonActive                                from '../ComptesNonActiveManagement/ComptesNonActive.jsx';
+import Composants                                      from '../EntrepriseManagement/ComposantsManagement/ComposantPage.jsx'
+import Entreprises                                     from '../EntrepriseManagement/EntreprisesManagement/EntreprisesPage.jsx'
+import Exportation                                     from '../EntrepriseManagement/ExportationManagement/ExportationsPage.jsx'
 
 
 
 const menuItems = [
-    { key: 'statistiques', label: 'Statistiques'     },
-    { key: 'utilisateurs', label: 'Utilisateurs' },
-    { key: 'sections', label: 'Sections' },
-    { key: 'interventions', label: 'Interventions' },
-    { key: 'agences', label: 'Agences' },
-    { key: 'comptesNonActive', label: 'Comptes non actifs' },
+    { key: 'statistiques'       ,      label: 'Statistiques'       },
+    { key: 'utilisateurs'       ,      label: 'Utilisateurs'       },
+    { key: 'sections'           ,      label: 'Sections'           },
+    { key: 'interventions'      ,      label: 'Interventions'      },
+    { key: 'agences'            ,      label: 'Agences'            },
+    { key: 'comptesNonActive'   ,      label: 'Comptes non actifs' },
+    { key: 'Composants'         ,      label: 'Composants'         },
+    { key: 'entreprises'        ,      label: 'Entreprises'        },
 ];
 
 export default function AdminDashboard() {
@@ -65,6 +70,12 @@ export default function AdminDashboard() {
                 return <GestionComptesNonActive />;
             case 'statistiques':
                   return <StatistiquesServives />
+            case 'Composants':
+                  return <Composants />
+            case 'entreprises':
+                 return <Entreprises />
+            case 'Exportation':
+                 return <Exportation />
             default:
                 return null;
         }

@@ -1,0 +1,242 @@
+/* src/components/EntrepriseFormModal.module.css */
+
+/* Variables CSS - centralisez-les si possible */
+:root {
+  --primary-color: #4a5aeb;
+  --primary-dark-color: #3842b3;
+  --secondary-color: #6c757d;
+  --danger-color: #dc3545;
+  --border-color: #e9ecef;
+  --text-color-dark: #343a40;
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.modalOverlay { /* Classe renommée */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modalContent { /* Classe renommée */
+  background-color: white;
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  width: 90%;
+  max-width: 550px;
+  position: relative;
+  animation: slideInFromTop 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalCloseBtn { /* Classe renommée */
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.6em;
+  color: var(--secondary-color);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.modalCloseBtn:hover { /* Classe renommée */
+  color: var(--danger-color);
+}
+
+.modalTitle { /* Classe renommée */
+  font-size: 2.2em;
+  color: var(--primary-dark-color);
+  margin-bottom: 25px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.entrepriseForm { /* Classe renommée */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Ces sélecteurs descendants fonctionnent toujours avec CSS Modules */
+.entrepriseForm .formGroup:nth-child(1),
+.entrepriseForm .formGroup:nth-child(2),
+.entrepriseForm .formGroup:nth-child(3) {
+  grid-column: span 2;
+}
+
+.formGroup { /* Classe renommée */
+  margin-bottom: 0;
+}
+
+.entrepriseForm label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-color-dark);
+  font-size: 0.95em;
+}
+
+.entrepriseForm input[type="text"],
+.entrepriseForm input[type="email"],
+.entrepriseForm select {
+  width: calc(100% - 24px);
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1em;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2C197.971L146.203%2C57.174L5.405%2C197.971h281.594z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+
+.entrepriseForm input[type="text"]:focus,
+.entrepriseForm input[type="email"]:focus,
+.entrepriseForm select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 90, 235, 0.25);
+  outline: none;
+}
+
+.inputError { /* Classe renommée */
+  border-color: var(--danger-color);
+}
+
+.errorText { /* Classe renommée */
+  color: var(--danger-color);
+  font-size: 0.85em;
+  margin-top: 5px;
+  display: block;
+}
+
+.checkboxGroup { /* Classe renommée */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    grid-column: span 2;
+    margin-top: 10px;
+}
+
+.checkboxGroup input[type="checkbox"] { /* Sélecteur descendant */
+    width: auto;
+    margin: 0;
+    transform: scale(1.3);
+    cursor: pointer;
+}
+
+.checkboxGroup label { /* Sélecteur descendant */
+    margin-bottom: 0;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+
+.formActions { /* Classe renommée */
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+  grid-column: span 2;
+}
+
+.saveBtn, .cancelBtn { /* Classes renommées */
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.05em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 500;
+}
+
+.saveBtn { /* Classe renommée */
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.saveBtn:hover { /* Classe renommée */
+  background-color: var(--primary-dark-color);
+  transform: translateY(-1px);
+}
+
+.cancelBtn { /* Classe renommée */
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.cancelBtn:hover { /* Classe renommée */
+  background-color: #5a6268;
+  transform: translateY(-1px);
+}
+
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInFromTop {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+
+/* Responsivité du modal */
+@media (max-width: 768px) {
+  .modalContent {
+    padding: 25px;
+    max-width: 90%;
+  }
+  .modalTitle {
+    font-size: 2em;
+  }
+  .entrepriseForm {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  .entrepriseForm .formGroup {
+    grid-column: span 1;
+  }
+  .formActions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .saveBtn, .cancelBtn {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalContent {
+    padding: 20px;
+  }
+  .modalTitle {
+    font-size: 1.8em;
+  }
+  .entrepriseForm label {
+    font-size: 0.9em;
+  }
+  .entrepriseForm input,
+  .entrepriseForm select {
+    padding: 10px;
+    font-size: 0.9em;
+  }
+}

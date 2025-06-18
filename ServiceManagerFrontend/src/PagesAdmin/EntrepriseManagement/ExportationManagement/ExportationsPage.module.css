@@ -1,0 +1,328 @@
+/* src/pages/ExportationsPage.module.css */
+
+:root {
+    --primary-color: #4a5aeb;
+    --primary-dark-color: #3842b3;
+    --secondary-color: #6c757d;
+    --accent-color: #28a745;
+    --danger-color: #dc3545;
+    --info-color: #17a2b8; /* Pour le bouton imprimer */
+    --card-bg: #ffffff;
+    --page-bg: #f0f2f5;
+    --border-color: #e9ecef;
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --shadow-medium: rgba(0, 0, 0, 0.12);
+    --text-color-dark: #343a40;
+    --text-color-light: #6c757d;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    /* Couleurs spécifiques au tableau */
+    --table-header-bg: #f8faff;
+    --table-border: #e0eaff;
+    --row-hover-bg: #e6f0ff;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--page-bg);
+  margin: 0;
+  padding: 0;
+  color: var(--text-color-dark);
+}
+
+.exportationsPageContainer {
+  max-width: 98%; /* Plus large pour le tableau */
+  margin: auto;
+  padding: 30px;
+  background-color: var(--card-bg);
+  border-radius: 15px;
+  box-shadow: 0 5px 25px var(--shadow-light);
+}
+
+.exportationsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.exportationsTitle {
+  font-size: 2.5em;
+  color: var(--primary-dark-color);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-weight: 700;
+}
+
+.headerIcon {
+  font-size: 1.2em;
+  color: var(--primary-color);
+}
+
+.addExportationBtn {
+  background-color: var(--accent-color);
+  color: white;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.15em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.addExportationBtn:hover {
+  background-color: #218838;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.btnIcon {
+  font-size: 1.05em;
+}
+
+.filterSection {
+  margin-bottom: 30px;
+  background-color: #f8faff;
+  border: 1px solid #e0eaff;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.filterLabel {
+  font-weight: 600;
+  color: var(--primary-dark-color);
+  font-size: 1.1em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filterInputDate { /* Nouveau style pour l'input date */
+  padding: 10px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1em;
+  min-width: 200px;
+  background-color: white;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.filterInputDate:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 90, 235, 0.25);
+  outline: none;
+}
+
+
+.loadingMessage, .errorMessage, .noDataMessage {
+  text-align: center;
+  padding: 25px;
+  font-size: 1.1em;
+  color: var(--text-color-light);
+  background-color: #e9f2fb;
+  border: 1px solid #d0e0f0;
+  border-radius: 10px;
+  margin-top: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.errorMessage {
+    background-color: #fce8e8;
+    border-color: #f5c6cb;
+    color: var(--danger-color);
+}
+.errorMessage .fa-info-circle {
+    color: var(--danger-color);
+}
+
+.tableContainer {
+    overflow-x: auto; /* Permet le défilement horizontal sur petits écrans */
+    margin-top: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px var(--shadow-light);
+    border: 1px solid var(--table-border);
+}
+
+.exportationsTable {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px; /* Largeur minimale pour éviter un tableau trop compressé */
+}
+
+.exportationsTable th,
+.exportationsTable td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--table-border);
+    font-size: 0.95em;
+    vertical-align: middle;
+}
+
+.exportationsTable th {
+    background-color: var(--table-header-bg);
+    color: var(--primary-dark-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: sticky;
+    top: 0;
+    z-index: 10; /* Pour que l'en-tête reste visible lors du défilement */
+    white-space: nowrap; /* Empêche le texte de se casser sur plusieurs lignes */
+}
+
+.exportationsTable th:hover {
+    background-color: #dbe4ff;
+}
+
+.exportationsTable th svg {
+    margin-left: 8px;
+    font-size: 0.8em;
+    color: var(--primary-color);
+}
+
+.exportationsTable tbody tr:nth-child(even) {
+    background-color: #fcfdff; /* Légère couleur alternée pour les lignes */
+}
+
+.exportationsTable tbody tr:hover {
+    background-color: var(--row-hover-bg);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.exportationsTable td {
+    color: var(--text-color-dark);
+}
+
+.actionsCell {
+    white-space: nowrap; /* Garde les boutons sur une seule ligne */
+    text-align: center; /* Centrer les boutons dans la cellule */
+}
+
+.actionBtn {
+  padding: 8px 12px; /* Plus petits pour les cellules de tableau */
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: inline-flex; /* Utilise inline-flex pour l'alignement des icônes/texte */
+  align-items: center;
+  justify-content: center; /* Centrer le contenu du bouton */
+  gap: 6px;
+  font-weight: 500;
+  margin: 0 4px; /* Espacement entre les boutons */
+}
+
+.editBtn {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.editBtn:hover {
+  background-color: var(--primary-dark-color);
+  transform: translateY(-1px);
+}
+
+.deleteBtn {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.deleteBtn:hover {
+  background-color: #c82333;
+  transform: translateY(-1px);
+}
+
+.printBtn {
+    background-color: var(--info-color);
+    color: white;
+}
+
+.printBtn:hover {
+    background-color: #138496;
+    transform: translateY(-1px);
+}
+
+/* Responsivité du tableau */
+@media (max-width: 1024px) {
+    .exportationsPageContainer {
+        padding: 20px;
+    }
+    .exportationsTable th,
+    .exportationsTable td {
+        padding: 12px;
+        font-size: 0.9em;
+    }
+    .actionBtn {
+        padding: 7px 10px;
+        font-size: 0.8em;
+        gap: 4px;
+    }
+}
+
+@media (max-width: 768px) {
+    .exportationsHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .exportationsTitle {
+        font-size: 2em;
+    }
+    .addExportationBtn {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 20px;
+    }
+    .filterSection {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .filterInputDate { /* Pour les petits écrans */
+        width: 100%;
+        min-width: unset;
+    }
+    /* Le tableau nécessitera un défilement horizontal sur les petits écrans */
+    .tableContainer {
+        border-radius: 8px;
+    }
+    .exportationsTable {
+        min-width: 700px; /* Ajustez si nécessaire */
+    }
+}
+
+@media (max-width: 480px) {
+    .exportationsPageContainer {
+        padding: 15px;
+    }
+    .exportationsTitle {
+        font-size: 1.8em;
+    }
+    .exportationsTable th,
+    .exportationsTable td {
+        padding: 10px;
+        font-size: 0.85em;
+    }
+    .actionBtn {
+        padding: 6px 8px;
+        font-size: 0.75em;
+        gap: 3px;
+        margin: 0 2px;
+    }
+}

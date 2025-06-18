@@ -1,0 +1,211 @@
+/* src/components/ExportationFormModal.module.css */
+
+:root {
+  --primary-color: #4a5aeb;
+  --primary-dark-color: #3842b3;
+  --secondary-color: #6c757d;
+  --danger-color: #dc3545;
+  --border-color: #e9ecef;
+  --text-color-dark: #343a40;
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  width: 90%;
+  max-width: 550px;
+  position: relative;
+  animation: slideInFromTop 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalCloseBtn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.6em;
+  color: var(--secondary-color);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.modalCloseBtn:hover {
+  color: var(--danger-color);
+}
+
+.modalTitle {
+  font-size: 2.2em;
+  color: var(--primary-dark-color);
+  margin-bottom: 25px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.exportationForm {
+  display: grid;
+  grid-template-columns: 1fr; /* Une seule colonne pour plus de simplicité */
+  gap: 20px;
+}
+
+.formGroup {
+  margin-bottom: 0;
+}
+
+.exportationForm label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-color-dark);
+  font-size: 0.95em;
+}
+
+.exportationForm input[type="text"],
+.exportationForm input[type="date"],
+.exportationForm input[type="number"],
+.exportationForm select {
+  width: calc(100% - 24px);
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1em;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none; /* Pour masquer la flèche par défaut du select */
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2C197.971L146.203%2C57.174L5.405%2C197.971h281.594z%22%2F%3E%3C%2Fsvg%3E'); /* Custom arrow for select */
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+
+.exportationForm input[type="date"] {
+    background-image: none; /* Pas de flèche pour les dates */
+}
+
+
+.exportationForm input[type="text"]:focus,
+.exportationForm input[type="date"]:focus,
+.exportationForm input[type="number"]:focus,
+.exportationForm select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 90, 235, 0.25);
+  outline: none;
+}
+
+.inputError {
+  border-color: var(--danger-color);
+}
+
+.errorText {
+  color: var(--danger-color);
+  font-size: 0.85em;
+  margin-top: 5px;
+  display: block;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.saveBtn, .cancelBtn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.05em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 500;
+}
+
+.saveBtn {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.saveBtn:hover {
+  background-color: var(--primary-dark-color);
+  transform: translateY(-1px);
+}
+
+.cancelBtn {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.cancelBtn:hover {
+  background-color: #5a6268;
+  transform: translateY(-1px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInFromTop {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsivité du modal */
+@media (max-width: 768px) {
+  .modalContent {
+    padding: 25px;
+    max-width: 90%;
+  }
+  .modalTitle {
+    font-size: 2em;
+  }
+  .exportationForm {
+    gap: 15px;
+  }
+  .formActions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .saveBtn, .cancelBtn {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalContent {
+    padding: 20px;
+  }
+  .modalTitle {
+    font-size: 1.8em;
+  }
+  .exportationForm label {
+    font-size: 0.9em;
+  }
+  .exportationForm input,
+  .exportationForm select {
+    padding: 10px;
+    font-size: 0.9em;
+  }
+}
