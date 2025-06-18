@@ -1,0 +1,251 @@
+/* src/components/ExportationsListModal.module.css (MIS À JOUR) */
+
+:root {
+    --primary-color: #4a5aeb;
+    --primary-dark-color: #3842b3;
+    --secondary-color: #6c757d;
+    --card-bg: #ffffff;
+    --page-bg: #f0f2f5;
+    --border-color: #e9ecef;
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --shadow-medium: rgba(0, 0, 0, 0.12);
+    --text-color-dark: #343a40;
+    --text-color-light: #6c757d;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    --export-header-bg: #e6f0ff;
+    --export-border: #cce0ff;
+    --vente-item-bg: #f8faff;
+    --vente-item-border: #e0eaff;
+}
+
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modalContent.largeModal {
+    background-color: white;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    width: 95%;
+    max-width: 800px;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideInFromTop 0.3s ease-out;
+}
+
+.modalCloseBtn {
+    position: sticky;
+    top: 0;
+    right: 0;
+    background: white;
+    border: none;
+    font-size: 1.6em;
+    color: var(--secondary-color);
+    cursor: pointer;
+    transition: color 0.2s ease;
+    z-index: 1060;
+    padding: 10px;
+    border-radius: 0 12px 0 0;
+}
+
+.modalCloseBtn:hover {
+    color: var(--danger-color);
+}
+
+.modalTitle {
+    font-size: 2.2em;
+    color: var(--primary-dark-color);
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.modalTitleIcon {
+    color: var(--primary-color);
+    font-size: 1.1em;
+}
+
+.loadingMessage, .errorMessage, .noDataMessage {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.1em;
+    color: var(--text-color-light);
+    background-color: #e9f2fb;
+    border: 1px solid #d0e0f0;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.errorMessage {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: var(--danger-color);
+}
+.errorMessage .fa-info-circle {
+    color: var(--danger-color);
+}
+
+.exportationsList {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.exportationCard {
+    background-color: var(--card-bg);
+    border: 1px solid var(--export-border);
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.exportationHeaderCard {
+    background-color: var(--export-header-bg);
+    padding: 20px;
+    border-bottom: 1px solid var(--export-border);
+}
+
+.exportationHeaderCard h3 {
+    font-size: 1.6em;
+    color: var(--primary-dark-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.exportationInfo p {
+    font-size: 0.95em;
+    color: var(--text-color-dark);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.faIcon {
+    color: var(--primary-color);
+    font-size: 1.1em;
+}
+
+
+.ventesLocalesList {
+    padding: 20px;
+}
+
+.ventesLocalesList h4 {
+    font-size: 1.3em;
+    color: var(--primary-dark-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 10px;
+}
+
+.venteLocaleItem {
+    background-color: var(--vente-item-bg);
+    border: 1px solid var(--vente-item-border);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    align-items: center;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.03);
+}
+
+.venteLocaleItem p {
+    margin: 0;
+    font-size: 0.9em;
+    color: var(--text-color-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.venteLocaleItem p .faIcon {
+    color: var(--secondary-color);
+    font-size: 1em;
+}
+
+.noVentesMessage {
+    padding: 20px;
+    text-align: center;
+    color: var(--text-color-light);
+    font-style: italic;
+    font-size: 0.95em;
+}
+
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInFromTop {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsivité du modal d'exportations */
+@media (max-width: 768px) {
+    .modalContent.largeModal {
+        padding: 25px;
+        max-width: 95%;
+    }
+    .modalTitle {
+        font-size: 1.8em;
+    }
+    .exportationHeaderCard {
+        padding: 15px;
+    }
+    .exportationHeaderCard h3 {
+        font-size: 1.4em;
+    }
+    .exportationInfo p, .ventesLocalesList h4, .venteLocaleItem p {
+        font-size: 0.85em;
+    }
+    .venteLocaleItem {
+        grid-template-columns: 1fr;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modalContent.largeModal {
+        padding: 20px;
+    }
+    .modalTitle {
+        font-size: 1.6em;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .modalTitleIcon {
+        font-size: 1em;
+    }
+}

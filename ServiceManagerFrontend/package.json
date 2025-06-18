@@ -10,6 +10,7 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.9.0",
+    "i18n-iso-countries": "^7.14.0",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.513.0",
     "react": "^19.1.0",

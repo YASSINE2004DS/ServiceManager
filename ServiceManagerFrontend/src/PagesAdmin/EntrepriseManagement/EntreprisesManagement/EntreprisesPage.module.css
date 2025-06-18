@@ -1,0 +1,326 @@
+/* src/pages/EntreprisesPage.module.css */
+
+/* Variables CSS pour un thème cohérent (peut être dans un fichier global comme App.css ou variables.css) */
+/* Pour cet exemple, je les inclue ici, mais il est recommandé de les centraliser */
+:root {
+    --primary-color: #4a5aeb; /* Bleu plus profond */
+    --primary-dark-color: #3842b3; /* Bleu encore plus foncé */
+    --secondary-color: #6c757d;
+    --accent-color: #28a745;
+    --danger-color: #dc3545;
+    --card-bg: #ffffff;
+    --page-bg: #f0f2f5; /* Un gris très clair */
+    --border-color: #e9ecef;
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --shadow-medium: rgba(0, 0, 0, 0.12);
+    --text-color-dark: #343a40;
+    --text-color-light: #6c757d;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    /* Couleurs spécifiques aux types d'entreprise */
+    --type-exportation-color: #007bff; /* Bleu */
+    --type-importation-color: #6f42c1; /* Violet */
+}
+
+/* Base body styles (considérez si cela devrait être global ou ici) */
+body {
+  font-family: var(--font-family);
+  background-color: var(--page-bg);
+  margin: 0;
+  padding: 0;
+  color: var(--text-color-dark);
+}
+
+.entreprisesPageContainer { /* Classe renommée */
+  max-width: 98%;
+  margin:  auto;
+  padding: 30px;
+  background-color: var(--card-bg);
+  border-radius: 15px;
+  box-shadow: 0 5px 25px var(--shadow-light);
+}
+
+.entreprisesHeader { /* Classe renommée */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.entreprisesTitle { /* Classe renommée */
+  font-size: 2.5em;
+  color: var(--primary-dark-color);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-weight: 700;
+}
+
+.headerIcon { /* Classe renommée */
+  font-size: 1.2em;
+  color: var(--primary-color);
+}
+
+.addEntrepriseBtn { /* Classe renommée */
+  background-color: var(--accent-color);
+  color: white;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.15em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.addEntrepriseBtn:hover { /* Classe renommée */
+  background-color: #218838;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.btnIcon { /* Classe renommée */
+  font-size: 1.05em;
+}
+
+.loadingMessage, .errorMessage, .noDataMessage { /* Classes renommées */
+  text-align: center;
+  padding: 25px;
+  font-size: 1.1em;
+  color: var(--text-color-light);
+  background-color: #e9f2fb;
+  border: 1px solid #d0e0f0;
+  border-radius: 10px;
+  margin-top: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.errorMessage { /* Classe renommée */
+    background-color: #fce8e8;
+    border-color: #f5c6cb;
+    color: var(--danger-color);
+}
+.errorMessage .fa-info-circle { /* Sélecteur enfant direct si nécessaire */
+    color: var(--danger-color);
+}
+
+
+.entreprisesListGrid { /* Classe renommée */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.entrepriseCard { /* Classe renommée */
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 18px var(--shadow-light);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  border-top: 6px solid var(--primary-color);
+}
+
+.entrepriseCard:hover { /* Classe renommée */
+  transform: translateY(-7px);
+  box-shadow: 0 10px 30px var(--shadow-medium);
+}
+
+.entrepriseName { /* Classe renommée */
+  font-size: 2.1em;
+  color: var(--primary-dark-color);
+  margin-top: 0;
+  margin-bottom: 20px;
+  word-break: break-word;
+  font-weight: 700;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+.entrepriseDetails p { /* Utilise un sélecteur descendant */
+  font-size: 1em;
+  color: var(--text-color-dark);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.entrepriseDetails p:last-child { /* Utilise un sélecteur descendant */
+    margin-bottom: 0;
+}
+
+.detailIcon { /* Classe renommée */
+  color: var(--primary-color);
+  font-size: 1.1em;
+  width: 25px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.entrepriseDetails strong { /* Utilise un sélecteur descendant */
+    font-weight: 600;
+    color: var(--primary-dark-color);
+}
+
+.entrepriseType { /* Classe renommée */
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 0.9em;
+    text-transform: capitalize;
+}
+
+.typeExportation { /* Classe renommée */
+    background-color: var(--type-exportation-color);
+    color: white;
+}
+
+.typeImportation { /* Classe renommée */
+    background-color: var(--type-importation-color);
+    color: white;
+}
+
+
+.entrepriseActions { /* Classe renommée */
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+  justify-content: flex-end;
+  border-top: 1px dashed var(--border-color);
+  padding-top: 20px;
+}
+
+.actionBtn { /* Classe renommée */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.editBtn { /* Classe renommée */
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.editBtn:hover { /* Classe renommée */
+  background-color: var(--primary-dark-color);
+  transform: translateY(-1px);
+}
+
+.deleteBtn { /* Classe renommée */
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.deleteBtn:hover { /* Classe renommée */
+  background-color: #c82333;
+  transform: translateY(-1px);
+}
+
+.viewExportationsBtn { /* Classe renommée */
+    background-color: var(--secondary-color); /* Gris pour le bouton d'exportations */
+    color: white;
+}
+
+.viewExportationsBtn:hover { /* Classe renommée */
+    background-color: #5a6268;
+    transform: translateY(-1px);
+}
+
+
+/* Responsivité */
+@media (max-width: 992px) {
+  .entreprisesPageContainer {
+    padding: 25px;
+    margin: 20px auto;
+  }
+  .entreprisesTitle {
+    font-size: 2.2em;
+  }
+  .addEntrepriseBtn {
+    padding: 12px 25px;
+    font-size: 1.05em;
+  }
+  .entreprisesListGrid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+  }
+  .entrepriseCard {
+    padding: 25px;
+  }
+  .entrepriseName {
+    font-size: 1.9em;
+  }
+}
+
+@media (max-width: 768px) {
+  .entreprisesHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .entreprisesTitle {
+    font-size: 2em;
+    margin-bottom: 10px;
+  }
+  .addEntrepriseBtn {
+    width: 100%;
+    justify-content: center;
+  }
+  .entreprisesListGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .entrepriseCard {
+    padding: 20px;
+  }
+  .entrepriseName {
+    font-size: 1.7em;
+  }
+  .entrepriseActions {
+    flex-direction: column;
+  }
+  .actionBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .entreprisesPageContainer {
+    padding: 15px;
+    margin: 15px auto;
+  }
+  .entreprisesTitle {
+    font-size: 1.8em;
+  }
+  .addEntrepriseBtn {
+    font-size: 0.95em;
+    padding: 10px;
+  }
+  .entrepriseName {
+    font-size: 1.5em;
+  }
+  .entrepriseDetails p {
+      font-size: 0.9em;
+  }
+}

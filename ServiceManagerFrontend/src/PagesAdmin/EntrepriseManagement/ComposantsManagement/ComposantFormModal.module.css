@@ -1,0 +1,215 @@
+/* src/components/ComposantFormModal.css */
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* Fond sombre semi-transparent */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Assure que le modal est au-dessus du reste */
+  animation: fadeIn 0.3s ease-out; /* Animation d'apparition */
+  /* height : 60% ;
+  overflow: auto; */
+}
+
+.modalContent {
+  background-color: white;
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 700px; /* Largeur maximale augmentée pour plus de champs */
+  position: relative;
+  animation: slideInFromTop 0.3s ease-out; /* Animation d'entrée */
+  display: flex;
+  flex-direction: column;
+  height : 70% ;
+  overflow: auto;
+}
+
+.modalCloseBtn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  color: var(--secondary-color);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.modalCloseBtn:hover {
+  color: var(--danger-color);
+}
+
+.modalTitle {
+  font-size: 2em;
+  color: var(--primary-dark-color);
+  margin-bottom: 25px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.composantForm {
+  display: grid; /* Utilisation de grid pour la mise en page des champs */
+  grid-template-columns: 1fr 1fr; /* Deux colonnes par défaut */
+  gap: 20px; /* Espacement entre les champs */
+}
+
+/* Rendre certains champs sur une seule colonne */
+.composantForm .formGroup:nth-child(1), /* Nom */
+.composantForm .formGroup:nth-child(2), /* Catégorie */
+.composantForm .formGroup:nth-child(5), /* Emplacement */
+.composantForm .formGroup:nth-child(8) /* Statut */
+{
+  grid-column: span 2; /* Prend les deux colonnes */
+}
+
+
+.composantForm .formGroup {
+  margin-bottom: 0; /* Géré par le gap de la grille */
+}
+
+.composantForm label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-color-dark);
+  font-size: 0.95em;
+}
+
+.composantForm input[type="text"],
+.composantForm input[type="number"],
+.composantForm select { /* Ajout de select */
+  width: calc(100% - 24px); /* Full width minus padding */
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1em;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  -webkit-appearance: none; /* Supprime le style par défaut de select sur WebKit */
+  -moz-appearance: none; /* Supprime le style par défaut de select sur Mozilla */
+  appearance: none; /* Supprime le style par défaut de select */
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2C197.971L146.203%2C57.174L5.405%2C197.971h281.594z%22%2F%3E%3C%2Fsvg%3E'); /* Icône de flèche pour select */
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+
+.composantForm input[type="text"]:focus,
+.composantForm input[type="number"]:focus,
+.composantForm select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.composantForm .input-error {
+  border-color: var(--danger-color);
+}
+
+.composantForm .error-text {
+  color: var(--danger-color);
+  font-size: 0.85em;
+  margin-top: 5px;
+  display: block;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end; /* Aligner les boutons à droite */
+  gap: 15px;
+  margin-top: 30px;
+  grid-column: span 2; /* Les boutons prennent toute la largeur en bas de la grille */
+}
+
+.saveBtn, .cancelBtn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.05em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.saveBtn {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.saveBtn:hover {
+  background-color: var(--primary-dark-color);
+  transform: translateY(-1px);
+}
+
+.cancelBtn {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.cancelBtn:hover {
+  background-color: #5a6268; /* Gris plus foncé */
+  transform: translateY(-1px);
+}
+
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInFromTop {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+
+/* Responsivité du modal */
+@media (max-width: 768px) {
+  .modalContent {
+    padding: 25px;
+    max-width: 90%; /* Pour laisser plus de marge sur les petits écrans */
+  }
+  .modalTitle {
+    font-size: 1.8em;
+  }
+  .composantForm {
+    grid-template-columns: 1fr; /* Une seule colonne sur mobile */
+    gap: 15px;
+  }
+  /* Tous les champs prennent la largeur complète en mode 1 colonne */
+  .composantForm .formGroup {
+    grid-column: span 1;
+  }
+  .formActions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .saveBtn, .cancelBtn {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalContent {
+    padding: 20px;
+  }
+  .modalTitle {
+    font-size: 1.6em;
+  }
+  .composantForm label {
+    font-size: 0.9em;
+  }
+  .composantForm input,
+  .composantForm select {
+    padding: 10px;
+    font-size: 0.9em;
+  }
+}

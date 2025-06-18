@@ -1,0 +1,402 @@
+/* src/pages/ComposantsPage.css */
+
+/* Variables CSS pour un thème cohérent (assurez-vous qu'elles sont aussi dans App.css) */
+:root {
+  --primary-color: #007bff; /* Bleu standard */
+  --primary-dark-color: #0056b3; /* Bleu plus foncé */
+  --secondary-color: #6c757d; /* Gris */
+  --accent-color: #28a745; /* Vert pour succès/ajout */
+  --danger-color: #dc3545; /* Rouge pour suppression */
+  --card-bg: #ffffff;
+  --page-bg: #f8f9fa; /* Fond de page léger */
+  --border-color: #e9ecef;
+  --shadow-light: rgba(0, 0, 0, 0.1);
+  --shadow-medium: rgba(0, 0, 0, 0.15);
+  --text-color-dark: #343a40;
+  --text-color-light: #6c757d;
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  /* Couleurs de statut spécifiques */
+  --status-active-color: #28a745; /* Vert */
+  --status-obsolete-color: #ffc107; /* Jaune */
+  --status-eol-color: #fd7e14; /* Orange */
+  --status-discontinued-color: #dc3545; /* Rouge */
+  --status-draft-color: #6c757d; /* Gris */
+
+  /* Nouvelle couleur pour stock faible */
+  --low-stock-color: #ffc107; /* Jaune d'avertissement */
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--page-bg);
+  margin: 0;
+  padding: 0;
+  color: var(--text-color-dark);
+}
+
+.composants-page-container-Ent {
+  width: 95%;
+  margin: auto;
+  padding: 20px;
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px var(--shadow-light);
+}
+
+.composants-header-Ent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.composants-title-Ent  {
+  font-size: 2.2em;
+  color: var(--primary-dark-color);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espace entre l'icône et le texte */
+}
+
+  .header-icon-Ent  {
+  font-size: 1.1em;
+  color: var(--primary-color);
+}
+
+.add-composant-btn-Ent  {
+  background-color: var(--accent-color);
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.add-composant-btn-Ent:hover {
+  background-color: #218838; /* Vert plus foncé */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+  .btn-icon-Ent  {
+  font-size: 1em;
+}
+
+.loading-message-Ent , .error-message-Ent , .no-data-message-Ent  {
+  text-align: center;
+  padding: 20px;
+  font-size: 1.1em;
+  color: var(--text-color-light);
+  background-color: #fff3cd; /* Jaune clair pour info/warning */
+  border: 1px solid #ffeeba;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.error-message-Ent  {
+    background-color: #f8d7da; /* Rouge clair pour erreur */
+    border-color: #f5c6cb;
+    color: var(--danger-color);
+}
+  .fa-info-circle-Ent  {
+    margin-right: 10px;
+    color: var(--danger-color);
+}
+
+/* Styles pour la section de filtre */
+.composants-filters-Ent {
+  margin-bottom: 25px;
+  padding: 15px 20px;
+  background-color: #e9f2fb; /* Fond légèrement bleuté */
+  border-radius: 10px;
+  border: 1px solid #d0e0f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 15px;
+}
+
+.filter-group-Ent  {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-group-Ent  label {
+  font-weight: 600;
+  color: var(--primary-dark-color);
+  font-size: 1em;
+}
+
+ .filter-icon-Ent  {
+    color: var(--primary-color);
+    font-size: 1.1em;
+}
+
+.category-select-Ent  {
+  padding: 10px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1em;
+  background-color: white;
+  cursor: pointer;
+  -webkit-appearance: none; /* Supprime le style par défaut de select sur WebKit */
+  -moz-appearance: none; /* Supprime le style par défaut de select sur Mozilla */
+  appearance: none; /* Supprime le style par défaut de select */
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2C197.971L146.203%2C57.174L5.405%2C197.971h281.594z%22%2F%3E%3C%2Fsvg%3E'); /* Icône de flèche pour select */
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.category-select-Ent:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+
+/* Grille des cartes de composants */
+.composants-list-grid-Ent {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Taille minimale ajustée */
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.composant-card-Ent  {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px var(--shadow-light);
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.3s ease;
+  border-left: 5px solid var(--primary-color); /* Bande de couleur sur le côté */
+}
+
+/* Style spécifique pour les cartes avec stock faible */
+ .low-stock-Ent  {
+  border-left: 5px solid var(--low-stock-color); /* Bande jaune pour stock faible */
+  background-color: #fff9e6; /* Fond légèrement jaune */
+}
+
+.composant-card-Ent:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px var(--shadow-medium);
+}
+
+.composant-name-Ent {
+  font-size: 1.8em;
+  color: var(--primary-dark-color);
+  margin-top: 0;
+  margin-bottom: 10px;
+  word-break: break-word; /* Casse les mots longs */
+}
+
+.composant-category-Ent {
+  font-size: 0.95em;
+  color: var(--text-color-light);
+  margin-bottom: 15px; /* Plus d'espace sous la catégorie */
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+.composant-category-Ent strong {
+    color: var(--text-color-dark);
+}
+
+/* Indicateur de stock faible */
+.low-stock-warning-Ent {
+  background-color: var(--low-stock-color);
+  color: var(--text-color-dark); /* Texte sombre sur fond jaune */
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 0.9em;
+  border: 1px solid #ffbe00;
+}
+
+.low-stock-warnin-Ent .warning-icon-Ent {
+  color: #c08f00; /* Jaune plus foncé pour l'icône */
+  font-size: 1.2em;
+}
+
+
+/* Nouvelles classes pour les détails du composant dans les cartes */
+.composant-details-row-Ent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px; /* Espacement entre les lignes de détails */
+  font-size: 0.9em;
+  color: var(--text-color-light);
+}
+
+.composant-details-row-Ent .detail-icon-Ent {
+  color: var(--primary-color); /* Couleur pour les icônes de détail */
+  font-size: 1.1em;
+  width: 20px; /* Largeur fixe pour l'alignement */
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* Styles pour le statut du composant */
+.composant-status-Ent {
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 0.85em;
+  display: inline-block; /* Pour que le padding et border-radius s'appliquent bien */
+}
+
+.status-active { background-color: var(--status-active-color); color: white; }
+.status-obsolete { background-color: var(--status-obsolete-color); color: var(--text-color-dark); }
+.status-eol { background-color: var(--status-eol-color); color: white; }
+.status-discontinued { background-color: var(--status-discontinued-color); color: white; }
+.status-draft { background-color: var(--status-draft-color); color: white; }
+
+
+.composant-source-Ent {
+  font-size: 0.95em;
+  color: var(--text-color-light);
+  margin-top: 15px; /* Espacement avant la source */
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-color); /* Bordure en pointillé */
+}
+
+.composant-actions-Ent {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: flex-end; /* Aligne les boutons à droite */
+}
+
+.action-btn-Ent {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.edit-btn-Ent {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.edit-btn-Ent:hover {
+  background-color: var(--primary-dark-color);
+  transform: translateY(-1px);
+}
+
+.delete-btn-Ent {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.delete-btn-Ent:hover {
+  background-color: #c82333; /* Rouge plus foncé */
+  transform: translateY(-1px);
+}
+
+/* Responsivité */
+@media (max-width: 992px) {
+  .composants-page-container-Ent {
+    padding: 15px;
+    margin: 20px auto;
+  }
+  .composants-title-Ent {
+    font-size: 2em;
+  }
+  .add-composant-btn-Ent {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+  .composants-filters-Ent {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 15px;
+  }
+  .category-select-Ent{
+    width: 100%; /* Prend toute la largeur sur petits écrans */
+  }
+  .composants-list-grid-Ent {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .composant-card-Ent {
+    padding: 20px;
+  }
+  .composant-name-Ent {
+    font-size: 1.6em;
+  }
+}
+
+@media (max-width: 768px) {
+  .composants-header-Ent {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .composants-title-Ent {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+  }
+  .add-composant-btn-Ent {
+    width: 100%;
+    justify-content: center;
+  }
+  .composants-list-grid-Ent {
+    grid-template-columns: 1fr; /* Une colonne sur mobile */
+    gap: 15px;
+  }
+  .composant-card-Ent {
+    padding: 18px;
+  }
+  .composant-name-Ent {
+    font-size: 1.5em;
+  }
+  .composant-actions-Ent {
+    flex-direction: column; /* Boutons Modifier/Supprimer empilés */
+  }
+  .action-btn-Ent {
+    width: 100%; /* Les boutons prennent toute la largeur */
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .composants-page-container-Ent {
+    padding: 10px;
+    margin: 10px auto;
+  }
+  .composants-title-Ent {
+    font-size: 1.6em;
+  }
+  .add-composant-btn-Ent {
+    font-size: 0.95em;
+    padding: 10px;
+  }
+  .composant-name-Ent {
+    font-size: 1.4em;
+  }
+}
