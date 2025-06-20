@@ -8,12 +8,6 @@ const composantSchema = Joi.object({
     'number.positive': 'La quantité doit être positive'
   }),
 
-  prix_unitaire: Joi.number().positive().required().messages({
-    'any.required': 'Le prix unitaire est requis',
-    'number.base': 'Le prix unitaire doit être un nombre',
-    'number.positive': 'Le prix unitaire doit être positif'
-  }),
-
   id_exportation: Joi.number().integer().required().optional().messages({
     'any.required': 'L\'ID du Exportation est requis',
     'number.base': 'L\'ID du Exportation doit être un nombre entier'

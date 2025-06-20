@@ -88,6 +88,10 @@ body {
   font-size: 1.05em;
 }
 
+.disabledColor  {
+  background-color: lightgray ;
+}
+
 .filterSection {
   margin-bottom: 30px;
   background-color: #f8faff;
@@ -247,6 +251,10 @@ body {
 .deleteBtn:hover {
   background-color: #c82333;
   transform: translateY(-1px);
+}
+
+.disabledColor  {
+  background-color: lightgray ;
 }
 
 .printBtn {

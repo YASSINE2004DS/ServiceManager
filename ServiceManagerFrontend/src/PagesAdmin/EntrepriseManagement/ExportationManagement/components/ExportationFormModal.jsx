@@ -1,139 +1,211 @@
-// src/components/ExportationFormModal.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './ExportationFormModal.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import axios     from 'axios';
+import {ErrorManagement}                     from '../../../../Shared/Components/MessageManagement'
+import PageChargement                        from '../../../../Pages/PageCommunComponnent/PageChargement'
+import {ConfirmeOperation}                      from '../../../../Shared/Components/SweetAlert'
+import { useNavigate, useParams , useSearchParams}                   from 'react-router-dom'; // Importez ceci
 
-const ExportationFormModal = ({ isOpen, onClose, onSave, initialData, entreprises }) => {
-  const [idEntreprise, setIdEntreprise] = useState('');
-  const [dateDemande, setDateDemande] = useState('');
-  const [dateExportation, setDateExportation] = useState('');
-  // Pour la simulation, nous laissons montant_total et nombre_composants gérés par le parent
-  // Si vous voulez les éditer ici, il faudrait les ajouter comme champs
-  // const [montantTotal, setMontantTotal] = useState('');
-  const [errors, setErrors] = useState({});
+// const composantsDisponibles = [
+//   { id: 1, name: 'Transformateur', categorie: 'Haute tension' },
+//   { id: 2, name: 'Disjoncteur', categorie: 'Basse tension' },
+//   { id: 3, name: 'Fusible', categorie: 'Protection' },
+//   { id: 4, name: 'Câble isolé', categorie: 'Connexion' },
+// ];
 
-  useEffect(() => {
-    if (initialData) {
-      setIdEntreprise(initialData.id_entreprise || '');
-      setDateDemande(initialData.date_demande ? new Date(initialData.date_demande).toISOString().split('T')[0] : '');
-      setDateExportation(initialData.date_exportation ? new Date(initialData.date_exportation).toISOString().split('T')[0] : '');
-      // setMontantTotal(initialData.montant_total || '');
-    } else {
-      setIdEntreprise('');
-      setDateDemande('');
-      setDateExportation('');
-      // setMontantTotal('');
+export default function ExportationForm({ onSubmit }) {
+  const {idEntreprise}          = useParams();
+  const [Params, setParams]     = useSearchParams();
+  const [formData, setFormData] = useState({
+  id_entreprise: idEntreprise,
+  date_exportation: new Date().toISOString().split('T')[0], // "2025-06-20"
+  date_demande: '',
+  composants: [{ id_composant: '', quantite: '' }]
+});
+  const [loading  , setLoading ]                           = useState(true);
+  const [composantsDisponibles , setComposantsDisponibles] = useState([]);
+  const [erreur, setErreur]                                = useState(null);
+  const [success, setSuccess]                              = useState(null);
+  const navigate                                           = useNavigate();
+
+  useEffect(()=> {
+  const fetchComponents =  async ()=> {
+    try {
+      const response = await axios.get('http://localhost:8001/api/composants');
+      setComposantsDisponibles(response.data);
+      setLoading(false);
+
+    } catch (error) {
+      console("erreur : erreur fetching compononts " + error);
     }
-    setErrors({});
-  }, [isOpen, initialData]);
+  }
+  fetchComponents();
+}, [])
 
-  if (!isOpen) return null;
-
-  const validate = () => {
-    const newErrors = {};
-    if (!idEntreprise) newErrors.idEntreprise = 'Veuillez sélectionner une entreprise.';
-    if (!dateDemande) newErrors.dateDemande = 'La date de demande est obligatoire.';
-    if (!dateExportation) newErrors.dateExportation = 'La date d\'exportation est obligatoire.';
-    if (dateDemande && dateExportation && new Date(dateExportation) < new Date(dateDemande)) {
-        newErrors.dateExportation = 'La date d\'exportation ne peut pas être antérieure à la date de demande.';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+// const categorieSet = [... new Set(composantsDisponibles.map((c)=>c.categorie))] ;
+// // console.log(categorieSet);
+  const handleComposantChange = (index, field, value) => {
+    const updated = [...formData.composants];
+    updated[index][field] = value;
+    setFormData({ ...formData, composants: updated });
   };
+
+  const addComposant = () => {
+    setFormData({
+      ...formData,
+      composants: [...formData.composants, { id_composant: '', quantite: '' }]
+    });
+  };
+
+  const removeComposant = (index) => {
+    const updated = formData.composants.filter((_, i) => i !== index);
+    setFormData({ ...formData, composants: updated });
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const getAvailableComposants = (currentIndex) => {
+    const selectedIds = formData.composants
+      .filter((_, i) => i !== currentIndex)
+      .map(c => parseInt(c.id_composant));
+    return composantsDisponibles.filter(c => !selectedIds.includes(c.id_composant));
+  };
+
+  const RequestToAddExport = async (etat=false) => {
+    const response = await axios.post(`http://localhost:8001/api/composantExporte/exportation?etat=${etat}` ,
+                                      formData
+                                     );
+       if(etat)
+       {
+        setSuccess("exportation bien enregistrer");
+        setTimeout(() => {
+          navigate(`/admin/Exportation?ExportationId=${idEntreprise}&Entreprise=${Params.get('entrepriseName')}`);
+        }, (2000));
+       }
+        return response ;                
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validate()) {
-      const dataToSave = {
-        id_entreprise: parseInt(idEntreprise),
-        date_demande: dateDemande, // Format YYYY-MM-DD
-        date_exportation: dateExportation, // Format YYYY-MM-DD
-        // Pour les données factices, vous pourriez simuler ces champs
-        montant_total: initialData?.montant_total || 0,
-        VentesLocales: initialData?.VentesLocales || []
-      };
-      onSave(dataToSave);
+    try {
+        RequestToAddExport()
+        .then(()=>{
+                         ConfirmeOperation(  `Es-tu sûr d'ajouter cette exportation ?`,
+                                             '',
+                                             ()=>RequestToAddExport(true)
+                      
+                                          );            
+        })
+        .catch(error =>{
+          setErreur(error?.response?.data?.message);
+        })
+
+
+    } catch (error) {
+       console.error("Erreur lors de l'enregistrement de l'exportation :", error);
     }
   };
 
+
+
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
-        <button className={styles.modalCloseBtn} onClick={onClose}>
-          <FontAwesomeIcon icon={faTimes} />
-        </button>
-        <h2 className={styles.modalTitle}>
-          {initialData ? 'Modifier l\'Exportation' : 'Ajouter une Nouvelle Exportation'}
-        </h2>
-        <form onSubmit={handleSubmit} className={styles.exportationForm}>
+    <form className={styles.formContainer} onSubmit={handleSubmit}>
+
+                  {/*  erreur management  */}
+                  {(erreur && ErrorManagement(null, erreur, "error", setErreur)) || 
+                   (success && ErrorManagement(null, success, "success", setSuccess))}
+      
+      <h2 className={styles.sectionTitle}>Nouvelle Exportation</h2>
+
+      <div className={styles.formGroup}>
+        <label>Date d'exportation</label>
+        <input
+          type="date"
+          name="date_exportation"
+          className={styles.inputField}
+          value={formData.date_exportation}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div className={styles.formGroup}>
+        <label>Date de demande</label>
+        <input
+          type="date"
+          name="date_demande"
+          className={styles.inputField}
+          value={formData.date_demande}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <h3 className={styles.sectionTitle}>Composants à exporter</h3>
+
+      {formData.composants.map((composant, index) => (
+        <div className={styles.composantCard} key={index}>
+          {index > 0 && (
+            <button type="button" className={styles.removeBtn} onClick={() => removeComposant(index)}>
+              Supprimer
+            </button>
+          )}
+
           <div className={styles.formGroup}>
-            <label htmlFor="idEntreprise">Entreprise:</label>
+            <label>Nom du composant</label>
             <select
-              id="idEntreprise"
-              value={idEntreprise}
-              onChange={(e) => setIdEntreprise(e.target.value)}
-              className={errors.idEntreprise ? styles.inputError : ''}
+              className={styles.selectField}
+              value={composant.id_composant}
+              onChange={(e) => handleComposantChange(index, 'id_composant', e.target.value)}
+              required
             >
-              <option value="">Sélectionnez une entreprise</option>
-              {entreprises.map(ent => (
-                <option key={ent.entreprise_id} value={ent.entreprise_id}>
-                  {ent.name}
-                </option>
+              <option value="">-- Choisir un composant --</option>
+              {getAvailableComposants(index).map((c) => (
+                <option key={c.id} value={c.id_composant}>{c.name}</option>
               ))}
             </select>
-            {errors.idEntreprise && <span className={styles.errorText}>{errors.idEntreprise}</span>}
           </div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="dateDemande">Date de Demande:</label>
-            <input
-              type="date"
-              id="dateDemande"
-              value={dateDemande}
-              onChange={(e) => setDateDemande(e.target.value)}
-              className={errors.dateDemande ? styles.inputError : ''}
-            />
-            {errors.dateDemande && <span className={styles.errorText}>{errors.dateDemande}</span>}
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="dateExportation">Date d'Exportation:</label>
-            <input
-              type="date"
-              id="dateExportation"
-              value={dateExportation}
-              onChange={(e) => setDateExportation(e.target.value)}
-              className={errors.dateExportation ? styles.inputError : ''}
-            />
-            {errors.dateExportation && <span className={styles.errorText}>{errors.dateExportation}</span>}
-          </div>
-
-          {/* Supprimez ou commentez ces champs si vous ne les gérez pas directement dans ce formulaire */}
           {/* <div className={styles.formGroup}>
-            <label htmlFor="montantTotal">Montant Total:</label>
-            <input
-              type="number"
-              id="montantTotal"
-              step="0.01"
-              value={montantTotal}
-              onChange={(e) => setMontantTotal(e.target.value)}
-            />
+            <label>Catégorie</label>
+            <select
+              className={styles.selectField}
+              value={composant.categorie}
+              onChange={(e) => handleComposantChange(index, 'categorie', e.target.value)}
+              required
+            >
+              <option value="">-- Choisir une catégorie --</option>
+              {
+                categorieSet.map((Cat , ind)=>(
+                  <option key={ind} value={Cat}>{Cat}</option>
+                ))
+              }
+            </select>
           </div> */}
 
-          <div className={styles.formActions}>
-            <button type="submit" className={styles.saveBtn}>
-              {initialData ? 'Mettre à Jour' : 'Ajouter'}
-            </button>
-            <button type="button" onClick={onClose} className={styles.cancelBtn}>
-              Annuler
-            </button>
+          <div className={styles.formGroup}>
+            <label>Quantité</label>
+            <input
+              type="number"
+              min="1"
+              className={styles.inputField}
+              value={composant.quantite}
+              onChange={(e) => handleComposantChange(index, 'quantite', e.target.value)}
+              required
+            />
           </div>
-        </form>
-      </div>
-    </div>
-  );
-};
+        </div>
+      ))}
 
-export default ExportationFormModal;
+      <button type="button" className={styles.addBtn} onClick={addComposant}>
+        + Ajouter un composant
+      </button>
+
+      <button type="submit" className={styles.submitBtn} >
+        Enregistrer l'exportation
+      </button>
+    </form>
+  );
+}

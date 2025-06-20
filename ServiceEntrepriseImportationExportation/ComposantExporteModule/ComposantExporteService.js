@@ -1,3 +1,4 @@
+import e from 'express';
 import   Models         from       '../DatabaseModule/ModelAssociations.js';
 import   validator      from       './ComposantExporteValidator.js';
 
@@ -76,7 +77,13 @@ class  ComposantExporteService {
         try {
 
             const data = req.body ;
+            const etat = req?.query?.etat || true ; 
+            console.log('---------------------------------------------------------------------\n')
+            console.log('etat : ', etat);
             
+            if(etat === 'true' || etat === true) {
+            
+                // return res.status(400).json({etat: etat});
              const  NewExportation = await Exportation.create({
                 id_entreprise: data.id_entreprise,
                 date_exportation: data.date_exportation || new Date(),
@@ -88,13 +95,16 @@ class  ComposantExporteService {
                     id_exportation  : NewExportation.id_exportation,
                     id_composant    : composant.id_composant,
                     quantite        : composant.quantite ,
-                    prix_unitaire   : composant.prix_unitaire
                 })) 
             );
             return res.status(201).json({
                 message: 'Composants exportés créés avec succès',
                 exportation: NewExportation
             });
+          }else {
+            return res.status(200).json('');
+          }
+
         } catch (error) {
             
             return res.status(500).json({ message: 'Erreur lors de la création des composants exportés', error });

@@ -12,6 +12,7 @@ import ComptesNonActive                                from '../ComptesNonActive
 import Composants                                      from '../EntrepriseManagement/ComposantsManagement/ComposantPage.jsx'
 import Entreprises                                     from '../EntrepriseManagement/EntreprisesManagement/EntreprisesPage.jsx'
 import Exportation                                     from '../EntrepriseManagement/ExportationManagement/ExportationsPage.jsx'
+import AddExportation                                  from '../EntrepriseManagement/ExportationManagement/components/ExportationFormModal.jsx'
 
 
 
@@ -76,6 +77,8 @@ export default function AdminDashboard() {
                  return <Entreprises />
             case 'Exportation':
                  return <Exportation />
+            case 'AddExportation':
+                 return <AddExportation />
             default:
                 return null;
         }

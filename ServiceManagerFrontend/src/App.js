@@ -29,7 +29,8 @@ import Graphic                                                from './PagesAdmin
               <Route path="/AddIntervention"                        element={ Authentifier ?   < Intervention            />      : <Navigate to="/login" /> }   /> 
               <Route path="/intervention/:id_Intervention"          element={ Authentifier ?   < Intervention_id         />      : <Navigate to="/login" /> }   />
               <Route path="/UpdateIntervention/:id_Intervention"    element={ Authentifier ?   < UpdateIntervention      />      : <Navigate to="/login" /> }   /> 
-              <Route path="/admin/:Page"                            element={ Authentifier ?   < Admin                   />      : <Navigate to="/login" /> }   />               
+              <Route path="/admin/:Page"                            element={ Authentifier ?   < Admin                   />      : <Navigate to="/login" /> }   /> 
+              <Route path="/admin/:Page/:idEntreprise"              element={ Authentifier ?   < Admin                   />      : <Navigate to="/login" /> }   />                     
               <Route path="/AuthorizationFailed"                    element={ Authentifier ?   < AuthorizationFailed     />      : <Navigate to="/login" /> }   /> 
               <Route path="/RequiredAuthentification"               element={ Authentifier ?   < RequireAuthentification />      : <Navigate to="/login" /> }   /> 
               <Route path="*"                                       element={                  < PageErreur              />                                 }   /> 

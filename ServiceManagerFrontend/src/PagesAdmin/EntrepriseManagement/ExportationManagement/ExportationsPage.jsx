@@ -1,26 +1,25 @@
 // src/pages/ExportationsPage.jsx
 import React, { useState, useEffect }       from 'react';
 import axios                                from 'axios'; // Pour de futures requêtes API
-import ExportationFormModal                 from './components/ExportationFormModal';
 import styles                               from './ExportationsPage.module.css'; // Utilisation des CSS Modules
 import { FontAwesomeIcon }                  from '@fortawesome/react-fontawesome';
 import {
   faFileExport, faPlus, faEdit, faTrash, faPrint,
-  faBuilding, faCalendarAlt, faDollarSign, faBoxOpen, faInfoCircle, faSort, faSortUp, faSortDown, faSearch
+   faSpinner, faInfoCircle, faSort, faSortUp, faSortDown, faSearch
 } from '@fortawesome/free-solid-svg-icons';
+import { ErrorManagement }                   from '../../../Shared/Components/MessageManagement';
 import {ConfirmeOperation}                   from '../../../Shared/Components/SweetAlert'
-import {ErrorManagement}                     from '../../../Shared/Components/MessageManagement'
 import PageChargement                        from '../../../Pages/PageCommunComponnent/PageChargement'
-import { useSearchParams }                   from 'react-router-dom'; // Importez ceci
+import { useNavigate, useSearchParams }      from 'react-router-dom'; // Importez ceci
 
 // Accepte entrepriseId comme prop
 const ExportationsPage = () => {
   const [exportations, setExportations]                 = useState([]);
-  const [currentEntreprise, setCurrentEntreprise]       = useState(null); // Pour stocker les détails de l'entreprise actuelle
-  const [entreprises, setEntreprises]                   = useState([]); // Gardé pour le dropdown dans le modal de formulaire
   const [isFormModalOpen, setIsFormModalOpen]           = useState(false);
   const [editingExportation, setEditingExportation]     = useState(null);
   const [loading, setLoading]                           = useState(true);
+  const [loadingGenerateFacture , setloadingGenerateF]  = useState(false);
+  const [loadingFacture, setLoadingfacture]             = useState([]);
   const [error, setError]                               = useState(null);
   const [searchDate, setSearchDate]                     = useState(''); // Nouveau state pour la recherche par date
   const [sortConfig, setSortConfig]                     = useState({ key: null, direction: 'ascending' });
@@ -28,8 +27,8 @@ const ExportationsPage = () => {
   const [detailsParExportation, setDetailsParExportation] = useState([]);
   const  entrepriseId                                   = (parseInt(searchParams.get('ExportationId')) || null) ;  
   const entrepriseName                                  = (searchParams.get('Entreprise') || null);
-  const [erreur, setErreur]                             = useState(null);
   const [success, setSuccess]                           = useState(null);
+  const navigate                                        = useNavigate();
 
 
   // Simulation de données (remplacez par de vrais appels API)
@@ -72,18 +71,21 @@ const FetcdetailExportation = async (id_expo) => {
   }
 };
 
-       useEffect(() => {
+  useEffect(() => {
         setLoading(true);
   const fetchAllDetails = async () => {
     const allDetails = {};
+    const LoadingfactureTab = [];
 
     for (const exportation of exportations) {
       const details = await FetcdetailExportation(exportation.id_exportation);
       if (details) {
+
         allDetails[exportation.id_exportation] = details;
+        LoadingfactureTab[exportation.id_exportation]=false ;
       }
     }
-
+    setLoadingfacture(LoadingfactureTab);
     setDetailsParExportation(allDetails);
    
   };
@@ -103,40 +105,6 @@ const FetcdetailExportation = async (id_expo) => {
     }
   }, [entrepriseId]); // Dépendance à entrepriseId
 
-  const handleSaveExportation = async (exportationData) => {
-    try {
-      // Assurez-vous que l'exportation est liée à l'entreprise actuelle
-      const dataWithEntreprise = { ...exportationData, id_entreprise: entrepriseId };
-
-      if (editingExportation) {
-        // Simulation de la mise à jour
-        setExportations(prev => prev.map(e =>
-          e.id_exportation === editingExportation.id_exportation
-            ? { ...e, ...dataWithEntreprise, Entreprise: currentEntreprise }
-            : e
-        ));
-        alert('Exportation mise à jour avec succès !');
-      } else {
-        // Simulation de l'ajout
-        const newId = Math.max(...exportations.map(e => e.id_exportation)) + 1 || 1;
-        setExportations(prev => [
-          ...prev,
-          {
-            ...dataWithEntreprise,
-            id_exportation: newId,
-            Entreprise: currentEntreprise, // Lier à l'entreprise actuelle
-            VentesLocales: []
-          }
-        ]);
-        alert('Exportation ajoutée avec succès !');
-      }
-      setIsFormModalOpen(false);
-      setEditingExportation(null);
-    } catch (err) {
-      console.error("Erreur lors de la sauvegarde de l'exportation:", err);
-      alert("Erreur lors de la sauvegarde de l'exportation. Vérifiez les données.");
-    }
-  };
 
   const handleDeleteExportation = async (exportation) => {
       try {
@@ -144,7 +112,7 @@ const FetcdetailExportation = async (id_expo) => {
                                 '',
                                 async ()=>{
                                      await axios.delete(`http://localhost:8001/api/exportation/${exportation.id_exportation}`);
-                                     setEntreprises(prev => prev.filter(e => e.id_exportation !== exportation.id_exportation));
+                                     setExportations(prev => prev.filter(e => e.id_exportation !== exportation.id_exportation));
                                       setSuccess('Exportation supprimée avec succès !');
                                 }
               
@@ -156,10 +124,6 @@ const FetcdetailExportation = async (id_expo) => {
     
   };
 
-  const openAddFormModal = () => {
-    setEditingExportation(null);
-    setIsFormModalOpen(true);
-  };
 
   const openEditFormModal = (exportation) => {
     setEditingExportation(exportation);
@@ -168,6 +132,9 @@ const FetcdetailExportation = async (id_expo) => {
 
   const handlePrintFacture = async  (id_exportation) => {
       try {
+
+        setloadingGenerateF(true);
+        setLoadingfacture(loadingFacture.map((_ , ind)=>(ind === id_exportation ? true : false)));
     const response = await axios.get(`http://localhost:8001/api/facture/${id_exportation}`, {
       responseType: 'blob', // important pour récupérer un fichier binaire (PDF)
     });
@@ -179,6 +146,9 @@ const FetcdetailExportation = async (id_expo) => {
 
   } catch (error) {
     console.error("Erreur lors de la prévisualisation du PDF :", error);
+  }finally {
+       setloadingGenerateF(false);
+       setLoadingfacture(loadingFacture.map((_ , ind)=>(ind === id_exportation ? false : false)));
   }
   
   };
@@ -248,13 +218,21 @@ const sortedExportations = [...exportations].sort((a, b) => {
 
   return (
     <div className={styles.exportationsPageContainer}>
+
+                   {/* error management */}
+         {(success && ErrorManagement(null, success, "success", setSuccess))}
+
       <div className={styles.exportationsHeader}>
         <h1 className={styles.exportationsTitle}>
           <FontAwesomeIcon icon={faFileExport} className={styles.headerIcon} />
           Exportations de {entrepriseName ? entrepriseName : 'Chargement...'}
         </h1>
       
-        <button className={styles.addExportationBtn} onClick={openAddFormModal}>
+        <button className={`${styles.addExportationBtn} ${loadingGenerateFacture ? styles.disabledColor : ''}`} 
+                onClick={()=>navigate(`/admin/AddExportation/${entrepriseId}?entrepriseName=${entrepriseName}`)}
+                disabled={loadingGenerateFacture}
+                
+        >
           <FontAwesomeIcon icon={faPlus} className={styles.btnIcon} /> Ajouter une Exportation
         </button>
       </div>
@@ -315,15 +293,34 @@ const sortedExportations = [...exportations].sort((a, b) => {
       <td>{details?.nbr_composant !== undefined  ? details.nbr_composant   : 0}</td>
       <td>{details?.total !== undefined ? details.total.toFixed(2)  : 'N/A'}</td>
 
-      <td className={styles.actionsCell}>
-        <button className={`${styles.actionBtn} ${styles.editBtn}`} onClick={() => openEditFormModal(exportation)} title="Modifier">
+      <td className={`${styles.actionsCell}`}>
+        <button className={`${styles.actionBtn} ${styles.editBtn}  ${loadingGenerateFacture ? styles.disabledColor : ''}`} 
+                onClick={() => openEditFormModal(exportation)} 
+                title="Modifier" 
+                disabled={loadingGenerateFacture}
+        >
           <FontAwesomeIcon icon={faEdit} />
         </button>
-        <button className={`${styles.actionBtn} ${styles.deleteBtn}`} onClick={() => handleDeleteExportation(exportation)} title="Supprimer">
+
+        <button className={`${styles.actionBtn} ${styles.deleteBtn} ${loadingGenerateFacture ? styles.disabledColor : ''}`} 
+                onClick={() => handleDeleteExportation(exportation)} 
+                title="Supprimer"
+                disabled={loadingGenerateFacture}
+        >
           <FontAwesomeIcon icon={faTrash} />
         </button>
-        <button className={`${styles.actionBtn} ${styles.printBtn}`} onClick={() => handlePrintFacture(exportation.id_exportation)} title="Imprimer Facture">
-          <FontAwesomeIcon icon={faPrint} />
+
+        <button className={`${styles.actionBtn} ${styles.printBtn}`} 
+                onClick={() => handlePrintFacture(exportation.id_exportation)} 
+                title="Imprimer Facture">
+             {loadingFacture[exportation.id_exportation] &&             
+                   <FontAwesomeIcon 
+                    icon={faSpinner}
+                    style={{padding:'0px 8px',}} 
+                    spin size="1x" />
+             }
+             {loadingFacture[exportation.id_exportation] ? 'generate' : <FontAwesomeIcon icon={faPrint} />}
+
         </button>
       </td>
     </tr>
@@ -334,16 +331,6 @@ const sortedExportations = [...exportations].sort((a, b) => {
         </div>
       )}
 
-      <ExportationFormModal
-        isOpen={isFormModalOpen}
-        onClose={() => setIsFormModalOpen(false)}
-        onSave={handleSaveExportation}
-        initialData={editingExportation}
-        entreprises={entreprises.filter(ent => ent.type_entreprise === 'exportation')} // Passer toutes les entreprises pour le dropdown
-        // Pré-remplir l'entreprise si ajout
-        preselectedEntrepriseId={entrepriseId}
-        isEditMode={!!editingExportation} // Passer si c'est un mode édition
-      />
     </div>
   );
 };

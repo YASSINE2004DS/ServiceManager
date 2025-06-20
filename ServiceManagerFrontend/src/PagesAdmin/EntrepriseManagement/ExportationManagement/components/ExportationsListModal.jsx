@@ -1,138 +1,136 @@
-// src/components/ExportationsListModal.jsx (MIS À JOUR)
-import React, { useState, useEffect } from 'react';
-// import axios from 'axios'; // Décommenter si de vrais appels API
-import styles from './ExportationsListModal.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faCalendarAlt, faDollarSign, faBox, faListAlt, faFileExport, faExternalLinkAlt, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from 'react';
+import styles from './ExportationForm.module.css';
 
-const ExportationsListModal = ({ isOpen, onClose, entreprise }) => {
-  const [exportations, setExportations] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const composantsDisponibles = [
+  { id: 1, name: 'Transformateur', categorie: 'Haute tension' },
+  { id: 2, name: 'Disjoncteur', categorie: 'Basse tension' },
+  { id: 3, name: 'Fusible', categorie: 'Protection' },
+];
 
-  useEffect(() => {
-    const fetchExportations = async () => {
-      if (!entreprise) {
-        setExportations([]);
-        setLoading(false);
-        return;
-      }
+export default function ExportationForm({ onSubmit }) {
+  const [formData, setFormData] = useState({
+    date_exportation: '',
+    date_demande: '',
+    composants: [
+      { id_composant: '', quantite: '', categorie: '' }
+    ]
+  });
 
-      try {
-        setLoading(true);
-        setError(null);
-        // Données factices pour les exportations et ventes_locales (composants exportés)
-        // Adaptées pour correspondre à votre modèle Exportation (date_demande, date_exportation, id_entreprise)
-        const dummyExportations = [
-            {
-                id_exportation: 101,
-                date_demande: "2024-05-01T00:00:00Z", // Ajouté date_demande
-                date_exportation: "2024-05-10T10:00:00Z",
-                montant_total: 550.75,
-                destination: "France",
-                id_entreprise: 1, // Lié à Safarilec
-                VentesLocales: [
-                    { id_vente_locale: 1, quantite: 100, prix_unitaire: 2.50, id_composant: 1, Composant: { name: 'Résistance 10kΩ', categorie: 'Résistance' } },
-                    { id_vente_locale: 2, quantite: 50, prix_unitaire: 6.00, id_composant: 2, Composant: { name: 'Condensateur 100nF', categorie: 'Condensateur' } }
-                ]
-            },
-            {
-                id_exportation: 102,
-                date_demande: "2024-05-20T00:00:00Z", // Ajouté date_demande
-                date_exportation: "2024-06-01T14:30:00Z",
-                montant_total: 1200.00,
-                destination: "Espagne",
-                id_entreprise: 1, // Lié à Safarilec
-                VentesLocales: [
-                    { id_vente_locale: 3, quantite: 200, prix_unitaire: 3.00, id_composant: 3, Composant: { name: 'Diode 1N4148', categorie: 'Diode' } },
-                    { id_vente_locale: 4, quantite: 10, prix_unitaire: 60.00, id_composant: 4, Composant: { name: 'Microcontrôleur ESP32', categorie: 'Microcontrôleur' } }
-                ]
-            },
-            {
-                id_exportation: 103,
-                date_demande: "2024-05-15T00:00:00Z", // Ajouté date_demande
-                date_exportation: "2024-05-20T09:00:00Z",
-                montant_total: 800.00,
-                destination: "Canada",
-                id_entreprise: 3, // Lié à Global Components Inc.
-                VentesLocales: [
-                    { id_vente_locale: 5, quantite: 500, prix_unitaire: 1.50, id_composant: 1, Composant: { name: 'Résistance 10kΩ', categorie: 'Résistance' } }
-                ]
-            }
-        ];
+  const handleComposantChange = (index, field, value) => {
+    const updated = [...formData.composants];
+    updated[index][field] = value;
+    setFormData({ ...formData, composants: updated });
+  };
 
-        const filteredExportations = dummyExportations.filter(exp => exp.id_entreprise === entreprise.entreprise_id);
-        setExportations(filteredExportations);
+  const addComposant = () => {
+    setFormData({
+      ...formData,
+      composants: [...formData.composants, { id_composant: '', quantite: '', categorie: '' }]
+    });
+  };
 
-      } catch (err) {
-        console.error("Erreur lors de la récupération des exportations:", err);
-        setError("Impossible de charger les exportations.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const removeComposant = (index) => {
+    const updated = formData.composants.filter((_, i) => i !== index);
+    setFormData({ ...formData, composants: updated });
+  };
 
-    if (isOpen) {
-      fetchExportations();
-    }
-  }, [isOpen, entreprise]);
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  if (!isOpen || !entreprise) return null;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   return (
-    <div className={styles.modalOverlay}>
-      <div className={`${styles.modalContent} ${styles.largeModal}`}>
-        <button className={styles.modalCloseBtn} onClick={onClose}>
-          <FontAwesomeIcon icon={faTimes} />
-        </button>
-        <h2 className={styles.modalTitle}>
-          <FontAwesomeIcon icon={faFileExport} className={styles.modalTitleIcon} /> Exportations de {entreprise.name}
-        </h2>
+    <form className={styles.formContainer} onSubmit={handleSubmit}>
+      <h2 className={styles.sectionTitle}>Nouvelle Exportation</h2>
 
-        {loading && <div className={styles.loadingMessage}>Chargement des exportations...</div>}
-        {error && <div className={styles.errorMessage}><FontAwesomeIcon icon={faInfoCircle} /> {error}</div>}
-
-        {!loading && !error && exportations.length === 0 && (
-          <div className={styles.noDataMessage}>
-            Aucune exportation trouvée pour cette entreprise.
-          </div>
-        )}
-
-        {!loading && !error && exportations.length > 0 && (
-          <div className={styles.exportationsList}>
-            {exportations.map(exp => (
-              <div key={exp.id_exportation} className={styles.exportationCard}>
-                <div className={styles.exportationHeaderCard}>
-                    <h3>Exportation #{exp.id_exportation}</h3>
-                    <div className={styles.exportationInfo}>
-                        <p><FontAwesomeIcon icon={faCalendarAlt} className={styles.faIcon} /> Date de Demande: {new Date(exp.date_demande).toLocaleDateString()}</p>
-                        <p><FontAwesomeIcon icon={faCalendarAlt} className={styles.faIcon} /> Date d'Exportation: {new Date(exp.date_exportation).toLocaleDateString()}</p>
-                        <p><FontAwesomeIcon icon={faDollarSign} className={styles.faIcon} /> Montant Total: {exp.montant_total ? `${exp.montant_total.toFixed(2)} DH` : 'N/A'}</p>
-                        {exp.destination && <p><FontAwesomeIcon icon={faExternalLinkAlt} className={styles.faIcon} /> Destination: {exp.destination}</p>}
-                    </div>
-                </div>
-
-                {exp.VentesLocales && exp.VentesLocales.length > 0 ? (
-                  <div className={styles.ventesLocalesList}>
-                    <h4><FontAwesomeIcon icon={faListAlt} /> Composants Exportés:</h4>
-                    {exp.VentesLocales.map(vl => (
-                      <div key={vl.id_vente_locale} className={styles.venteLocaleItem}>
-                        <p><FontAwesomeIcon icon={faBox} className={styles.faIcon} /> {vl.Composant?.name || 'Composant Inconnu'} ({vl.Composant?.categorie || 'N/A'})</p>
-                        <p>Quantité: {vl.quantite}</p>
-                        <p>Prix Unitaire: {vl.prix_unitaire ? `${vl.prix_unitaire.toFixed(2)} DH` : 'N/A'}</p>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className={styles.noVentesMessage}>Aucun composant détaillé pour cette exportation.</div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+      <div className={styles.formGroup}>
+        <label>Date d'exportation</label>
+        <input
+          type="date"
+          name="date_exportation"
+          className={styles.inputField}
+          value={formData.date_exportation}
+          onChange={handleChange}
+          required
+        />
       </div>
-    </div>
-  );
-};
 
-export default ExportationsListModal;
+      <div className={styles.formGroup}>
+        <label>Date de demande</label>
+        <input
+          type="date"
+          name="date_demande"
+          className={styles.inputField}
+          value={formData.date_demande}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <h3 className={styles.sectionTitle}>Composants à exporter</h3>
+
+      {formData.composants.map((composant, index) => (
+        <div className={styles.composantCard} key={index}>
+          {index > 0 && (
+            <button type="button" className={styles.removeBtn} onClick={() => removeComposant(index)}>
+              Supprimer
+            </button>
+          )}
+          <div className={styles.formGroup}>
+            <label>Nom du composant</label>
+            <select
+              className={styles.selectField}
+              value={composant.id_composant}
+              onChange={(e) => handleComposantChange(index, 'id_composant', e.target.value)}
+              required
+            >
+              <option value="">-- Choisir un composant --</option>
+              {composantsDisponibles.map((c) => (
+                <option key={c.id} value={c.id}>{c.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label>Catégorie</label>
+            <select
+              className={styles.selectField}
+              value={composant.categorie}
+              onChange={(e) => handleComposantChange(index, 'categorie', e.target.value)}
+              required
+            >
+              <option value="">-- Choisir une catégorie --</option>
+              <option value="Haute tension">Haute tension</option>
+              <option value="Basse tension">Basse tension</option>
+              <option value="Protection">Protection</option>
+            </select>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label>Quantité</label>
+            <input
+              type="number"
+              min="1"
+              className={styles.inputField}
+              value={composant.quantite}
+              onChange={(e) => handleComposantChange(index, 'quantite', e.target.value)}
+              required
+            />
+          </div>
+        </div>
+      ))}
+
+      <button type="button" className={styles.addBtn} onClick={addComposant}>
+        + Ajouter un composant
+      </button>
+
+      <button type="submit" className={styles.submitBtn}>
+        Enregistrer l'exportation
+      </button>
+    </form>
+  );
+}
