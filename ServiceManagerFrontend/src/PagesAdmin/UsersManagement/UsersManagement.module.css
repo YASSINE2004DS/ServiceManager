@@ -1,0 +1,240 @@
+/* UsersManagement.module.css - Alternative Style */
+
+.usersManagementContainer {
+    padding: 25px;
+    max-width: 98%;
+    margin: auto;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f2f5;
+}
+
+.sectionHeader h2 {
+    color: #2c3e50;
+    font-size: 2.1em;
+    margin: 0;
+    font-weight: 600;
+}
+
+.primaryButton {
+    background-color: #0d6efd; /* A slightly darker blue */
+    color: white;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 30px; /* Pill-shaped button */
+    cursor: pointer;
+    font-size: 1.05em;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 10px rgba(0, 102, 255, 0.2);
+}
+
+.primaryButton:hover {
+    background-color: #0b5ed7;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 102, 255, 0.3);
+}
+
+.primaryButton:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 102, 255, 0.2);
+}
+
+.addFormSection {
+    background-color: #f9fbfd;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 40px;
+    animation: fadeInScale 0.4s ease-out;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px 30px; /* Row gap, Column gap */
+}
+
+.formField {
+    display: flex;
+    flex-direction: column;
+}
+
+.formField label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.95em;
+}
+
+.formField input[type="text"],
+.formField input[type="email"],
+.formField input[type="password"],
+.formField select {
+    padding: 12px;
+    border: 1px solid #dcdfe6;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fefefe;
+    box-sizing: border-box;
+}
+
+.formField input:focus,
+.formField select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+    outline: none;
+}
+
+.formButtons {
+    grid-column: 1 / -1; /* Span full width */
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.submitButton {
+    background-color: #28a745; /* Success green */
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+}
+
+.submitButton:hover {
+    background-color: #218838;
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.cancelButton {
+    background-color: #6c757d; /* Muted grey */
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 8px rgba(108, 117, 125, 0.2);
+}
+
+.cancelButton:hover {
+    background-color: #5a6268;
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+.alertMessage {
+    grid-column: 1 / -1;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    text-align: center;
+    background-color: #ffe0b2; /* Light orange for warnings/errors */
+    color: #e65100; /* Dark orange text */
+    border: 1px solid #ffcc80;
+}
+
+.usersCardsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+    padding: 15px 0;
+    margin-top: 20px;
+}
+
+.noUsersMessage {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    font-size: 1.1em;
+    color: #6c757d;
+    background-color: #f0f2f5;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .usersManagementContainer {
+        padding: 15px;
+        margin: 15px auto;
+    }
+
+    .sectionHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .sectionHeader h2 {
+        font-size: 1.7em;
+    }
+
+    .primaryButton {
+        width: 100%;
+        justify-content: center;
+        padding: 10px 20px;
+    }
+
+    .addFormSection {
+        padding: 20px;
+    }
+
+    .formGrid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .formButtons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .submitButton,
+    .cancelButton {
+        width: 100%;
+        padding: 12px 20px;
+    }
+
+    .usersCardsGrid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}

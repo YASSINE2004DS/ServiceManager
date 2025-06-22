@@ -1,5 +1,5 @@
 
-import './MessageManagement.css'
+import styles                                         from  './MessageManagement.module.css';
 import { FontAwesomeIcon }                           from '@fortawesome/react-fontawesome';
 import { faSearch , faCheckCircle, faTimesCircle , faInfoCircle , faExclamationTriangle }   from '@fortawesome/free-solid-svg-icons';
 
@@ -29,15 +29,20 @@ export const ErrorManagement = (id, message, type, onClose)=> {
     setTimeout(()=>onClose('') , 3000);
 
     return (
-    <div className={`toast-notification toast-${type}`}>
-      {/* Si vous utilisez FontAwesomeIcon */}
-      <FontAwesomeIcon icon={icon_type} className="toast-icon" />
-      <i className={`${icon} toast-icon`}></i> {/* Alternative simple avec des classes FA */}
-      <span className="toast-message">{message}</span>
-      <button className="toast-close-btn" onClick={() => onClose(id)}>
-        <i className="fas fa-times"></i>
-      </button>
-    </div>
+
+<div className={`${styles['toast-notification']} ${styles[`toast-${type}`]}`}>
+  {/* Si vous utilisez FontAwesomeIcon */}
+  <FontAwesomeIcon icon={icon_type} className={styles['toast-icon']} />
+
+  {/* Alternative simple avec des classes FA */}
+  <i className={`${icon} ${styles['toast-icon']}`}></i>
+
+  <span className={styles['toast-message']}>{message}</span>
+
+  <button className={styles['toast-close-btn']} onClick={() => onClose(id)}>
+    <i className="fas fa-times"></i>
+  </button>
+</div>
   );
   
  }

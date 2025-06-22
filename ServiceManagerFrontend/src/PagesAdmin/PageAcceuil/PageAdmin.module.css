@@ -1,0 +1,296 @@
+/* src/components/AdminDashboard/PageAdmin.module.css */
+
+:root {
+    /* Couleurs de base */
+    --primary-color: #4A90E2; /* Bleu vif pour les éléments principaux */
+    --primary-dark-color: #357ABD; /* Bleu plus foncé pour le hover/active */
+    --secondary-color: #6c757d; /* Gris pour les textes secondaires */
+    --accent-color: #FFC107; /* Jaune pour les accents, si besoin */
+    
+    /* Couleurs de fond */
+    --bg-light: #F4F7FA; /* Arrière-plan général très clair */
+    --bg-dark: #2C3E50; /* Arrière-plan sombre pour la sidebar */
+    --bg-card: #FFFFFF; /* Fond des cartes et du contenu principal */
+
+    /* Couleurs de texte */
+    --text-dark: #34495E; /* Texte principal sombre */
+    --text-light: #ECF0F1; /* Texte clair pour les fonds sombres */
+    --text-muted: #7F8C8D; /* Texte estompé */
+
+    /* Ombres */
+    --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.08);
+    --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.12);
+    --shadow-sidebar: 5px 0 15px rgba(0, 0, 0, 0.1);
+
+    /* Espacements */
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+
+    /* Rayons de bordure */
+    --border-radius: 8px;
+
+    /* Transitions */
+    --transition-speed: 0.3s ease;
+
+    /* Dimensions des éléments fixes (AJOUTÉES) */
+    --header-height: 70px; /* Hauteur de votre PageHeader */
+    --sidebar-width: 250px; /* Largeur de votre sidebar */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* --- Conteneur Global --- */
+.globalContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* --- Styles pour le PageHeader (SI C'EST UN COMPOSANT EXTERNE ET QU'IL FAUT LE RENDRE FIXE) --- */
+/* Si PageHeader est déjà fixé par son propre CSS, cette section peut ne pas être nécessaire ici.
+   Mais c'est une bonne pratique de s'assurer qu'il est bien positionné. */
+/* Assurez-vous que votre PageHeader a une classe ou un ID que vous pouvez cibler.
+   Pour cet exemple, je suppose qu'il y a un style global ou qu'il a déjà des styles position: fixed.
+   Si ce n'est pas le cas, vous devrez peut-être ajouter un wrapper ou styliser directement le PageHeader. */
+/* Exemple si PageHeader est un div avec une classe `page-header-wrapper` */
+/* .page-header-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    background-color: var(--bg-card);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 200;
+} */
+
+
+/* --- Layout du Tableau de Bord --- */
+.dashboardLayout {
+    display: flex;
+    /* Ajuste le début du layout sous le header fixe */
+    margin-top: var(--header-height);
+    flex: 1; /* Permet au contenu de prendre l'espace restant */
+}
+
+/* --- Sidebar (Barre Latérale) --- */
+.sidebar {
+    position: fixed; /* Rend la sidebar fixe */
+    top: var(--header-height); /* Commence sous le header */
+    left: 0;
+    width: var(--sidebar-width);
+    height: calc(100vh - var(--header-height)); /* Prend la hauteur restante de la fenêtre */
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    padding: var(--spacing-lg) 0;
+    box-shadow: var(--shadow-sidebar);
+    transition: transform var(--transition-speed);
+    flex-shrink: 0;
+    z-index: 100;
+    overflow-y: auto; /* Permet le défilement si le contenu de la sidebar est trop long */
+}
+
+.sidebarHeader {
+    text-align: center;
+    padding: var(--spacing-md) var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebarHeader h2 {
+    font-size: 1.8em;
+    font-weight: 700;
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.sidebarNav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebarNav li {
+    margin-bottom: 5px;
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    padding: 12px var(--spacing-lg);
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 1.05em;
+    font-weight: 500;
+    transition: background-color var(--transition-speed), color var(--transition-speed), transform var(--transition-speed);
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    margin-right: var(--spacing-lg);
+}
+
+.navItem:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--accent-color);
+    transform: translateX(5px);
+}
+
+.navItem.active {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.navItem.active::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 80%;
+    background-color: var(--accent-color);
+    border-radius: var(--border-radius);
+}
+
+.navIcon {
+    margin-right: var(--spacing-md);
+    font-size: 1.2em;
+}
+
+/* --- Contenu Principal --- */
+.mainContent {
+    flex-grow: 1;
+    /* Décale le contenu principal pour qu'il ne soit pas sous la sidebar */
+    margin-left: var(--sidebar-width);
+    padding: var(--spacing-lg) var(--spacing-lg);
+    background-color: var(--bg-light);
+    overflow-y: auto; /* Permet le défilement du contenu */
+    position: relative;
+    /* Le padding-top n'est plus nécessaire ici si le dashboardLayout a un margin-top */
+    /* padding-top: var(--header-height); */ /* Ancien */
+}
+
+/* --- Bouton de Bascule du Menu (Mobile) --- */
+.menuToggle {
+    display: none; /* Caché par défaut sur desktop */
+    position: fixed;
+    top: calc(var(--header-height) + 20px); /* Ajusté pour être sous le header */
+    left: 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5em;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-medium);
+    z-index: 110;
+    transition: background-color var(--transition-speed), transform var(--transition-speed);
+}
+
+.menuToggle:hover {
+    background-color: var(--primary-dark-color);
+    transform: scale(1.05);
+}
+
+.menuToggle.active {
+    background-color: var(--danger-color);
+    transform: rotate(90deg);
+}
+
+
+/* --- Overlay pour mobile --- */
+.overlay {
+    display: none; /* Caché par défaut */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 90;
+}
+
+/* --- Message si aucune page sélectionnée --- */
+.notFoundMessage {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 1.5em;
+    color: var(--text-muted);
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .dashboardLayout {
+        flex-direction: column;
+        margin-top: var(--header-height); /* Conserve cette marge */
+    }
+
+    .sidebar {
+        position: fixed; /* Reste fixe sur mobile */
+        top: 0; /* Commencera du haut de la page */
+        left: 0;
+        height: 100vh; /* Prend toute la hauteur de la vue */
+        width: 250px; /* Largeur de la sidebar sur mobile */
+        transform: translateX(-100%); /* Masqué par défaut */
+        padding-top: var(--header-height); /* Pour que le contenu de la sidebar ne soit pas sous le header */
+        box-shadow: 2px 0 10px rgba(0,0,0,0.2); /* Ombre plus visible sur mobile */
+    }
+
+    .sidebar.open {
+        transform: translateX(0); /* Apparaît */
+    }
+
+    .menuToggle {
+        display: flex; /* Affiché sur mobile */
+        /* Ajuste la position du bouton si le header est à 0 */
+        top: calc(var(--header-height) + 20px); /* Ajuster selon la hauteur réelle de votre header */
+        left: 20px;
+    }
+
+    .overlay {
+        display: block; /* Affiché quand la sidebar est ouverte */
+    }
+
+    .mainContent {
+        margin-left: 0; /* Pas de marge à gauche sur mobile */
+        padding-top: 0; /* Pas besoin de padding-top si le layout est en colonne et le header est au top */
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 220px;
+    }
+    .sidebarHeader h2 {
+        font-size: 1.5em;
+    }
+    .navItem {
+        font-size: 1em;
+        padding: 10px var(--spacing-md);
+    }
+    .menuToggle {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3em;
+        top: calc(var(--header-height) + 15px); /* Ajuster si le header est plus petit */
+    }
+    .mainContent {
+        padding: var(--spacing-md);
+    }
+    /* Ajuster la hauteur du header si elle est responsive */
+    /* --header-height: 60px; */
+}

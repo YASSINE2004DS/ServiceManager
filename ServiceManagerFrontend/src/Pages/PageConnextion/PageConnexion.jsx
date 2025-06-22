@@ -49,8 +49,16 @@ const PageConnexion = () => {
             // Check if the response is successful
             if(response.ok){
                 // Set the token in the local storage
+                console.log(data);
                 localStorage.setItem('token', data.token);
-                 const {role} =  UserIdAndRole(data.token) ; 
+                localStorage.setItem('id', data.user.id);
+                 const {role} =  UserIdAndRole(data.token) ;
+
+                 // Check if the account is active
+                 if(!data.user.active) {
+                    window.location.href = '/inactiveAccount';
+                    return;
+                 }
 
                  if(role==='user')
                 // Redirect to the home page

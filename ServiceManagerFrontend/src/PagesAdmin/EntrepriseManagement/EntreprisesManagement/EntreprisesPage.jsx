@@ -2,13 +2,12 @@
 import React, { useState, useEffect }           from 'react';
 import axios                                    from 'axios';
 import EntrepriseFormModal                      from './EntrepriseFormModal';
-import ExportationsListModal                    from './ExportationsListModal';
 import styles                                   from './EntreprisesPage.module.css'; // Changement ici !
 import { FontAwesomeIcon }                      from '@fortawesome/react-fontawesome';
 import {ConfirmeOperation}                      from '../../../Shared/Components/SweetAlert'
 import {ErrorManagement}                        from '../../../Shared/Components/MessageManagement'
 import PageChargement                           from '../../../Pages/PageCommunComponnent/PageChargement'
-import { faBuilding, faPlus, faEdit, faTrash, faInfoCircle, faArrowRight, faMapMarkerAlt, faEnvelope, faGlobe, faIndustry } from '@fortawesome/free-solid-svg-icons';
+import { faBuilding, faPlus, faEdit, faTrash, faInfoCircle, faSearch, faMapMarkerAlt, faEnvelope, faGlobe, faIndustry } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate }                          from 'react-router-dom';
 
 const EntreprisesPage = () => {
@@ -16,6 +15,7 @@ const EntreprisesPage = () => {
   const [isFormModalOpen, setIsFormModalOpen]                   = useState(false);
   const [isExportationsModalOpen, setIsExportationsModalOpen]   = useState(false);
   const [editingEntreprise, setEditingEntreprise]               = useState(null);
+  const [ searchDate, setSearchDate]                            = useState('');
   const [selectedEntrepriseForExportations, setSelectedEntrepriseForExportations] = useState(null);
   const [loading, setLoading]                                   = useState(true);
   const [error, setError]                                       = useState(null);
@@ -153,6 +153,15 @@ const EntreprisesPage = () => {
     return type === 'exportation' ? styles.typeExportation : styles.typeImportation; // Utilise les classes modulaires
   };
 
+const RechercheEntreprise = () => {
+  const filtered = searchDate.trim() === ''
+    ? entreprises
+    : entreprises.filter(ent =>
+        ent.name.toLowerCase().includes(searchDate.toLowerCase())
+      );
+  return filtered ;
+}
+
   return (
     <div className={styles.entreprisesPageContainer}>
       <div className={styles.entreprisesHeader}>
@@ -173,6 +182,28 @@ const EntreprisesPage = () => {
         </div>
       )}
 
+         <div className={styles.filterSection}>
+              <label htmlFor="searchDate" className={styles.filterLabel}>
+                 <FontAwesomeIcon icon={faSearch} /> Rechercher par nom d'entreprise:
+              </label>
+              <input
+                  type="text"
+                  id="searchDate"
+                  placeholder="nom de l'entreprise"
+                  value={searchDate}
+                  onChange={(e) => setSearchDate(e.target.value)}
+                  className={styles.filterInputDate}
+               />
+           </div>
+
+           
+       {!loading && !error && RechercheEntreprise().length === 0 && (
+         <div className={styles.noDataMessage}>
+           Aucune entreprise ne correspond au nom 
+            <strong>{searchDate}</strong>.
+         </div>
+       )}     
+
       {!loading && !error && entreprises.length > 0 && (
         
         <div className={styles.entreprisesListGrid}>
@@ -181,12 +212,12 @@ const EntreprisesPage = () => {
             {(erreur && ErrorManagement(null, erreur, "error", setErreur)) || 
              (success && ErrorManagement(null, success, "success", setSuccess))}
 
-          {entreprises.map((entreprise) => (
+          {RechercheEntreprise().map((entreprise) => (
 
             <div key={entreprise.entreprise_id} className={styles.entrepriseCard}>
                   <a
                   style={{cursor:'pointer'}}
-                  onClick={() => navigate(`/admin/Exportation?ExportationId=${entreprise.entreprise_id}&Entreprise=${entreprise.name}`)}
+                  onClick={() => navigate(`/admin/exportation?ExportationId=${entreprise.entreprise_id}&Entreprise=${entreprise.name}`)}
                   title={`Voir les exportations de exportation`}
                  >
               <h3 className={styles.entrepriseName}>{entreprise.name}</h3>
@@ -234,11 +265,7 @@ const EntreprisesPage = () => {
         initialData={editingEntreprise}
       />
 
-      <ExportationsListModal
-        isOpen={isExportationsModalOpen}
-        onClose={closeExportationsModal}
-        entreprise={selectedEntrepriseForExportations}
-      />
+
     </div>
   );
 };

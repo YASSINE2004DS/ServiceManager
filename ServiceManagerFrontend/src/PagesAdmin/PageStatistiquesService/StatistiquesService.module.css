@@ -1,0 +1,247 @@
+/* Dashboard.module.css */
+
+.dashboardPage {
+    padding: 30px;
+    max-width: 98%;
+    margin:  auto;
+    background-color: #f8f9fa;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+.title {
+    font-size: 2.8em;
+    font-weight: 700;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 50px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.title::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background-color: #007bff;
+    border-radius: 2px;
+}
+
+.statsCardsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.statCard {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    padding: 25px 20px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border-left: 6px solid transparent;
+}
+
+.statCard:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* Specific border colors for each card */
+.statCard.users { border-left-color: #007bff; }
+.statCard.sections { border-left-color: #28a745; }
+.statCard.agencies { border-left-color: #ffc107; }
+.statCard.interventions { border-left-color: #dc3545; }
+
+/* NEW: Styles for new cards */
+.statCard.importCompanies { border-left-color: #6f42c1; } /* Purple */
+.statCard.exportCompanies { border-left-color: #20c997; } /* Teal */
+.statCard.components { border-left-color: #6c757d; }    /* Grey */
+.statCard.totalExports { border-left-color: #17a2b8; }   /* Cyan */
+
+
+.statIconWrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+/* Background colors for icon wrappers */
+.statIconWrapper.users { background-color: rgba(0, 123, 255, 0.1); }
+.statIconWrapper.sections { background-color: rgba(40, 167, 69, 0.1); }
+.statIconWrapper.agencies { background-color: rgba(255, 193, 7, 0.1); }
+.statIconWrapper.interventions { background-color: rgba(220, 53, 69, 0.1); }
+
+/* NEW: Background colors for new icon wrappers */
+.statIconWrapper.importCompanies { background-color: rgba(111, 66, 193, 0.1); }
+.statIconWrapper.exportCompanies { background-color: rgba(32, 201, 151, 0.1); }
+.statIconWrapper.components { background-color: rgba(108, 117, 125, 0.1); }
+.statIconWrapper.totalExports { background-color: rgba(23, 162, 184, 0.1); }
+
+
+.statIcon {
+    font-size: 1.8em;
+}
+
+/* Icon colors */
+.statIconWrapper.users .statIcon { color: #007bff; }
+.statIconWrapper.sections .statIcon { color: #28a745; }
+.statIconWrapper.agencies .statIcon { color: #ffc107; }
+.statIconWrapper.interventions .statIcon { color: #dc3545; }
+
+/* NEW: Icon colors for new cards */
+.statIconWrapper.importCompanies .statIcon { color: #6f42c1; }
+.statIconWrapper.exportCompanies .statIcon { color: #20c997; }
+.statIconWrapper.components .statIcon { color: #6c757d; }
+.statIconWrapper.totalExports .statIcon { color: #17a2b8; }
+
+
+.statInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.statValue {
+    font-size: 2.2em;
+    font-weight: 700;
+    color: #343a40;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.statLabel {
+    font-size: 1.0em;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.chartCard {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chartTitle {
+    font-size: 1.6em;
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* Message styling for loading/error/no data */
+.message {
+    text-align: center;
+    padding: 50px 20px;
+    font-size: 1.3em;
+    color: #6c757d;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.03);
+}
+
+.errorMessage {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(220, 53, 69, 0.1);
+}
+
+/* Responsive Adjustments (existing, ensure new cards adapt) */
+@media (max-width: 768px) {
+    .dashboardPage {
+        padding: 20px;
+        margin: 20px auto;
+    }
+
+    .title {
+        font-size: 2.2em;
+        margin-bottom: 40px;
+    }
+
+    .statsCardsGrid {
+        gap: 20px;
+    }
+
+    .statCard {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .statIconWrapper {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .statValue {
+        font-size: 1.8em;
+    }
+
+    .statLabel {
+        font-size: 0.9em;
+    }
+
+    .chartCard {
+        padding: 20px;
+        height: 350px;
+    }
+
+    .chartTitle {
+        font-size: 1.4em;
+        margin-bottom: 20px;
+    }
+
+    .message {
+        font-size: 1.1em;
+        padding: 30px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.8em;
+        margin-bottom: 30px;
+    }
+
+    .statValue {
+        font-size: 1.6em;
+    }
+
+    .statIconWrapper {
+        width: 50px;
+        height: 50px;
+    }
+
+    .statIcon {
+        font-size: 1.5em;
+    }
+
+    .chartCard {
+        height: 300px;
+    }
+}

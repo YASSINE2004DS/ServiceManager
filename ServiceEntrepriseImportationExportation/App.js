@@ -16,7 +16,8 @@ import EntrepriseRouter              from './EntrepriseModule/EntrepriseRouter.j
 import ComposantRouter               from './ComposentModule/ComposentRouter.js'              ;  // import Composant Route
 import ExportationRouter             from './ExportationModule/ExportationRouter.js'          ;  // import Exportation Route
 import ComposantExporteRouter        from './ComposantExporteModule/ComposantExporteRouter.js';  // import Composant Exporte Route
-import factureExportation            from './PreparePdfModule/PrepareFactureRouter.js'        ;
+import factureExportation            from './PreparePdfModule/PrepareFactureRouter.js'  
+import statistiqueRouter            from './Statisiques/statistiqueRouter.js';                // import Statistique Route
 
 app.use(express.static('public')); 
 app.use('/api/entreprise'             ,  EntrepriseRouter );
@@ -24,6 +25,7 @@ app.use('/api/composants'              ,  ComposantRouter  );
 app.use('/api/exportation'            ,  ExportationRouter);
 app.use('/api/composantExporte'       ,  ComposantExporteRouter);
 app.use('/api/facture'                , factureExportation);
+app.use('/api/statistiques'           , statistiqueRouter);
      
 
 

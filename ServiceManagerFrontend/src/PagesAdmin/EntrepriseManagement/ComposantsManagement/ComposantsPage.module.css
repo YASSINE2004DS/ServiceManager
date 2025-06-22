@@ -157,6 +157,7 @@ body {
   background-position: right 10px center;
   background-size: 12px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  height: fit-content ;
 }
 
 .category-select-Ent:focus {
@@ -338,6 +339,7 @@ body {
   }
   .category-select-Ent{
     width: 100%; /* Prend toute la largeur sur petits écrans */
+
   }
   .composants-list-grid-Ent {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));

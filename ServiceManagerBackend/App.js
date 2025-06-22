@@ -42,10 +42,16 @@ sequelize.sync({})
 
 sequelize.sync();
 
+// Global error handling
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Une erreur interne est survenue.');
+});
 
 // lance the server
 dotenv.config();
-app.listen(process.env.PORT, () => {
-    console.log('Server running on port : ', process.env.PORT);
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+    console.log(`Server running on port: ${PORT}`);
 });
 

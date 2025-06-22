@@ -1,13 +1,24 @@
 import React, { useState } from 'react';
-import './UsersManagement.css'
+import styles from './UserCard.module.css'; // Import the new CSS module
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faBuilding, faPen, faTrash, faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-const UserCard = ({ id, first_name, last_name, email, role, agency, users, setUsers }) => {
+const UserCard = ({ id, first_name, last_name, email, role, agency, users, setUsers, fetchUsers }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedUser, setEditedUser] = useState({
         first_name,
         last_name,
         role,
     });
+    const [feedbackMessage, setFeedbackMessage] = useState({ type: '', message: '' });
+    const token = localStorage.getItem('token');
+
+    // Reset editedUser to current props when starting edit mode
+    const startEditing = () => {
+        setEditedUser({ first_name, last_name, role }); // Only editable fields
+        setFeedbackMessage({ type: '', message: '' }); // Clear any previous feedback
+        setIsEditing(true);
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,73 +29,108 @@ const UserCard = ({ id, first_name, last_name, email, role, agency, users, setUs
     };
 
     const handleSave = async () => {
+        setFeedbackMessage({ type: '', message: '' }); // Clear previous messages
+        if (!editedUser.first_name || !editedUser.last_name || !editedUser.role) {
+            setFeedbackMessage({ type: 'error', message: 'Veuillez remplir tous les champs.' });
+            return;
+        }
+
         try {
-            const { agency, email, ...userToSend } = editedUser;
+            // Only send fields that are editable and might change
+            const userUpdatePayload = {
+                first_name: editedUser.first_name,
+                last_name: editedUser.last_name,
+                role: editedUser.role,
+                // Do NOT send email or agency_id here unless they are meant to be editable via this card
+                // If agency_id needs to be editable, you'd add an input for it and fetch agency list for a select
+            };
+
             const response = await fetch(`http://localhost:8000/api/user/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}` // si tu utilises un token
+                    Authorization: `Bearer ${token}`
                 },
-                body: JSON.stringify(userToSend),
+                body: JSON.stringify(userUpdatePayload),
             });
-    
+
             const data = await response.json();
-    
+
             if (!response.ok) {
-                alert(data.Error || 'Failed to update user');
+                const errorMessage = data.Error || data.message || 'Échec de la mise à jour de l\'utilisateur.';
+                setFeedbackMessage({ type: 'error', message: errorMessage });
                 return;
             }
-    
-            // Mettre à jour l'utilisateur dans le tableau
-            const updatedUsers = users.map((user) =>
-                user.id === id ? { ...user, ...editedUser } : user
-            );
-            setUsers(updatedUsers);
+
+            // If update is successful, refresh the users list in parent component
+            // This ensures agency name updates if agency_id was changed in the backend via another mechanism
+            if (fetchUsers) {
+                await fetchUsers();
+            } else {
+                // Fallback: update local state if fetchUsers is not passed
+                const updatedUsers = users.map((user) =>
+                    user.id === id ? { ...user, ...editedUser } : user
+                );
+                setUsers(updatedUsers);
+            }
+            setFeedbackMessage({ type: 'success', message: 'Utilisateur mis à jour avec succès !' });
             setIsEditing(false);
         } catch (error) {
-            console.error('Error while updating user:', error);
-            alert('Unexpected error while updating user.');
+            console.error('Erreur lors de la mise à jour de l\'utilisateur :', error);
+            setFeedbackMessage({ type: 'error', message: 'Erreur inattendue lors de la mise à jour.' });
         }
     };
 
     const handleCancel = () => {
-        setEditedUser({ first_name, last_name, email, role, agency });
         setIsEditing(false);
+        setEditedUser({ first_name, last_name, role }); // Reset to original values
+        setFeedbackMessage({ type: '', message: '' }); // Clear feedback
     };
 
     const handleDelete = async () => {
-        if (!window.confirm('Are you sure you want to delete this user?')) return;
-    
+        if (!window.confirm(`Êtes-vous sûr de vouloir supprimer l'utilisateur ${first_name} ${last_name} ?`)) return;
+        setFeedbackMessage({ type: '', message: '' }); // Clear previous messages
+
         try {
             const response = await fetch(`http://localhost:8000/api/user/${id}`, {
                 method: 'DELETE',
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    Authorization: `Bearer ${token}`,
                 },
             });
-    
+
             const data = await response.json();
-    
+
             if (!response.ok) {
-                alert(data.Error || 'Failed to delete user');
+                const errorMessage = data.Error || data.message || 'Échec de la suppression de l\'utilisateur.';
+                setFeedbackMessage({ type: 'error', message: errorMessage });
                 return;
             }
-    
-            // Supprimer localement
-            const updatedUsers = users.filter((user) => user.id !== id);
-            setUsers(updatedUsers);
+
+            // Remove user locally or trigger a full refresh
+            if (fetchUsers) {
+                await fetchUsers(); // Refresh the entire list
+            } else {
+                const updatedUsers = users.filter((user) => user.id !== id);
+                setUsers(updatedUsers);
+            }
+            setFeedbackMessage({ type: 'success', message: 'Utilisateur supprimé avec succès !' });
         } catch (error) {
-            console.error('Error while deleting user:', error);
-            alert('Unexpected error while deleting user.');
+            console.error('Erreur lors de la suppression de l\'utilisateur :', error);
+            setFeedbackMessage({ type: 'error', message: 'Erreur inattendue lors de la suppression.' });
         }
     };
-    
 
     return (
-        <div className="user">
-            <div className="user-info">
-                <span className="user-id">#{id}</span>
+        <div className={styles.userCard}>
+            {feedbackMessage.message && (
+                <div className={`${styles.feedbackMessage} ${feedbackMessage.type === 'error' ? styles.errorMessage : styles.successMessage}`}>
+                    {feedbackMessage.message}
+                </div>
+            )}
+
+            <div className={styles.userInfo}>
+                <span className={styles.userId}>#{id}</span>
                 {isEditing ? (
                     <>
                         <input
@@ -92,63 +138,71 @@ const UserCard = ({ id, first_name, last_name, email, role, agency, users, setUs
                             name="first_name"
                             value={editedUser.first_name}
                             onChange={handleChange}
-                            placeholder="First name"
+                            placeholder="Prénom"
                         />
                         <input
                             type="text"
                             name="last_name"
                             value={editedUser.last_name}
                             onChange={handleChange}
-                            placeholder="Last name"
+                            placeholder="Nom"
                         />
                     </>
                 ) : (
                     <>
-                        <span className="user-name">
+                        <span className={styles.userName}>
                             {`${first_name} ${last_name}`}
                         </span>
-                        <span className="user-email">{email}</span>
+                        <span className={styles.userEmail}>{email}</span>
                     </>
                 )}
             </div>
 
-            <div className="user-details">
+            <div className={styles.userDetails}>
                 {isEditing ? (
-                    <>
-                        <input
-                            type="text"
+                    <div className={styles.formField}> {/* Re-using formField for consistency */}
+                        <label htmlFor={`role-${id}`}>Rôle :</label>
+                        <select
+                            id={`role-${id}`} // Unique ID for accessibility
                             name="role"
                             value={editedUser.role}
                             onChange={handleChange}
-                            placeholder="Role"
-                        />
-
-                    </>
+                        >
+                            <option value="user">Utilisateur</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
                 ) : (
                     <>
-                        <span className="user-role">Role: {role}</span>
-                        <span className="user-agency">Agency: {agency}</span>
+                        <span className={styles.userRole}>
+                            <FontAwesomeIcon icon={faUser} className={styles.icon} />
+                            Rôle: <span>{role}</span>
+                        </span>
+                        <span className={styles.userAgency}>
+                            <FontAwesomeIcon icon={faBuilding} className={styles.icon} />
+                            Agence: <span>{agency}</span>
+                        </span>
                     </>
                 )}
             </div>
 
-            <div className="user-actions">
+            <div className={styles.userActions}>
                 {isEditing ? (
                     <>
-                        <button className="save-button" onClick={handleSave}>
-                            Save
+                        <button className={`${styles.actionButton} ${styles.saveButton}`} onClick={handleSave}>
+                            <FontAwesomeIcon icon={faSave} /> Enregistrer
                         </button>
-                        <button className="cancel-button" onClick={handleCancel}>
-                            Cancel
+                        <button className={`${styles.actionButton} ${styles.cancelButton}`} onClick={handleCancel}>
+                            <FontAwesomeIcon icon={faTimes} /> Annuler
                         </button>
                     </>
                 ) : (
                     <>
-                        <button className="edit-button" onClick={() => setIsEditing(true)}>
-                            Edit
+                        <button className={`${styles.actionButton} ${styles.editButton}`} onClick={startEditing}>
+                            <FontAwesomeIcon icon={faPen} /> Modifier
                         </button>
-                        <button className="delete-button" onClick={handleDelete}>
-                            Delete
+                        <button className={`${styles.actionButton} ${styles.deleteButton}`} onClick={handleDelete}>
+                            <FontAwesomeIcon icon={faTrash} /> Supprimer
                         </button>
                     </>
                 )}

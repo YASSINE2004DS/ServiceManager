@@ -14,13 +14,13 @@
    }
 
   .Interventions-container-consulter {
-    height                  : 700px ;
+    height                  : auto ;
      width                  : 80%   ;
    border-radius            : 5px   ;
    box-shadow               : 2px 2px 5px 3px gray;
    padding                  : 2px   ; 
    margin                   : auto;
-   margin-top               : 170px ;
+   margin-top               : calc(80px  + 2%);
 
   }
 

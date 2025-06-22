@@ -1,449 +1,400 @@
-import React, { useEffect, useState }                from 'react';
-import { FontAwesomeIcon }                           from '@fortawesome/react-fontawesome';
-import { faSearch }                                  from '@fortawesome/free-solid-svg-icons';
-import '../../Pages/PageShowInterventions/PageInterventions.css'
-import './ShowIntervention.css'
-import axios                                          from 'axios' ;
-import {ConfirmeOperation}                              from '../../Shared/Components/SweetAlert'
-import { faTrash }                                    from '@fortawesome/free-solid-svg-icons';
-import { useNavigate }                                from 'react-router-dom';
-import PageChargement                                 from '../../Pages/PageCommunComponnent/PageChargement'
-import {VerifierExpiredToken , UserIdAndRole , token} from '../../Pages/Authentification/Authentification' // import deux fonctions un pour la verifications
-                                                                                                  //de token et l'autre pour decode le token ainsi le 
-                                                                                                  //token 
-                                                                                                  
+// src/components/ShowIntervention/ShowIntervention.jsx
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faSearch, faTrash, faInfoCircle, faEdit, faEye, faSort, faSortUp, faSortDown, 
+  faCalendarDay, faListOl, faSyncAlt, faClipboardList // Nouvelle icône pour le titre
+} from '@fortawesome/free-solid-svg-icons'; 
+import styles from './ShowIntervention.module.css';
+import axios from 'axios';
+import { ConfirmeOperation } from '../../Shared/Components/SweetAlert';
+import { useNavigate } from 'react-router-dom';
+import PageChargement from '../../Pages/PageCommunComponnent/PageChargement';
+import { VerifierExpiredToken, UserIdAndRole, token } from '../../Pages/Authentification/Authentification';
+
+// --- Fonctions utilitaires ---
+const convertirDate = (dateString) => {
+  if (!dateString) return 'N/A';
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+  try {
+    return new Date(dateString).toLocaleDateString('fr-FR', options);
+  } catch (e) {
+    console.error("Erreur de conversion de date:", dateString, e);
+    return 'Date invalide';
+  }
+};
+
+const PAGE_SIZE = 10; 
+
 const PageInterventions = () => {
+  const navigate = useNavigate();
 
-    const navigate            = useNavigate() ;
+  const [interventions, setInterventions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [search, setSearch] = useState('');
+  const [interventionTodayFilter, setInterventionTodayFilter] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
-    // hooks pour verifié l'authentification et l'expiration du token
-    useEffect(( )=> {
-      if(!token || VerifierExpiredToken(token))
-        {
-            navigate('/RequiredAuthentification');
-            return ;
-        }
-      const { role} = UserIdAndRole(token);
-
-        if(role !== 'admin')
-           navigate('/AuthorizationFailed');
-     } , []);
-
-  const [Success , SetSuccess]                                = useState('');
-  const [loading , SetLoading]                                = useState({    // variable qui indique le chargement des données
-                                                                  data : true ,
-                                                                  time : true 
-                                                                });
- const [InterventionToday, SetInterventionToday]              = useState(false);   
- const [search , SetSearch]                                   = useState('');                                                        
-  const [Interventions , SetInterventions]                    = useState([]);
-  const [InterventionsNotValidate , SetInterventionsNotValidate] = useState([]);
-  const {user_Id}                                             = UserIdAndRole(token) ; //fonction permet de decodé le token et de recuperer le id et le role d'utilisateur
-
-
-  // handler permettre d'envoyer l'intervention => changement sur le champ validate
-  const EnvoyerIntervention = async (id_intervention) => {
-    try {
-
-          //recuperer l'intervention pour verifier est ce que n'est pas déje envoyée
-          const response = await axios.get(
-              `http://localhost:8000/api/intervention/${user_Id}/${id_intervention}`,
-            {
-              headers: {
-                authorization: `Bearer ${token}`
-              }
-            },     
-         );
-        const intervention = response.data ;
-
-         // si l'intervention n'est pas envoyée
-        if(!intervention.validate)
-      {
-          await axios.patch(
-            `http://localhost:8000/api/intervention/${user_Id}/${id_intervention}?etat=true`,
-            {
-                 validate:true 
-            } ,
-            {
-                headers: {
-                    authorization: `Bearer ${token}`
-                }
-            },   
-          ) ;
-
-        console.log("success send Intrevention");
-
+  // --- Authentification et Autorisation ---
+  useEffect(() => {
+    if (!token || VerifierExpiredToken(token)) {
+      navigate('/RequiredAuthentification');
+      return;
     }
-    } catch (error)
-    {
-      // les cas des errurs envoyé au niveau de backend
-      if(error.response && error.response.data && error.response.data.message)
-      {
-        console.log(error.response.data.message);
-      }else {
+    const { role } = UserIdAndRole(token);
+    if (role !== 'admin') {
+      navigate('/AuthorizationFailed');
+    }
+  }, [navigate]);
 
-        console.log("erreur send intervention" , error);
+  // --- Gestion des messages de succès ---
+  const showMessage = useCallback((message, type = 'success') => {
+    setSuccessMessage({ message, type });
+    setTimeout(() => setSuccessMessage(null), 3000);
+  }, []);
+
+  // --- Récupération des interventions ---
+  const fetchInterventions = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const url = `http://localhost:8000/api/intervention?Intervention_today=${interventionTodayFilter ? 'true' : 'false'}`;
+      const response = await axios.get(url, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setInterventions(response.data);
+      setCurrentPage(1);
+    } catch (err) {
+      console.error("Erreur lors du chargement des interventions:", err);
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("Impossible de charger les interventions. Veuillez réessayer.");
       }
-      
+    } finally {
+      setLoading(false);
     }
-  }
+  }, [interventionTodayFilter, refreshTrigger]);
 
-    //  pour l'envoie automatique si le temps dépasse 24h
-    useEffect(() => {
-    //   const updateTime =async  () => {
+  useEffect(() => {
+    fetchInterventions();
+  }, [fetchInterventions]);
 
-    // try {
-    //   // Requête GET pour récupérer les interventions d'un utilisateur
-    //   const responseInterventions = await axios.get(
-    //     `http://localhost:8000/api/intervention?Intervention_today=${false}&validate=0`,
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`
-    //       }
-    //     }
-    //   )
-    //   .then(response=>{
-    //       SetInterventionsNotValidate(response.data);
-    //      })
-    //   .catch(erreur=>{
-    //       console.log(erreur);
-    //    });
-
-    //  }catch(erreur){
-
-    //   console.log(erreur);
-    //   return ;
-    //  }
-    //     const now = new Date(); // la date courrant
-
-    //       /*parcourir toutes les temps des interventions et l'initialise le temps reste de chaque intervention dans une case correspond a l'index d'intervention dans
-    //       le tableau Time */
-    //       const updatedTimes = InterventionsNotValidate.map(async (interv) =>  {
-  
-    //      //calculé  le temps d'autorization de modification , le 1000 pour la convertion en ms
-    //       const target = new Date(interv.createdAt).getTime() + 24 * 60 * 60 * 1000;
-  
-    //       //calculer le temps entre  time courrant  et time d'autorization
-    //       const diff = target - now.getTime();
-    
-    //        // le temps terminé
-    //       if (diff <= 0) {
-
-    //         await EnvoyerIntervention(interv.intervention_id);
-            
-            
-    //         //return une indication
-    //         return 'Termine';
-    //       }
-
-    //     });
-       
-    //   };
-     
-    //   updateTime(); //  Appel immédiat au montage sans attendre 1min
-  
-    }, []);
-
-  // fonction pour recuperer tout les intreventions de l'uitilisateur courant
-  const RecupererInterventions =async ()=>{
-        
+  // --- Logique d'envoi d'intervention (changement de statut 'validate') ---
+  const EnvoyerIntervention = useCallback(async (id_intervention) => {
     try {
-      // Requête GET pour récupérer les interventions d'un utilisateur
-      const responseInterventions = await axios.get(
-        `http://localhost:8000/api/intervention?Intervention_today=${InterventionToday}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
+      await axios.patch(
+        `http://localhost:8000/api/intervention/${UserIdAndRole(token).user_Id}/${id_intervention}?etat=true`,
+        { validate: true },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-
-        // indique que les données et chargé
-        SetLoading(prev => ({...prev , data:false})) ;
-      return responseInterventions ;
-
-     }catch(erreur){
-
-      console.log(erreur);
-     }
-  }
-
-  const deleteAll = async () => {
-    try {
-         
-       const response =   await axios.delete(`http://localhost:8000/api/intervention/${user_Id}` ,{
-            headers : {
-                Authorization : `Bearer ${token}`
-            }
-        }
-         );
-         SetInterventions([]);
-        //  SetSuccess(response.data.Success);
-        //  setTimeout(()=> SetSuccess('') , 2000);
-    }catch(error)
-    {
-        if(error.response.data.message)
-           console.log(error.response.data.message);
-        else
-        console.log(error);
-    }
-  }
-
-   const deleteInterventionById = async (id_intervention) =>{
-    try {
-        
-         const response =  await axios.delete(
-                 `http://localhost:8000/api/intervention/${user_Id}/${id_intervention}`,
-                 {
-                    headers : {
-                        Authorization : `Bearer ${token}`
-                    }
-                 }
-         ) ;
-         const NewTableIntervention = Interventions.filter((inter , index) => ( inter.intervention_id != id_intervention ));
-
-         SetInterventions(NewTableIntervention);
-
-        //  SetSuccess(response.data.Success);
-        //  setTimeout(()=> SetSuccess('') , 2000);
-
+      showMessage("Intervention envoyée avec succès.", 'success');
+      setRefreshTrigger(prev => prev + 1);
     } catch (error) {
-
-         if(error.response.data.message)
-           console.log(error.response.data.message);
-        else
-        console.log(error);       
+      console.error("Erreur lors de l'envoi de l'intervention:", error);
+      showMessage("Une erreur est survenue lors de l'envoi de l'intervention.", 'error');
     }
-   }
-  // handler permet de consulter les informations d'une intervention a travers le click sur le button voir plus
-  const ConsulterInterventionNavigate= (interventionId) => {
- 
-    //redirection ver la page /intervention/id_intervention
+  }, [showMessage]);
+
+  // --- Logique de suppression de toutes les interventions ---
+  const deleteAll = useCallback(async () => {
+    try {
+      await axios.delete(`http://localhost:8000/api/intervention/${UserIdAndRole(token).user_Id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      showMessage('Toutes les interventions ont été supprimées.', 'success');
+      setRefreshTrigger(prev => prev + 1);
+    } catch (error) {
+      console.error("Erreur lors de la suppression de toutes les interventions:", error);
+      showMessage("Une erreur est survenue lors de la suppression globale.", 'error');
+    }
+  }, [showMessage]);
+
+  // --- Logique de suppression d'une intervention par ID ---
+  const deleteInterventionById = useCallback(async (id_intervention) => {
+    try {
+      await axios.delete(
+        `http://localhost:8000/api/intervention/${UserIdAndRole(token).user_Id}/${id_intervention}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      showMessage(`L'intervention DI-N° ${id_intervention} a été supprimée.`, 'success');
+      setRefreshTrigger(prev => prev + 1);
+    } catch (error) {
+      console.error("Erreur lors de la suppression de l'intervention:", error);
+      showMessage("Une erreur est survenue lors de la suppression.", 'error');
+    }
+  }, [showMessage]);
+
+  // --- Fonctions de navigation ---
+  const ConsulterInterventionNavigate = useCallback((interventionId) => {
     navigate(`/intervention/${interventionId}`);
-  }
+  }, [navigate]);
 
-    // handler permet de consulter les informations d'une intervention a travers le click sur le button voir plus
-  const UpdateInterventionNavigate= (interventionId) => {
- 
-      //redirection ver la page /intervention/id_intervention
-      navigate(`/UpdateIntervention/${interventionId}`);
+  const UpdateInterventionNavigate = useCallback((interventionId) => {
+    navigate(`/UpdateIntervention/${interventionId}`);
+  }, [navigate]);
+
+  // --- Logique de filtrage et de tri des interventions affichées ---
+  const filteredAndSortedInterventions = useMemo(() => {
+    let currentInterventions = [...interventions];
+
+    if (search.trim()) {
+      const lowerCaseSearch = search.trim().toLowerCase();
+      currentInterventions = currentInterventions.filter(interv =>
+        String(interv.intervention_id).includes(lowerCaseSearch) ||
+        convertirDate(interv.date).toLowerCase().includes(lowerCaseSearch) ||
+        (interv.section && interv.section.name && interv.section.name.toLowerCase().includes(lowerCaseSearch)) ||
+        (interv.maintenance_type && interv.maintenance_type.toLowerCase().includes(lowerCaseSearch))
+      );
     }
 
- //hooks pour recuperer les interventions est l'initialis' dans une variable tableau
-  useEffect( ()=> {
-    try {
+    if (sortConfig.key) {
+      currentInterventions.sort((a, b) => {
+        let aValue = a[sortConfig.key];
+        let bValue = b[sortConfig.key];
 
-    const updateTime =async  () => {
-
-    try {
-      // Requête GET pour récupérer les interventions d'un utilisateur
-      const responseInterventions = await axios.get(
-        `http://localhost:8000/api/intervention?Intervention_today=${false}&validate=0`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+        if (sortConfig.key === 'section') {
+            aValue = a.section?.name || '';
+            bValue = b.section?.name || '';
+        } else if (sortConfig.key === 'date') {
+            aValue = new Date(aValue).getTime();
+            bValue = new Date(bValue).getTime();
+        } else if (sortConfig.key === 'status' || sortConfig.key === 'reception') {
+            return sortConfig.direction === 'ascending' ? (aValue === bValue ? 0 : aValue ? 1 : -1) : (aValue === bValue ? 0 : aValue ? -1 : 1);
         }
-      )
-      .then(response=>{
-          SetInterventionsNotValidate(response.data);
-         })
-      .catch(erreur=>{
-          console.log(erreur);
-       });
 
-     }catch(erreur){
+        if (typeof aValue === 'string') {
+          aValue = aValue.toLowerCase();
+        }
+        if (typeof bValue === 'string') {
+          bValue = bValue.toLowerCase();
+        }
 
-      console.log(erreur);
-      return ;
-     }
-        const now = new Date(); // la date courrant
-
-          /*parcourir toutes les temps des interventions et l'initialise le temps reste de chaque intervention dans une case correspond a l'index d'intervention dans
-          le tableau Time */
-          const updatedTimes = InterventionsNotValidate.map(async (interv) =>  {
-  
-         //calculé  le temps d'autorization de modification , le 1000 pour la convertion en ms
-          const target = new Date(interv.createdAt).getTime() + 24 * 60 * 60 * 1000;
-  
-          //calculer le temps entre  time courrant  et time d'autorization
-          const diff = target - now.getTime();
-    
-           // le temps terminé
-          if (diff <= 0) {
-
-            await EnvoyerIntervention(interv.intervention_id);
-            
-            
-            //return une indication
-            return 'Termine';
-          }
-
-        });
-       
-      };
-     
-      updateTime(); //  Appel immédiat au montage sans attendre 1min
-
-      RecupererInterventions()
-      .then(response=>{
-          SetInterventions(response.data);
-         })
-      .catch(erreur=>{
-          console.log(erreur);
-       });
-
-    } catch (error) {
-
-      console.log("erreur");
-
+        if (aValue < bValue) {
+          return sortConfig.direction === 'ascending' ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+      });
     }
-  }, [InterventionToday]);
-  
-// fonction pour la convertion du date 
- const convertirDate = (date_recup)=> {
-    const rawDate = date_recup;
-     const date = new Date(rawDate);
-     const formattedDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`;
 
-     return formattedDate ;
- }
+    return currentInterventions;
+  }, [interventions, search, sortConfig]);
 
+  // --- Pagination Logic ---
+  const totalPages = Math.ceil(filteredAndSortedInterventions.length / PAGE_SIZE);
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  const endIndex = startIndex + PAGE_SIZE;
+  const currentInterventionsPage = filteredAndSortedInterventions.slice(startIndex, endIndex);
+
+  const goToNextPage = () => {
+    setCurrentPage(prev => Math.min(prev + 1, totalPages));
+  };
+
+  const goToPrevPage = () => {
+    setCurrentPage(prev => Math.max(prev - 1, 1));
+  };
+
+  const goToPage = (pageNumber) => {
+    setCurrentPage(Math.max(1, Math.min(pageNumber, totalPages)));
+  };
+
+  const requestSort = (key) => {
+    let direction = 'ascending';
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getSortIcon = (key) => {
+    if (sortConfig.key !== key) {
+      return faSort;
+    }
+    return sortConfig.direction === 'ascending' ? faSortUp : faSortDown;
+  };
+
+  if (loading && interventions.length === 0) {
+    return <PageChargement />;
+  }
 
   return (
-          <div className='Container-globale-show-admin'>
-            
-              <div className='Container-search-pagination'>
-                  <div className="Container-pages">
-                      <button
-                          className='paginate-btn'
-                          onClick={() => SetInterventionToday(true)}
-                          style={{backgroundColor:  InterventionToday ? '#a9a1a1 ' : 'lightgray' }}
-                      >
-                            pour Aujourd'hui
-                      </button>
+    <div className={styles.interventionsPageContainer}>
+      <h1 className={styles.pageTitle}>
+        <FontAwesomeIcon icon={faClipboardList} className={styles.titleIcon} /> Liste des Interventions
+      </h1>
 
-                     <button
-                          className='paginate-btn'
-                          onClick={() => SetInterventionToday(false)}
-                          style={{backgroundColor: !InterventionToday ? '#a9a1a1 ' : 'lightgray' }}
-                      >
-                                 Tous
-                      </button>
-              
-                  </div>
-                  <div className='Container-search'>
-                  <input
-                             type='search'
-                             name='search'
-                             placeholder='chercher par Numero intervention ou la date'
-                             onChange={(e)=> SetSearch(e.target.value)}
-                      />
-                      <FontAwesomeIcon 
-                                     icon={faSearch} 
-                                     className='icon-search'
-                                     />
-                  </div>
+      <div className={styles.controlsSection}>
+        <div className={styles.filterButtons}>
+          <button
+            className={`${styles.filterBtn} ${interventionTodayFilter ? styles.activeFilter : ''}`}
+            onClick={() => setInterventionTodayFilter(true)}
+            title="Afficher les interventions d'aujourd'hui"
+          >
+            <FontAwesomeIcon icon={faCalendarDay} /> Aujourd'hui
+          </button>
+          <button
+            className={`${styles.filterBtn} ${!interventionTodayFilter ? styles.activeFilter : ''}`}
+            onClick={() => setInterventionTodayFilter(false)}
+            title="Afficher toutes les interventions"
+          >
+            <FontAwesomeIcon icon={faListOl} /> Toutes
+          </button>
+          <button
+              className={styles.refreshBtn}
+              onClick={() => setRefreshTrigger(prev => prev + 1)}
+              title="Rafraîchir les données"
+          >
+              <FontAwesomeIcon icon={faSyncAlt} /> Rafraîchir
+          </button>
+        </div>
 
-                { Interventions.length > 0 && 
-                  <button className="delete-btn" 
-                         onClick={()=>
-                                 ConfirmeOperation(`Êtes-vous sûr de vouloir supprimer toutes les interventions ?`,
-                                                    'Les interventions ont été supprimées.' , 
-                                                    deleteAll     
-                                                   )
-                         }
-                  
-                  >
-                            <FontAwesomeIcon 
-                                     icon={faTrash} 
-                                     className='icon-search'
-                            />
-                                Supprimer Tous
-                 </button>
-                } 
-              </div>
+        <div className={styles.searchContainer}>
+          <input
+            type='search'
+            name='search'
+            placeholder='Rechercher par N°, Date, Section ou Type'
+            onChange={(e) => setSearch(e.target.value)}
+            value={search}
+            className={styles.searchInput}
+          />
+          <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
+        </div>
 
-         <div className='Interventions-container'>
-            {Interventions.length == 0 && 
-               <h2 className='NotExistData'>Aucune intervention trouvée.</h2>
+        {interventions.length > 0 && (
+          <button
+            className={styles.deleteAllBtn}
+            onClick={() =>
+              ConfirmeOperation(
+                `Êtes-vous sûr de vouloir supprimer toutes les interventions ? Cette action est irréversible.`,
+                'Les interventions ont été supprimées avec succès.',
+                deleteAll
+              )
             }
+            title="Supprimer toutes les interventions"
+          >
+            <FontAwesomeIcon icon={faTrash} /> Supprimer Tout
+          </button>
+        )}
+      </div>
 
-             {/* message si l'intervention est bien envoyée */}
-        {Success && <p className='MessageSend' >{Success}</p>} 
+      {successMessage && <div className={`${styles.messageBox} ${styles[successMessage.type]}`}><FontAwesomeIcon icon={faInfoCircle} /> {successMessage.message}</div>}
+      {error && <div className={`${styles.messageBox} ${styles.error}`}><FontAwesomeIcon icon={faInfoCircle} /> {error}</div>}
 
-       {Interventions.map((interv , index)=>
 
-            <div key={index} 
-                   className='Intervention-container'
-                   style={{display : (!search || (String(interv.intervention_id).includes(search) || String(convertirDate(interv.date)).includes(String(search).trim() )) ||
-                    String(interv.intervention_id)===String(search).trim() ) ? 'block' : 'none'}}
+      {!loading && !error && filteredAndSortedInterventions.length === 0 && (
+        <div className={styles.noDataMessage}>
+          Aucune intervention trouvée {interventionTodayFilter ? "pour aujourd'hui" : ''}
+          {search ? ` pour la recherche "${search}"` : ''}.
+        </div>
+      )}
+
+      {!loading && !error && filteredAndSortedInterventions.length > 0 && (
+        <div className={styles.tableContainer}>
+          <table className={styles.interventionsTable}>
+            <thead>
+              <tr>
+                <th onClick={() => requestSort('intervention_id')}>
+                   N° DI <FontAwesomeIcon icon={getSortIcon('intervention_id')} />
+                </th>
+                <th onClick={() => requestSort('date')}>
+                   Date <FontAwesomeIcon icon={getSortIcon('date')} />
+                </th>
+                <th onClick={() => requestSort('status')}>
+                   Statut <FontAwesomeIcon icon={getSortIcon('status')} />
+                </th>
+                <th onClick={() => requestSort('reception')}>
+                   Réception <FontAwesomeIcon icon={getSortIcon('reception')} />
+                </th>
+                <th onClick={() => requestSort('section')}>
+                   Section <FontAwesomeIcon icon={getSortIcon('section')} />
+                </th>
+                <th onClick={() => requestSort('maintenance_type')}>
+                   Type Maintenance <FontAwesomeIcon icon={getSortIcon('maintenance_type')} />
+                </th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentInterventionsPage.map((interv) => (
+                <tr key={interv.intervention_id}>
+                  <td>DI-N° {interv.intervention_id}</td>
+                  <td>{convertirDate(interv.date)}</td>
+                  <td>
+                    <span className={interv.status ? styles.statusTextOui : styles.statusTextNon}>
+                      {interv.status ? "Validée" : "En attente"}
+                    </span>
+                  </td>
+                  <td>
+                    <span className={interv.reception ? styles.statusTextOui : styles.statusTextNon}>
+                      {interv.reception ? "Reçue" : "Non reçue"}
+                    </span>
+                  </td>
+                  <td>{interv.section?.name || 'N/A'}</td>
+                  <td>{interv.maintenance_type}</td>
+                  <td className={styles.actionsCell}>
+                    <button
+                      className={`${styles.actionBtn} ${styles.viewBtn}`}
+                      onClick={() => ConsulterInterventionNavigate(interv.intervention_id)}
+                      title="Voir les détails"
                     >
-            
-             {/* section pour le temps et numero d'intervention */}
-               <div className='Data-inter'>
-                   <div className='Info-time-send'>
+                      <FontAwesomeIcon icon={faEye} />
+                    </button>
+                    <button
+                      className={`${styles.actionBtn} ${styles.editBtn}`}
+                      onClick={() => UpdateInterventionNavigate(interv.intervention_id)}
+                      title="Modifier l'intervention"
+                    >
+                      <FontAwesomeIcon icon={faEdit} />
+                    </button>
+                    <button
+                      className={`${styles.actionBtn} ${styles.deleteBtn}`}
+                      onClick={() =>
+                        ConfirmeOperation(
+                          `Êtes-vous sûr de supprimer l'intervention DI-N° ${interv.intervention_id} ?`,
+                          'Intervention supprimée avec succès.',
+                          deleteInterventionById,
+                          interv.intervention_id
+                        )
+                      }
+                      title="Supprimer l'intervention"
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
-                      <h4>{ convertirDate(interv.date)}</h4>
-
-                    </div>
-
-                    <h3 className='DI-number'>DI-N° {interv.intervention_id}</h3>
-               </div>
-
-                 {/* section pour quelque info sur l'interventions */}
-              <div className='Data-inter Addstyle'>
-
-                <div className='Info-time-send Addstyle1'>
-                    <p className='p1'><span className='Type_Attribut'> <span>Status </span> <span>:</span> </span> <span>{(interv.status)?"OUI" : "NON"}</span> </p>
-                    <p className='p2'><span className='Type_Attribut'> <span>Section</span> <span>:</span> </span> <span className='Span2'>{interv.section.name}</span>                             </p>
-                </div>
-
-                <div className='Info-time-send Addstyle2'>
-                     <p className='p1'><span className='Type_Attribut'> <span>Reception</span> <span>:</span> </span> <span >{(interv.reception)?"OUI" : "NON"}</span> </p>
-                     <p className='p2'><span className='Type_Attribut'> <span className='Type_M_Abr'>Type_M</span> <span className='Type_M'>Type_Maintenance </span> <span>:</span>   </span>  <span className='Span2'>{interv.maintenance_type}</span> </p>
-                </div>
-                 
-
-              </div>
-
-
-                      {/* section des buttons pour gerer l'intervention */}
-              <div className='button-group-inter'>
-                  <input 
-                  className=" button-consulter"
-                  type='button' 
-                  value="Voir plus"
-                  onClick={()=>ConsulterInterventionNavigate(interv.intervention_id)}/>
-
-                  <input 
-                  className=" button-update-show"
-                  type='button' 
-                  value="Modifier"
-                  onClick={()=>UpdateInterventionNavigate(interv.intervention_id)}
-                 />
-                 
-                 <input 
-                  className=" button-supprimer"
-                  type='button' 
-                  value="Supprimer"
-                  onClick={()=>
-                                 ConfirmeOperation(`Es-tu sûr de Supprimer l\'intervention ${interv.intervention_id}`,
-                                                    'Intervention est supprimé' , 
-                                                    deleteInterventionById      , 
-                                                    interv.intervention_id   )
-                          }
-                  /> 
-                
-              </div>
-           </div>
-          )}
-          {/* //  fin de la fonction map
-     */}
-    </div>  
-     </div>
+      {/* Pagination Controls */}
+      {!loading && !error && filteredAndSortedInterventions.length > PAGE_SIZE && (
+        <div className={styles.paginationControls}>
+          <button onClick={goToPrevPage} disabled={currentPage === 1} className={styles.paginationBtn}>Précédent</button>
+          <div className={styles.pageNumbers}>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              <button
+                key={page}
+                onClick={() => goToPage(page)}
+                className={`${styles.paginationPageBtn} ${currentPage === page ? styles.activePage : ''}`}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
+          <button onClick={goToNextPage} disabled={currentPage === totalPages} className={styles.paginationBtn}>Suivant</button>
+        </div>
+      )}
+    </div>
   );
-
 };
 
 export default PageInterventions;

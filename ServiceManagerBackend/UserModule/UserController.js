@@ -22,6 +22,8 @@ class UserController {
 
     async logout                (req, res) { return UserService.logout              (req, res); }
 
+    async isActive              (req, res) { return UserService.isActive              (req, res); }
+
 }
 
 

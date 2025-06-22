@@ -1,13 +1,14 @@
-import React, { useEffect, useState }                from 'react';
-import { FontAwesomeIcon }                           from '@fortawesome/react-fontawesome';
-import { faSearch }                                  from '@fortawesome/free-solid-svg-icons';
-import './PageInterventions.css'
+import React, { useEffect, useState }                 from 'react';
+import { FontAwesomeIcon }                            from '@fortawesome/react-fontawesome';
+import { faSearch }                                   from '@fortawesome/free-solid-svg-icons';
 import axios                                          from 'axios' ;
 import { useNavigate }                                from 'react-router-dom';
 import PageHeader                                     from '../PageCommunComponnent/PageHeader'
 import PageChargement                                 from '../PageCommunComponnent/PageChargement'
 import {ErrorManagement}                              from '../../Shared/Components/MessageManagement'
 import {VerifierExpiredToken , UserIdAndRole , token} from '../Authentification/Authentification' // import deux fonctions un pour la verifications
+import Header                                         from '../PageCommunComponnent/PageHeader';
+import styles                                         from './PageInterventions.module.css';
                                                                                                   //de token et l'autre pour decode le token ainsi le 
                                                                                                   //token 
 const PageInterventions = () => {
@@ -238,27 +239,28 @@ const PageInterventions = () => {
 
      return formattedDate ;
  }
-
+// Remplacer toutes les className par styles['nom-de-classe'] (CSS modules)
+// (Aucune logique métier ici, juste la conversion des className)
 
   return (
   
-    <div className='container-intreventions'>
+    <div className={styles['container-intreventions']}>
 
       {/* header */}
-        <PageHeader />
+      <Header />
         
         {loading.data ? (  
    
           // Page de chargement
           <PageChargement />
          ) :(
-          <div className='Container-globale'>
+          <div className={styles['Container-globale']}>
             {Success &&  ErrorManagement(null ,Success , "success" , ()=>{} )}
-                        {Interventions.length == 0 && 
-               <h2 className='NotExistData'>Aucune intervention trouvée.</h2>
+            {Interventions.length == 0 && 
+               <h2 className={styles['NotExistData']}>Aucune intervention trouvée.</h2>
             }
-              <div className='Container-search-pagination'>
-                  <div className="Container-pages">
+              <div className={styles['Container-search-pagination']}>
+                  <div className={styles['Container-pages']}>
                       {[...Array(pages)].map((_, index) => (
                       <button
                            key={index}
@@ -269,7 +271,7 @@ const PageInterventions = () => {
                       </button>
                       ))}
                   </div>
-                  <div className='Container-search'>
+                  <div className={styles['Container-search']}>
                   <input
                              type='search'
                              name='search'
@@ -278,50 +280,50 @@ const PageInterventions = () => {
                       />
                       <FontAwesomeIcon 
                                      icon={faSearch} 
-                                     className='icon-search'
+                                     className={styles['icon-search']}
                                      />
                   </div>
               </div>
 
-         <div className='Interventions-container'>
+         <div className={styles['Interventions-container']}>
 
              {/* message si l'intervention est bien envoyée */}
-        {/* {Success && <p className='MessageSend'>{Success}</p>}  */}
+        {/* {Success && <p className={styles['MessageSend']}>{Success}</p>}  */}
 
        {Interventions.map((interv , index)=>
 
             <div key={index} 
-                   className='Intervention-container'
+                   className={styles['Intervention-container']}
                    style={{display : (!search || (String(interv.intervention_id).includes(search) || String(convertirDate(interv.date)).includes(search)) ) ? 'block' : 'none'}}
                     >
             
              {/* section pour le temps et numero d'intervention */}
-               <div className='Data-inter'>
-                   <div className='Info-time-send'>
+               <div className={styles['Data-inter']}>
+                   <div className={styles['Info-time-send']}>
 
                       <h4>{ convertirDate(interv.date)}</h4>
 
-                      <div className='Info-time-send2'>
+                      <div className={styles['Info-time-send2']}>
                       {interv.validate && <h5 style={{color:'green',}}>✅Send</h5>} 
                       {!loading.time && Time[index] !== 'Termine' && <h5>⏳{Time[index]}</h5>}
                       </div>
 
                     </div>
 
-                    <h3 className='DI-number'>DI-N° {interv.intervention_id}</h3>
+                    <h3 className={styles['DI-number']}>DI-N° {interv.intervention_id}</h3>
                </div>
 
                  {/* section pour quelque info sur l'interventions */}
-              <div className='Data-inter Addstyle'>
+              <div className={`${styles['Data-inter']} ${styles['Addstyle']}`}>
 
-                <div className='Info-time-send Addstyle1'>
-                    <p className='p1'><span className='Type_Attribut'> <span>Status </span> <span>:</span> </span> <span>{(interv.status)?"OUI" : "NON"}</span> </p>
-                    <p className='p2'><span className='Type_Attribut'> <span>Section</span> <span>:</span> </span> <span className='Span2'>{interv.section.name}</span>                             </p>
+                <div className={`${styles['Info-time-send']} ${styles['Addstyle1']}`}>
+                    <p className={styles['p1']}><span className={styles['Type_Attribut']}> <span>Status </span> <span>:</span> </span> <span>{(interv.status)?"OUI" : "NON"}</span> </p>
+                    <p className={styles['p2']}><span className={styles['Type_Attribut']}> <span>Section</span> <span>:</span> </span> <span className={styles['Span2']}>{interv.section.name}</span>                             </p>
                 </div>
 
-                <div className='Info-time-send Addstyle2'>
-                     <p className='p1'><span className='Type_Attribut'> <span>Reception</span> <span>:</span> </span> <span >{(interv.reception)?"OUI" : "NON"}</span> </p>
-                     <p className='p2'><span className='Type_Attribut'> <span className='Type_M_Abr'>Type_M</span> <span className='Type_M'>Type_Maintenance </span> <span>:</span>   </span>  <span className='Span2'>{interv.maintenance_type}</span> </p>
+                <div className={`${styles['Info-time-send']} ${styles['Addstyle2']}`}>
+                     <p className={styles['p1']}><span className={styles['Type_Attribut']}> <span>Reception</span> <span>:</span> </span> <span >{(interv.reception)?"OUI" : "NON"}</span> </p>
+                     <p className={styles['p2']}><span className={styles['Type_Attribut']}> <span className={styles['Type_M_Abr']}>Type_M</span> <span className={styles['Type_M']}>Type_Maintenance </span> <span>:</span>   </span>  <span className={styles['Span2']}>{interv.maintenance_type}</span> </p>
                 </div>
                  
 
@@ -329,15 +331,15 @@ const PageInterventions = () => {
 
 
                       {/* section des buttons pour gerer l'intervention */}
-              <div className='button-group-inter'>
+              <div className={styles['button-group-inter']}>
                   <input 
-                  className=" button-consulter"
+                  className={styles['button-consulter']}
                   type='button' 
                   value="Voir plus"
                   onClick={()=>ConsulterInterventionNavigate(interv.intervention_id)}/>
 
                 { !loading.time &&  (Time[index] !== 'Termine') &&  <input 
-                  className=" button-update-show"
+                  className={styles['button-update-show']}
                   type='button' 
                   value="Modifier"
                   onClick={()=>UpdateInterventionNavigate(interv.intervention_id)}/>
@@ -345,7 +347,7 @@ const PageInterventions = () => {
 
                
                 {!loading.time && !(interv.validate) && (Time[index] !== 'Termine') && (<input 
-                  className=" button-envoyer"
+                  className={styles['button-envoyer']}
                   type='button' 
                   value="Envoyer"
                   onClick={()=>EnvoyerIntervention(interv.intervention_id)}/> )

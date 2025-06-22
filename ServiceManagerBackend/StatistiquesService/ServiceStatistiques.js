@@ -10,16 +10,16 @@ class StatistiquesService {
     const agenciesCount              = await Agency.count();
     const interventionsCount         = await Intervention.count();
     const sectionsCount              = await Section.count();
-    const sectionRealiseesCount      = await Intervention.count({ where: { status: true } });
-    const sectionNonRealiseesCount   = await Intervention.count({ where: { status: false } });
+    const interventionRealiseesCount      = await Intervention.count({ where: { status: true } });
+    const interventionNonRealiseesCount   = await Intervention.count({ where: { status: false } });
   
     return  res.status(200).json({
         users: usersCount,
         agencies: agenciesCount,
         interventions: interventionsCount,
         sections: sectionsCount ,
-        sectionRealisees: sectionRealiseesCount,
-        sectionNonRealisees: sectionNonRealiseesCount
+        interventionRealisees: interventionRealiseesCount,
+        interventionNonRealisees: interventionNonRealiseesCount
     });
 }
 

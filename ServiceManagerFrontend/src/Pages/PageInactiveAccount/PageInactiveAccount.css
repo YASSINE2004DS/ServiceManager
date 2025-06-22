@@ -1,0 +1,46 @@
+.inactive-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f7f9fc;
+    padding: 20px;
+  }
+  
+  .inactive-card {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    max-width: 480px;
+  }
+  
+  .inactive-card h1 {
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+    color: #333;
+  }
+  
+  .inactive-card p {
+    color: #555;
+    margin-bottom: 12px;
+    font-size: 1rem;
+  }
+  
+  .inactive-button {
+    margin-top: 16px;
+    padding: 12px 24px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .inactive-button:hover {
+    background-color: #0056b3;
+  }
+  

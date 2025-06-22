@@ -149,6 +149,40 @@ body {
   padding-bottom: 10px;
 }
 
+
+.filterSection {
+  margin-bottom: 30px;
+  background-color: #f8faff;
+  border: 1px solid #e0eaff;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.filterLabel {
+  font-weight: 600;
+  color: var(--primary-dark-color);
+  font-size: 1.1em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filterInputDate { /* Nouveau style pour l'input date */
+  padding: 10px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1em;
+  max-width: 400px;
+  background-color: white;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  box-shadow: 1px 1px 3px 1px rgb(154, 151, 151);
+}
+
 .entrepriseDetails p { /* Utilise un sélecteur descendant */
   font-size: 1em;
   color: var(--text-color-dark);

@@ -65,3 +65,4 @@ class EmailRouter {
 
 // Export only the router instance, not the class itself
 export default new EmailRouter().router;
+

@@ -128,7 +128,7 @@ const EntrepriseFormModal = ({ isOpen, onClose, onSave, initialData }) => {
               className={errors.typeEntreprise ? styles.inputError : ''}
             >
               <option value="exportation">Exportation</option>
-              <option value="importation">Importation</option>
+              {/* <option value="importation">Importation</option> */}
             </select>
             {errors.typeEntreprise && <span className={styles.errorText}>{errors.typeEntreprise}</span>}
           </div>

@@ -1,0 +1,105 @@
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px; /* Increased height for better visibility */
+    background-color: #f8f9fa; /* Light gray for a clean look */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Stronger shadow for depth */
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    padding: 0 30px; /* Increased padding for spacing */
+    font-family: 'Arial', sans-serif; /* Professional font */
+}
+
+.company-logo {
+    height: 50px; /* Adjusted size for better visibility */
+}
+
+.header-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Added spacing between elements */
+}
+
+.user-info-container {
+    position: relative;
+    display: flex; /* Ensure email and avatar are aligned horizontally */
+    align-items: center; /* Vertically align email and avatar */
+    cursor: pointer;
+}
+
+.user-email {
+    font-size: 14px;
+    color: #343a40; /* Dark gray for text */
+    margin-right: 10px; /* Space between email and avatar */
+}
+
+.avatar-wrapper {
+    display: flex;
+    align-items: center; /* Ensure avatar is vertically aligned */
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #007bff; /* Blue for a professional look */
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.user-avatar:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    border-radius: 5px; /* Rounded corners */
+    overflow: hidden;
+}
+
+.dropdown-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dropdown-menu li {
+    padding: 10px 20px;
+    font-size: 14px;
+        color: #333;
+        cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between icon and text */
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-menu li:hover {
+       background-color: #f0f0f0; /* Light hover background */
+    color: #007bff; /* Icon color on hover */
+}
+
+.dropdown-icon {
+    color: #007bff; /* Blue for icons */
+}
+
+body {
+    margin: 0;
+    padding-top: 70px; /* Adjusted for new header height */
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}

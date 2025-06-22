@@ -1,0 +1,177 @@
+/* UserCard.module.css */
+
+.userCard {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.userCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.userId {
+    font-size: 0.85em;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.userName {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #343a40;
+    margin-bottom: 5px;
+}
+
+.userEmail {
+    font-size: 0.95em;
+    color: #555;
+}
+
+.userDetails {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.userRole,
+.userAgency {
+    font-size: 0.9em;
+    color: #495057;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.userRole span,
+.userAgency span {
+    font-weight: 600;
+    color: #212529;
+}
+
+/* Form inputs when editing */
+.userCard input[type="text"],
+.userCard select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 0.95em;
+    box-sizing: border-box; /* Ensures padding doesn't add to width */
+    margin-bottom: 5px; /* Spacing between inputs */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.userCard input:focus,
+.userCard select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+.userActions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto; /* Pushes buttons to the bottom if card content varies */
+    border-top: 1px solid #f0f0f0;
+    padding-top: 15px;
+    justify-content: flex-end; /* Align buttons to the right */
+}
+
+.actionButton {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.editButton {
+    background-color: #ffc107; /* Warning yellow */
+    color: #343a40;
+}
+.editButton:hover { background-color: #e0a800; transform: translateY(-1px); }
+
+.deleteButton {
+    background-color: #dc3545; /* Danger red */
+    color: white;
+}
+.deleteButton:hover { background-color: #c82333; transform: translateY(-1px); }
+
+.saveButton {
+    background-color: #28a745; /* Success green */
+    color: white;
+}
+.saveButton:hover { background-color: #218838; transform: translateY(-1px); }
+
+.cancelButton {
+    background-color: #6c757d; /* Secondary gray */
+    color: white;
+}
+.cancelButton:hover { background-color: #5a6268; transform: translateY(-1px); }
+
+/* Message for operation feedback */
+.feedbackMessage {
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.errorMessage {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.successMessage {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Icons for roles/agencies */
+.icon {
+    margin-right: 5px;
+    color: #007bff; /* Primary color for icons */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 480px) {
+    .userCard {
+        padding: 15px 20px;
+        gap: 10px;
+    }
+    .userName {
+        font-size: 1.3em;
+    }
+    .userEmail, .userRole, .userAgency {
+        font-size: 0.85em;
+    }
+    .userActions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .actionButton {
+        width: 100%;
+        padding: 10px;
+    }
+}

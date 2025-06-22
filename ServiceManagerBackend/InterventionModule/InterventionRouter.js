@@ -34,14 +34,14 @@ class IntereventionController {
 
         // Define POST  route for create new Intervention
         this.router.post('/', 
-                               AuthMiddleware.authenticate ,
+
                                async (req, res) => {
                                 return intereventionController.createNewIntervention   (req, res);
                        });
 
         // Define GET route for fetching Intervention by id
         this.router.get('/:id', 
-                              
+
                                async (req, res) => {
                                return intereventionController.getIntereventionByUserId (req, res);
                         });
