@@ -46,7 +46,7 @@ const PageIntervention = () => {
             end_time: '',
             comment: ' ',
             validate: false,
-            section_id: 1,
+            section_id: null,
             user_id: user_Id,
         },
     );
@@ -285,6 +285,7 @@ const PageIntervention = () => {
                                     name="section_id"
                                     onChange={(event) => RetriveDataAndInitializechamp(event)}
                                 >
+                                    <option value={null} selected={true}>---choisir section---</option>
                                     {Sections.map((section, index) => (
                                         <option key={index} value={section.section_id}>
                                             {' '}

@@ -57,7 +57,7 @@ class AuthService{
             const token = jwt.sign  (
                                         { user_id: user.user_id, role: user.role },
                                         process.env.SECRET_KEY,
-                                        { expiresIn: '7d' }
+                                        { expiresIn: '1d' }
                                     );
 
             return token;

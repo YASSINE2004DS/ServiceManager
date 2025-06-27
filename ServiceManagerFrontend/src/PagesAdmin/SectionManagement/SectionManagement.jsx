@@ -90,7 +90,7 @@ const SectionManagement = () => {
 
     // --- Opérations Backend (Ajouter, Modifier, Supprimer) ---
     const performBackendOperation = useCallback(async (type_opr, confirm = false, id_section = null) => {
-        try {
+   
             let response;
             const url = 'http://localhost:8000/api/section';
 
@@ -128,22 +128,14 @@ const SectionManagement = () => {
             }
             return response;
 
-        } catch (err) {
-            console.error(`Error during ${type_opr} operation:`, err);
-            if (err.response && err.response.data && err.response.data.message) {
-                showMessage(err.response.data.message, 'error');
-            } else {
-                showMessage(`Une erreur est survenue lors de l'opération de ${type_opr.toLowerCase()}.`, 'error');
-            }
-            return null;
-        }
+       
     }, [sectionNameInput, editSectionId, handleCancelEdit, showMessage]);
 
     // --- Handlers pour les actions (Supprimer, Modifier, Ajouter) ---
     const handleDeleteSection = useCallback((id, name) => {
         ConfirmeOperation(
             `Êtes-vous sûr de vouloir supprimer la section "${name}" ? Cette action est irréversible.`,
-            `Section "${name}" supprimée avec succès.`, // Message de succès pour SweetAlert
+            ``, // Message de succès pour SweetAlert
             () => performBackendOperation("Supprimer", true, id)
         );
     }, [performBackendOperation]);
@@ -153,11 +145,22 @@ const SectionManagement = () => {
             showMessage("Le nom de section ne peut pas être vide.", 'error');
             return;
         }
+        performBackendOperation("Modifier", false).then(_=>{
         ConfirmeOperation(
             `Êtes-vous sûr de vouloir modifier la section "${oldSectionName}" en "${sectionNameInput}" ?`,
-            `Section modifiée avec succès.`, // Message de succès pour SweetAlert
+            ``, // Message de succès pour SweetAlert
             () => performBackendOperation("Modifier", true)
         );
+        }).catch(err=>{
+            console.error(`Error during ${"Modifier"} operation:`, err);
+            if (err.response && err.response.data && err.response.data.message) {
+                showMessage(err.response.data.message, 'error');
+            } else {
+                showMessage(`Une erreur est survenue lors de l'opération de modifier.`, 'error');
+            }
+            return null;
+    })
+
     }, [sectionNameInput, oldSectionName, performBackendOperation, showMessage]);
 
     const handleAddSection = useCallback(() => {
@@ -165,11 +168,23 @@ const SectionManagement = () => {
             showMessage("Le nom de section ne peut pas être vide.", 'error');
             return;
         }
+
+        performBackendOperation("Ajouter" , false).then(()=>{
+
         ConfirmeOperation(
             `Êtes-vous sûr de vouloir ajouter la section "${sectionNameInput}" ?`,
-            `Section ajoutée avec succès.`, // Message de succès pour SweetAlert
+            ``, // Message de succès pour SweetAlert
             () => performBackendOperation("Ajouter", true)
         );
+    }).catch(err=>{
+            console.error(`Error during ${"Ajouter"} operation:`, err);
+            if (err.response && err.response.data && err.response.data.message) {
+                showMessage(err.response.data.message, 'error');
+            } else {
+                showMessage(`Une erreur est survenue lors de l'opération de ajouter.`, 'error');
+            }
+            return null;
+    })
     }, [sectionNameInput, performBackendOperation, showMessage]);
 
     // --- Filtrage des sections pour la recherche ---

@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
     faChartBar, faUsers, faLayerGroup, faTools, faBuilding, 
-    faUserSlash, faCog, faBuildingColumns, faFileExport, faPlusCircle,
+    faUsersSlash, faCog, faBuildingColumns, faFileExport, faPlusCircle,
     faBars, faTimes // Icônes pour le menu toggle
 } from '@fortawesome/free-solid-svg-icons'; // Assurez-vous d'avoir toutes ces icônes installées
 
@@ -39,11 +39,11 @@ const componentMap = {
 // Éléments du menu avec leurs icônes
 const menuItems = [
     { key: 'statistiques', label: 'Statistiques', icon: faChartBar },
+    { key: 'comptesNonActive', label: 'Comptes non actifs', icon: faUsersSlash },
     { key: 'utilisateurs', label: 'Utilisateurs', icon: faUsers },
     { key: 'sections', label: 'Sections', icon: faLayerGroup },
     { key: 'interventions', label: 'Interventions', icon: faTools },
     { key: 'agences', label: 'Agences', icon: faBuilding },
-    { key: 'comptesNonActive', label: 'Comptes non actifs', icon: faUserSlash },
     { key: 'composants', label: 'Composants', icon: faCog }, // J'ai changé 'Composants' à 'composants' pour la cohérence
     { key: 'entreprises', label: 'Entreprises', icon: faBuildingColumns },
 ];

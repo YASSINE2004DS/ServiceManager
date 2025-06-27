@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import UserCard from './UserCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus , faUsers } from '@fortawesome/free-solid-svg-icons';
 import styles from './UsersManagement.module.css'; // Import the CSS module
 
 const UsersManagement = () => {
@@ -139,8 +139,13 @@ const UsersManagement = () => {
 
     return (
         <div className={styles.usersManagementContainer}>
+            {/* <header className={styles.headerSection}>
+   
+            </header> */}
             <div className={styles.sectionHeader}>
-                <h2>Gestion des utilisateurs</h2>
+                <h1 className={styles.pageTitle}>
+                    <FontAwesomeIcon icon={faUsers} className={styles.titleIcon} /> Gestion des Sections
+                </h1>
                 <button className={styles.primaryButton} onClick={() => setShowAddForm(true)}>
                     <FontAwesomeIcon icon={faPlus} />
                     Ajouter un utilisateur

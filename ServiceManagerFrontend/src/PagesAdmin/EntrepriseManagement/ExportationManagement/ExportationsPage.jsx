@@ -294,13 +294,13 @@ const sortedExportations = [...exportations].sort((a, b) => {
       <td>{details?.total !== undefined ? details.total.toFixed(2)  : 'N/A'}</td>
 
       <td className={`${styles.actionsCell}`}>
-        <button className={`${styles.actionBtn} ${styles.editBtn}  ${loadingGenerateFacture ? styles.disabledColor : ''}`} 
+        {/* <button className={`${styles.actionBtn} ${styles.editBtn}  ${loadingGenerateFacture ? styles.disabledColor : ''}`} 
                 onClick={() => openEditFormModal(exportation)} 
                 title="Modifier" 
                 disabled={loadingGenerateFacture}
         >
           <FontAwesomeIcon icon={faEdit} />
-        </button>
+        </button> */}
 
         <button className={`${styles.actionBtn} ${styles.deleteBtn} ${loadingGenerateFacture ? styles.disabledColor : ''}`} 
                 onClick={() => handleDeleteExportation(exportation)} 

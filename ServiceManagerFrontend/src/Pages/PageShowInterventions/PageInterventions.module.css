@@ -1,626 +1,354 @@
-.container-intreventions {
-    height              : 100%;
-    width               : 100%;
-    display             : flex;
-    flex-direction      : row ;
-    background          : linear-gradient(to bottom right, #f0f0f0, #ffffff);
-  }
+/* src/pages/PageInterventions/PageInterventions.module.css */
 
-.Container-globale {
-  height            : 100%;
-  width             : 100%;
-  display           : block;
-  margin-top        : 90px ;
-  overflow          : hidden;
-  box-sizing        : border-box;  
-  padding           : 20px 0px;
+.container-interventions {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure it takes at least full viewport height */
+    background-color: #f0f2f5; /* Light background for the whole page */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
 }
 
-.Container-search-pagination
-{
-  width             : 100%;
-  height            : 90px ;
-  display           : flex;
-  /* background-color:#a9a1a1 */
- 
-   
+.Container-globale {
+    flex-grow: 1; /* Allows it to take available space */
+    padding: 30px;
+    width: 100%; /* Max width for content */
+    margin: 90px auto; /* Center content with some top margin */
+}
+
+.NotExistData {
+    text-align: center;
+    color: #6c757d;
+    font-size: 1.5em;
+    margin-top: 50px;
+}
+
+.Container-search-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 20px; /* Space between pagination and search */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.Container-pages {
+    display: flex;
+    gap: 8px; /* Space between page buttons */
+}
+
+.Container-pages button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1em;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    min-width: 40px; /* Ensure buttons have minimum width */
+    text-align: center;
+}
+
+.Container-pages button:hover {
+    background-color: #5a5a5a !important; /* Darker hover for all buttons */
+    color: white;
+}
+
+/* Styles for active page button */
+.Container-pages button[style*="background-color: rgb(124, 121, 121)"] {
+    color: white;
 }
 
 .Container-search {
-  width               : 25% ;
-  align-self          : center ;
-  margin              : auto;
-  display             : flex;
-  column-gap          : 10px;
-  background-color    : #c7bfbf; ;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  border-radius: 10px;
-  padding:4px ;
-
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 400px; /* Max width for search input */
+    background-color: #e0e0e0; /* Grey background as in image */
+    border-radius: 25px;
+    padding: 5px 15px; /* Adjust padding for input inside */
 }
 
-.Container-search-pagination .Container-search input {
- width                : 90%;
-  height              : 50px ;
-  /* border              : 1px solid darkblue ; */
-  background-color    : #c7bfbf;
-  outline: none;
-  border: none;
-  font-weight         : bold;
-  
+.Container-search input[type='search'] {
+    flex-grow: 1;
+    border: none;
+    background: transparent;
+    padding: 8px 10px;
+    font-size: 1em;
+    outline: none;
+    color: #333;
 }
 
-.Container-search-pagination .Container-search  .icon-search {
-font-size             : 22px ;
-margin-top            : 11px ;
+.Container-search input[type='search']::placeholder {
+    color: #888;
 }
 
-.Container-pages
-{
-  display             : flex;
-  max-width           :40% ;
-  height              : 100%;
-  column-gap          : 10px ;
-  padding             : 0px 5%;
-  overflow-x          : auto;
+.icon-search {
+    color: #666;
+    font-size: 1.2em;
+    margin-left: 10px;
+    cursor: pointer; /* Indicate it's clickable, even if not used directly */
 }
 
-.Container-pages button {
- margin-top           : 10px;
-  height              : 80% ;
-  min-width           :100px ;
-  font-size           : 25px;
-  font-weight         : bold;
-  background-color    :#a9a1a1 ;
-  cursor              : pointer ;
-
+.Interventions-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(350px , 400px)); /* Responsive grid */
+    gap: 30px; /* Space between cards */
+    padding: 20px 0;
 }
 
-  .Interventions-container {
-
-    height                : 100% ;
-    width                 : 100% ;
-    padding               : 20px 0px 0px 30px;
-    display               : grid ;
-    grid-template-columns : repeat(3 , 1fr);
-    row-gap               : 30px ;
-
-  }
-  
-  .Intervention-container {
-    height                : 280px ;
-     width                : 85% ;
-   background-color       : rgb(255, 255, 255) ;
-   z-index                : 1;
-   position               : relative;
-   border-radius          : 5px;
-   box-shadow             : 2px 2px 5px 3px gray;
-   padding                :2px ;
-  
-  }
-  
-  .Data-inter {
-    display               : flex ;
-    flex-direction        : column;
-    align-items           : center;
-    gap                   : 0 ;
-    position              : relative;
-  }
-
-  .Info-time-send {
-    display      : flex;
+.Intervention-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    width        :95% ;
-    color        :#857676
-
-  }
-  .Info-time-send2 {
-    display       : flex;
-    column-gap    : 10px ;
-    width         :50% ;
-    color         :#020c53;
-    justify-content: end;
-    
-
-  }
-
-  .Addstyle1 , .Addstyle2 {
-    font-family   : Georgia, 'Times New Roman', Times, serif;
-    font-size     :14 ;
-    font-weight   : bold;
-    color         : rgb(0, 0, 0) ;
-    width         :100% ;
-  }
-
-  .p2 {
-    width          :65% ;
-
-  }
-
-  .p1 {
-    width           :35% ;
-
-  }
-
-  .p1 , .p2   {
-    display         : flex ;
-    justify-content : space-between;
-    padding         : 0px 15px 0px 5px ;
-
-  }
-   
-  .p1 span:nth-last-of-type(1) , .p2 span:nth-last-of-type(1) {
-    color           : darkblue  ;
-
-  }
-
-  .Span2 {
-    text-align        : start;
-    width             : 40%; 
-  }
-
-
-
-  h3 {
-    margin-top          : -10px ;
-    color               :rgb(3, 42, 171)
-  }
-  
-  .section2 {
-    padding             : 40px 20px 0px 20px;
-    font-family         : 'Segoe UI', sans-serif;
-    background          : linear-gradient(to bottom right, #f0f0f0, #ffffff);
-    color               : #333;
-    text-align          : center;
-    width               : 100%;
-    height              : 100%;
-    border-radius       : 5px;
-    box-shadow          : 2px 2px 5px 3px gray;
-  }
-  
-  form {
-    width               : 100%;
-    height              : 100%;
-    position            : relative;
-  }
-  .welcome-section-intrevention {
-    /* animation       : fadeIn 2s ease-in-out; */
-    height             : 100%;
-    width              : 100%;
-    display            : grid;
-    grid-template-columns: repeat(2, 1fr);
-    row-gap            : 0px;
-    padding            : 5px 0px;
-    position           : absolute;
-  }
-  
-  label {
-    font-family        : Georgia, 'Times New Roman', Times, serif;
-    font-weight        : bold;
-    align-self         : flex-start;
-    color              : darkblue;
-    margin             : 0% 2%;
-  }
-  
-  input,
-  select {
-    padding            : 3px 10px;
-    height             : 35px;
-    margin-bottom      : 10px;
-    border             : 1px solid #a9a1a1;
-    border-radius      : 8px;
-    font-size          : 17px;
-    outline            : none;
-  }
-  
-  input:focus {
-    border-color       : #4ca1af;
-    box-shadow         : 0 0 5px rgba(76, 161, 175, 0.5);
-  }
-  
-  h2 {
-    font-size          : x-large;
-    margin-bottom      : 20px;
-    color              : #005580;
-  }
-  
-  .Type_Attribut {
-    display: flex ;
-    justify-content: space-between;
-    width :50%;
-  }
-  
-  .button-group-inter {
-    display            : flex;
-    justify-content    : flex-end;
-    align-items        : flex-end ;
-    position           : absolute;
-    bottom             : 0px;
-    right              : 5px;
-    column-gap         : 10px;
-    width              : 100%;
-  }
-
-  .button-consulter {
-    color              : white;
-    background-color   : rgb(6, 83, 171);
-     cursor : pointer ;
-    height             : 35px;
-    width              : 100px;
-  }
-  
-  .button-update-show {
-    color              : white;
-    background-color   : rgb(6, 83, 171);
-    cursor : pointer ;
-    font-weight        : bold;
-    height             : 35px;
-    width              : 100px;
-  }
-  
-  .button-envoyer {
-    color              : white;
-    background-color   : rgb(21, 150, 43);
-    cursor             : pointer ;
-    font-weight        : bold;
-    height             : 35px;
-    width              : 100px;
-  }
-
-  .button-consulter:hover , .button-update-show:hover , .button-envoyer:hover   {
-     opacity: 80%;
-  }
-
-  
-  .erreur {
-    color              : red;
-  }
-  .success {
-    color              : green;
-  }
-
-  .NotExistData {
-  position              : absolute ;
-  top                   :50% ;
-  left                  : 50%;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
-  /* Animations */
-  @keyframes fadeIn {
-    from {
-      opacity          : 0;
-      transform        : translateY(20px);
-    }
-    to {
-      opacity          : 1;
-      transform        : translateY(0);
-    }
-  }
-  .Type_M_Abr {
-    display            : none;
-  }
 
-  /* Responsive */
-  @media (max-width: 1500px) {
-    .Container-search {
-      width               : 30%;
-      align-self          : center ;
-      margin              : auto;
-      display             : flex;
-      column-gap          : 10px;
-      margin-top          : 30px;
-    
-    }
-    
-    .Container-search-pagination .Container-search input {
-     width                : 90%;
-      height              : 38px ;
-      border              : 1px solid darkblue ;
-      background-color    : #c7bfbf;
-      font-weight         : bold;
-      font-size           : 14px ;
-      border              : none ;
-    }
+.Intervention-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
 
-    .Container-search-pagination .Container-search  .icon-search {
-      font-size             : 15px ;
-      margin-top            : 11px ;
-      }
+.Data-inter {
+    margin-bottom: 15px; /* Space between sections */
+}
 
-    .Intervention-container {
-      font-size: 13px;
-      height   : 240px ; 
+.Info-time-send {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.Info-time-send h4 {
+    margin: 0;
+    font-weight: 500;
+    color: #333;
+}
+
+.Info-time-send2 {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.Info-time-send2 h5 {
+    margin: 0;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #28a745; /* Green for "Send" */
+}
+
+/* Specific styling for the green checkmark "Send" text */
+.send-indicator {
+    color: #28a745; /* Green color */
+    font-weight: bold;
+    font-size: 0.95em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.time-indicator {
+    color: #ff9800; /* Orange for time remaining */
+    font-weight: bold;
+    font-size: 0.95em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.DI-number {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #007bff; /* Blue for DI-N° */
+    margin: 0;
+    text-align: center;
+}
+
+.Addstyle { /* For the second data section (Status, Section, etc.) */
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.Addstyle1, .Addstyle2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px; /* Space between rows */
+}
+
+.Type_Attribut {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+    color: #555;
+    white-space: nowrap; /* Prevent breaking "Status :" */
+}
+
+.Type_Attribut span:first-child , .Type_M {
+    min-width: 80px; /* Align labels */
+    text-align: left;
+    color:darkblue
+}
+
+.p1, .p2 {
+    margin: 0;
+    font-size: 0.95em;
+    color: #333;
+    font-weight: bold;
+}
+
+.Span2 {
+    font-weight: bold;
+    color: #000; /* Darker color for values */
+}
  
-    }
-  }
+.Type_M_Abr {
+    display: none; /* Hide abbreviated type maintenance by default */
+}
 
-  @media (max-width: 1300px) {
+.button-group-inter {
+    display: flex;
+    justify-content: center; /* Center buttons */
+    gap: 15px; /* Space between buttons */
+    margin-top: 20px;
+    flex-wrap: wrap; /* Allow buttons to wrap */
+}
 
-    .Intervention-container {
-      font-size: 12px;
-      height   : 200px ; 
- 
-    }
-    .Type_M {
-      display: none;
-    }
-    .Type_M_Abr {
-      display: block;
-    }
+.button-group-inter input[type='button'] {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    white-space: nowrap; /* Prevent button text from wrapping */
+}
 
-    .button-group-inter {
-      column-gap: 6px ;
+.button-consulter {
+    background-color:  #0056b3; /* Blue */
+    color: white;
+}
 
-    }
-    .button-consulter  , .button-update-show-show-show , .button-envoyer{
-      font-weight        : normal;
-      height             : 27px;
-      width              : 55px;
-      font-size          : 10px;
-      padding            : 1px  ;
-      left               : 0px;
-    }
+.button-consulter:hover {
+    background-color: #007bff;
+    transform: translateY(-2px);
+}
 
-  }
-  @media (max-width: 1024px) {
-    .Container-pages
-    {
-      display             : flex;
-      max-width           : 40% ;
-      height              : 100%;
-      column-gap          : 10px ;
-      padding             : 0px 5%;
-      overflow-x          : auto;
+.button-update-show {
+   background-color:  #0056b3; /* Blue */
+    color: white;
+}
 
-    }
-    
-    .Container-pages button {
-     margin-top           : 10px;
-      height              : 80% ;
-      min-width           : 60px ;
-      font-size           : 18px;
-      font-weight         : bold;
-      background-color    :#a9a1a1 ;
-      cursor              : pointer ;
-    
-    }
+.button-update-show:hover {
+    background-color: #007bff;
+    transform: translateY(-2px);
+}
 
-    .Container-search {
-      width               : 38%;
-      align-self          : center ;
-      margin              : auto;
-      display             : flex;
-      column-gap          : 10px;
-      margin-top          : 18px;
-    
-    }
-    
-    .Container-search-pagination .Container-search input {
-     width                : 90%;
-      height              : 35px ;
-      border              : 1px solid darkblue ;
-      background-color    : #c7bfbf;
-      font-weight         : bold;
-      font-size           : 14px ;
-      border              : none ;
+.button-envoyer {
+    background-color: #28a745; /* Green */
+    color: white;
+}
 
-    }
+.button-envoyer:hover {
+    background-color: #1e7e34;
+    transform: translateY(-2px);
+}
 
-    .Container-search-pagination .Container-search  .icon-search {
-      font-size             : 15px ;
-      margin-top            : 11px ;
-      }
-
-    .Intervention-container {
-      font-size: 10px;
-      height   : 180px ; 
- 
-    }
-
-        .button-consulter  , .button-update-show , .button-envoyer{
-      font-weight        : normal;
-      height             : 20px;
-      width              : 45px;
-      font-size          : 9px;
-      padding            : 1px  ;
-      left               : 0px;
-    }
-
-  }
-
-  @media (max-width: 800px) {
-    .Container-pages
-    {
-      display             : flex;
-      max-width           : 30% ;
-      height              : 100%;
-      column-gap          : 10px ;
-      padding             : 0px 5%;
-      overflow-x          : auto;
-
-    }
-    
-    .Container-pages button {
-     margin-top           : 10px;
-      height              : 60% ;
-      min-width           : 60px ;
-      font-size           : 18px;
-      font-weight         : bold;
-      background-color    :#a9a1a1 ;
-      cursor              : pointer ;
-    
-    }
-
-    .Container-search {
-      width               : 30%;
-      align-self          : center ;
-      margin              : auto;
-      display             : flex;
-      column-gap          : 10px;
-      margin-top          : 15px;
-    
-    }
-    
-    .Container-search-pagination .Container-search input {
-     width                : 90%;
-      height              : 25px ;
-      border              : 1px solid darkblue ;
-      background-color    : #c7bfbf;
-      font-weight         : bold;
-      font-size           : 9px ;
-      border              : none ;
-
-    }
-
-    .Container-search-pagination .Container-search  .icon-search {
-      font-size             : 15px ;
-      margin-top            : 11px ;
-      }
-
-    .Intervention-container {
-      font-size: 8px;
-      height   : 150px ; 
- 
-    }
-
-        .button-consulter  , .button-update-show , .button-envoyer{
-      font-weight        : normal;
-      height             : 20px;
-      width              : 45px;
-      font-size          : 9px;
-      padding            : 1px  ;
-      left               : 0px;
-    }
-
-  }
-
-  @media (max-width: 700px) {
-
-
-    .container-intreventions {
-      width               : 100%;
-
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .Container-globale {
+        padding: 20px;
     }
     .Interventions-container {
-      padding: 20px 2px 0px 10px;
-    grid-template-columns: 1fr  1fr;
-    column-gap: 0px;
-
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
     }
-    .Intervention-container {
-      font-size: 8px;
-      height   : 150px ; 
- 
-    }
-    .Type_M {
-      display: none;
-    }
-    .Type_M_Abr {
-      display: block;
-    }
-
-    .button-group-inter {
-      column-gap: 4px ;
-
-    }
-    .button-consulter  , .button-update-show , .button-envoyer{
-      font-weight        : normal;
-      height             : 20px;
-      width              : 45px;
-      font-size          : 9px;
-      padding            : 1px  ;
-      left               : 0px;
-    }
-
-  }
-
-
-  @media (max-width: 470px) {
-
-    .Container-search-pagination
-    {
-  width             : 100%;
-  height            : 100px ;
-  display           : flex;
-  flex-direction    : column;
-  row-gap           : 10px;
-  }
-
-  .Container-search {
-    width               : 85% ;
-    align-self          : center ;
-    margin              : auto;
-    display             : flex;
-    column-gap          : 10px;
-    margin-top          : 5px;
-    height              : 23px;
-  
-  }
-  
-  .Container-search-pagination .Container-search input {
-   width                : 90%;
-    height              : 25px ;
-    border              : 1px solid darkblue ;
-    background-color    : #c7bfbf;
-    font-weight         : bold;
-    font-size           : 12px ;
-    outline             : none;
-    border              : none;
-  }
-  
-  .Container-search-pagination .Container-search  .icon-search {
-  font-size             : 15px ;
-  margin-top            : 5px ;
-  }
-
-  .Container-pages
-{
-  display             : flex;
-  max-width           : 98% ;
-  height              : 100%;
-  column-gap          : 10px ;
-  padding             : 0px 5%;
-  overflow-x          : auto;
 }
 
-.Container-pages button {
- margin-top           : 10px;
-  height              : 70% ;
-  min-width           : 50px ;
-  font-size           : 18px;
-  font-weight         : bold;
-  background-color    :#a9a1a1 ;
-  cursor              : pointer ;
-
-}
+@media (max-width: 768px) {
+    .Container-search-pagination {
+        flex-direction: column;
+        align-items: stretch; /* Stretch items to full width */
+        gap: 15px;
+    }
+    .Container-pages {
+        justify-content: center; /* Center page buttons */
+        width: 100%;
+    }
+    .Container-search {
+        max-width: 100%; /* Full width on smaller screens */
+    }
     .Interventions-container {
-     grid-template-columns: 1fr;
-
+        grid-template-columns: 1fr; /* Single column on small screens */
+        padding: 10px 0;
     }
     .Intervention-container {
-      margin:  auto;
-      width : 80% ;
-      font-size: 9px;
- 
+        padding: 15px;
     }
-    .Type_M {
-      display: none;
+    .DI-number {
+        font-size: 1.3em;
     }
-    .Type_M_Abr {
-      display: block;
-    }
-
     .button-group-inter {
-      column-gap: 4px ;
-
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
     }
-    .button-consulter  , .button-update-show , .button-envoyer{
-      font-weight        : normal;
-      height             : 20px;
-      width              : 45px;
-      font-size          : 9px;
-      padding            : 1px  ;
-      left               : 0px;
+    .button-group-inter input[type='button'] {
+        width: 80%; /* Make buttons wider */
+        padding: 10px;
+        font-size: 0.9em;
     }
-  }
+    .Type_M { /* Hide full type maintenance on small screens */
+        display: none;
+    }
+    .Type_M_Abr { /* Show abbreviated type maintenance */
+        display: inline;
+    }
+    .Type_Attribut span:first-child {
+        min-width: 65px; /* Adjust label alignment for smaller screens */
+    }
+    .userEmail {
+        display: none; /* Hide email on very small screens */
+    }
+}
 
-  
+@media (max-width: 480px) {
+    .Container-globale {
+        padding: 15px;
+    }
+    .Container-pages button {
+        padding: 6px 12px;
+        font-size: 0.9em;
+    }
+    .Container-search input[type='search'] {
+        padding: 6px 8px;
+        font-size: 0.9em;
+    }
+    .Intervention-container {
+        padding: 10px;
+    }
+    .Info-time-send {
+        font-size: 0.85em;
+    }
+    .DI-number {
+        font-size: 1.2em;
+    }
+    .p1, .p2 {
+        font-size: 0.9em;
+    }
+    .button-group-inter input[type='button'] {
+        font-size: 0.85em;
+        width: 90%;
+    }
+}

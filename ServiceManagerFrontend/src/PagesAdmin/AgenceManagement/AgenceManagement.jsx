@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faEdit, faTrashAlt, faStar, faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faEdit, faTrashAlt, faStar, faPlus, faTimes , faBuilding } from '@fortawesome/free-solid-svg-icons';
 import { VerifierExpiredToken, UserIdAndRole, token } from '../../Pages/Authentification/Authentification';
 import { useNavigate } from 'react-router-dom';
 import { ConfirmeOperation } from '../../Shared/Components/SweetAlert';
@@ -79,6 +79,7 @@ const AgencyManagement = () => {
     };
 
     const handleEditInDB = async (id_agency, data, etat = false) => {
+        console.log(data );
         const response = await axios.patch(`http://localhost:8000/api/agency/${id_agency}?etat=${etat}`,
             data,
             {
@@ -217,7 +218,9 @@ const AgencyManagement = () => {
     return (
         <div className={styles.container}>
             <header className={styles.headerSection}>
-                <h1>Gestion des Agences</h1>
+                   <h1 className={styles.pageTitle}>
+                       <FontAwesomeIcon icon={faBuilding} className={styles.titleIcon} /> Gestion des Sections
+                   </h1>
                 <button className={`${styles.button} ${styles.primary}`} onClick={openModal}>
                     <FontAwesomeIcon icon={faPlus} />
                     Ajouter une nouvelle agence
@@ -227,8 +230,8 @@ const AgencyManagement = () => {
             {(Erreur && ErrorManagement(null, Erreur, "error", SetErreur)) ||
                 (Success && ErrorManagement(null, Success, "success", SetSuccess))}
 
-            <section className={styles.searchSection}>
-                <div className={styles.searchBar}>
+            <section className={styles.searchSection} >
+                <div className={styles.searchBar} >
                     <input
                         type="text"
                         placeholder="Chercher par nom ou adresse..."
@@ -240,7 +243,7 @@ const AgencyManagement = () => {
                 </div>
             </section>
 
-            <section className={styles.tableContainer}>
+            <section className={styles.tableContainer} >
                 <table className={styles.dataTable}>
                     <thead>
                         <tr>

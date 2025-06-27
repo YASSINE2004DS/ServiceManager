@@ -328,7 +328,7 @@ const PageInterventions = () => {
                   <td>{convertirDate(interv.date)}</td>
                   <td>
                     <span className={interv.status ? styles.statusTextOui : styles.statusTextNon}>
-                      {interv.status ? "Validée" : "En attente"}
+                      {interv.status ? "Validée" : "Non realisé"}
                     </span>
                   </td>
                   <td>
@@ -346,13 +346,13 @@ const PageInterventions = () => {
                     >
                       <FontAwesomeIcon icon={faEye} />
                     </button>
-                    <button
+                    {/* <button
                       className={`${styles.actionBtn} ${styles.editBtn}`}
                       onClick={() => UpdateInterventionNavigate(interv.intervention_id)}
                       title="Modifier l'intervention"
                     >
                       <FontAwesomeIcon icon={faEdit} />
-                    </button>
+                    </button> */}
                     <button
                       className={`${styles.actionBtn} ${styles.deleteBtn}`}
                       onClick={() =>

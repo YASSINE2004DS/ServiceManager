@@ -1,8 +1,10 @@
-import React from 'react';
-import styles from './CompteCard.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faEnvelope, faUserTag, faCheckCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import Swal from 'sweetalert2'; // Import SweetAlert2
+import React                                                       from 'react';
+import styles                                                      from './CompteCard.module.css';
+import { FontAwesomeIcon }                                         from '@fortawesome/react-fontawesome';
+import { faUser, faEnvelope, faUserTag, faCheckCircle, faTrashAlt }from '@fortawesome/free-solid-svg-icons';
+import Swal                                                        from 'sweetalert2'; // Import SweetAlert2
+import { ConfirmeOperation }                                       from '../../Shared/Components/SweetAlert';
+
 
 // Make sure to accept 'user_id' as a prop
 const CompteCard = ({ user_id, first_name, last_name, email, role, onValidate, onDelete }) => {
@@ -87,7 +89,12 @@ const CompteCard = ({ user_id, first_name, last_name, email, role, onValidate, o
             </div>
 
             <div className={styles.buttonContainer}> {/* New container for buttons */}
-                <button className={`${styles.actionButton} ${styles.validateButton}`} onClick={onValidate}>
+                <button className={`${styles.actionButton} ${styles.validateButton}`} onClick={()=>{
+                    ConfirmeOperation(`Etes-vous sûr de vouloir Activé le compte de  ${first_name + last_name}?`,
+                     'Compte est activé ',
+                     ()=> onValidate()
+                    )
+                }}>
                     <FontAwesomeIcon icon={faCheckCircle} /> Valider
                 </button>
                 <button className={`${styles.actionButton} ${styles.deleteButton}`} onClick={handleDelete}>

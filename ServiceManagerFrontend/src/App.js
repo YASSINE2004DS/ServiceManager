@@ -14,6 +14,7 @@ import UpdateIntervention                                     from './Pages/Page
 import PageEmail                                              from './Pages/PageEmail/PageEmail.jsx';
 import Admin                                                  from './PagesAdmin/PageAcceuil/PageAdmin.jsx';      
 import Graphic                                                from './PagesAdmin/PageStatistiquesService/StatistiquesService.jsx'
+import InactiveAccount                                        from './Pages/PageCompteNonActive/CompteNonActive.jsx';
 
 
     function App() {
@@ -23,7 +24,7 @@ import Graphic                                                from './PagesAdmin
            <Routes>
 
               <Route path="/"                                       element={ Authentifier ?   < Acceuil                 />      : <Navigate to="/login" /> }   />
-              <Route path="/sign_up"                                element={                  < SingUp                  />                                 }   />    
+              <Route path="/register"                               element={                  < SingUp                  />                                 }   />    
               <Route path="/login"                                  element={                  < Login                   />                                 }   />    
               <Route path="/ShowInterventions"                      element={ Authentifier ?   < Interventions           />      : <Navigate to="/login" /> }   />  
               <Route path="/AddIntervention"                        element={ Authentifier ?   < Intervention            />      : <Navigate to="/login" /> }   /> 
@@ -36,6 +37,7 @@ import Graphic                                                from './PagesAdmin
               <Route path="*"                                       element={                  < PageErreur              />                                 }   /> 
               <Route path="/sendemail"                              element={ Authentifier ?   < PageEmail               />      : <Navigate to="/login" /> }   />
               <Route path="/graphic"                                element={ Authentifier ?   < Graphic                 />      : <Navigate to="/login" /> }   />
+              <Route path="/inactiveAccount"                        element={ Authentifier ?   < InactiveAccount         />      : <Navigate to="/login" /> }   />
            </Routes>
         </Router>
       );

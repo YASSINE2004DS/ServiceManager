@@ -1,0 +1,236 @@
+
+.container-singUp {
+    height          :  100vh;
+    width           : 100%;
+    display         : flex ;
+    justify-content : center;
+    align-items     : center;
+}
+
+.home-container {
+    display         : flex;
+    flex-direction  : column;
+    align-items     : center;
+    justify-content : center;
+    padding         : 40px 20px 0px  20px;
+    font-family     : 'Segoe UI', sans-serif;
+    background      : linear-gradient(to bottom right, #f0f0f0, #ffffff);
+    color           : #333;
+    text-align      : center;
+    width           : 60%;
+    height          : 80%;
+    border-radius   : 5px;
+    box-shadow      : 2px 2px 5px 3px gray;
+    position        : absolute;
+  }
+
+  /* Ajoutez ceci à votre fichier PageInscription.css */
+
+/* Pour les groupes de champs */
+.input-group {
+    margin-bottom: 20px; /* Espace entre chaque champ */
+}
+
+/* Pour le conteneur icône + input */
+.input-wrapper {
+    position: relative;
+    display: flex; /* Permet à l'icône et l'input d'être sur la même ligne */
+    align-items: center; /* Centre verticalement l'icône avec le texte */
+}
+
+/* Pour les icônes à l'intérieur des champs */
+.input-icon {
+    position: absolute;
+    left: 15px; /* Positionne l'icône à gauche */
+    color: #666; /* Couleur de l'icône */
+    font-size: 1.1em; /* Taille de l'icône */
+    z-index: 1; /* S'assure que l'icône est au-dessus de l'input */
+}
+
+/* Ajustez le padding de l'input pour laisser de la place à l'icône */
+.Input-Form { /* C'est votre classe existante */
+    padding-left: 45px; /* Laissez de l'espace pour l'icône */
+    /* Assurez-vous que les autres styles de Input-Form restent inchangés ici */
+    border-radius: 8px; /* Si vous voulez des bords arrondis */
+    border: 1px solid #ccc; /* Bordure par défaut */
+    transition: border-color 0.3s ease; /* Transition pour le focus */
+}
+
+.Input-Form:focus {
+    border-color: #007bff; /* Couleur de bordure au focus (exemple) */
+    outline: none; /* Enlève la bordure de focus par défaut du navigateur */
+}
+
+/* Styles pour le bouton */
+.button-sing_up { /* Votre classe existante */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Espace entre l'icône et le texte du bouton */
+    /* Assurez-vous que les autres styles du bouton restent inchangés */
+}
+
+/* Styles pour le lien de connexion */
+.login-prompt {
+    margin-top: 25px;
+    font-size: 0.95em;
+    color: #555;
+}
+
+.login-link {
+    color: #007bff; /* Couleur du lien (exemple) */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.login-link:hover {
+    color: #0056b3; /* Couleur au survol */
+    text-decoration: underline;
+}
+
+/* Styles pour les messages d'erreur et de succès */
+.error-message {
+    background-color: #f8d7da; /* Rouge clair */
+    color: #721c24; /* Rouge foncé */
+    border: 1px solid #f5c6cb;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+}
+
+.success-message {
+    background-color: #d4edda; /* Vert clair */
+    color: #155724; /* Vert foncé */
+    border: 1px solid #c3e6cb;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+}
+  
+  .logo {
+    max-width       : 200px;
+    height          : auto;
+    margin-bottom   : 20px;
+    animation       : fadeIn 2s ease-in-out;
+     position       :absolute ;
+     top            : 10px ;
+  }
+    
+  .welcome-section {
+    width           : 50% ;
+    animation       : fadeIn 2s ease-in-out;
+    height          : 85% ;
+    width           :60% ;
+    display         : flex ;
+    flex-direction  : column;
+    padding         : 5px 0px ;
+    justify-content : space-around;
+  }
+
+  form > h2 {
+    color: var(--primary-blue);
+    font-size: 2.2em; /* Exemple */
+    font-weight: 700;
+    margin-bottom: 25px;  }
+
+  form > label {
+    font-family     : Georgia, 'Times New Roman', Times, serif;
+    font-weight     : bold;
+    align-self      : flex-start;
+    color           :#333333 ;
+    margin          : 0% 2% ;
+  }
+
+   .welcome-section .Input-Form {
+    padding         : 3px 10px ;
+    height          : 35px ;
+    margin-bottom   : 10px;
+    border          : 1px solid #a9a1a1;
+    border-radius   : 8px;
+    font-size       : 17px;
+    outline         : none;
+  }
+
+  input:focus {
+    border-color    : #4ca1af;
+    box-shadow      : 0 0 5px rgba(76, 161, 175, 0.5);
+  }
+  
+  .welcome-section h2 {
+    font-size       : x-large ;
+    margin-bottom   : 20px;
+    color           : #005580;
+  }
+
+  .button-sing_up {
+    background-color: #067200;
+    transition      : background 0.3s ease;
+    padding         : 12px 24px;
+    border          : none;
+    border-radius   : 8px;
+    font-size       : 16px;
+    cursor          : pointer;
+    transition      : background 0.3s ease;
+    width           :50% ;
+    align-self      : center ;
+    color           : white ;
+  }
+
+  .button-sing_up:hover {
+    background-color: #3b8b9d;
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px)  ;}
+    to   { opacity: 1; transform: translateY(0)     ;}
+  }
+  
+  /* Responsive */
+  @media (max-width: 700px) {
+    .home-container  {
+        width: 80% ;
+    }
+    .welcome-section
+    {
+       width:100%;
+    }
+    .welcome-section label 
+    {
+      font-size           : 14px;
+      padding: 3px;
+    }
+
+    .welcome-section .Input-Form 
+    {
+      font-size           : 14px;
+    }
+
+    .welcome-section h1 {
+      font-size           : 20px;
+
+    }
+    .welcome-section .Message {
+      margin-top          : 18% ;
+    }
+    input {
+      height              : 25px ;
+      width :90%;
+    }
+
+    .button {
+        margin-top: 5px;
+        font-size: 12px;
+    }
+  
+  }
+  

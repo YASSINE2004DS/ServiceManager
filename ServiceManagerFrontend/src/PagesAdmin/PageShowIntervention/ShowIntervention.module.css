@@ -278,7 +278,7 @@ body {
 /* Texte de statut (moins de "badge", plus de texte stylisé) */
 .statusTextOui {
     font-weight: 600;
-    color: var(--accent-color);
+    color:green;
 }
 
 .statusTextNon {

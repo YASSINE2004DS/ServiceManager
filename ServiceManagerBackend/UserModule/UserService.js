@@ -3,6 +3,9 @@ import bcrypt from 'bcryptjs';
 import Schema from './UserValidator.js'; // Contains the validation schemas.
 import Models from '../DatabaseModule/ModelAssociations.js'; // Contains the database models.
 import AuthMiddleware from '../AuthModule/AuthMiddleware.js'; // Contains the authentication operations.
+import nodemailer from 'nodemailer';
+import fs from 'fs';
+import path from 'path';
 
 const { createUserSchema, updateUserSchema, loginUserSchema } = Schema;
 const { User, Agency } = Models;
@@ -152,6 +155,77 @@ class UserService {
             // Update the user's active status to true.
             user.active = true;
             await user.save();
+
+   
+            
+                        // Send the email using nodemailer.
+                        const transporter = nodemailer.createTransport({
+                            service: 'gmail',
+                            auth: {
+                                user: process.env.EMAIL_USER,
+                                pass: process.env.EMAIL_PASS
+                            }
+                        });
+            
+     const emailHtml = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body { font-family: 'Arial', sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; color: #333; }
+                .container { background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); max-width: 600px; margin: 20px auto; }
+                .header { text-align: center; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+                .header h1 { color: #003366; font-size: 24px; margin: 0; }
+                .content { padding: 20px 0; line-height: 1.6; }
+                .button-container { text-align: center; margin: 30px 0; }
+                .button { background-color: #FF6F00; color: #ffffff; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: bold; }
+                .footer { text-align: center; font-size: 12px; color: #777; border-top: 1px solid #eee; padding-top: 20px; margin-top: 20px; }
+                .footer a { color: #003366; text-decoration: none; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>Bienvenue chez Safarelec!</h1>
+                </div>
+                <div class="content">
+                    <p>Cher/Chère ${user.first_name + ' ' + user.last_name || 'utilisateur'},</p>
+                    <p>Nous avons le plaisir de vous informer que votre compte sur **Safarelec** a été activé avec succès ! 🎉</p>
+                    <p>Vous pouvez désormais vous connecter et profiter pleinement de toutes nos fonctionnalités.</p>
+
+                    <div class="button-container">
+                        <a href="http://localhost:3001/login" class="button">Se connecter maintenant</a>
+                    </div>
+
+                    <p>Votre identifiant (Email) : <strong>${user.email}</strong></p>
+                    <p>Si vous avez des questions ou rencontrez des difficultés, n'hésitez pas à nous contacter.</p>
+                </div>
+                <div class="footer">
+                    <p>Cordialement,<br>L'équipe de Safarelec</p>
+                    <p><a href="http://localhost:3001">Notre site web</a></p>
+                    <p>Ceci est un e-mail automatique, merci de ne pas y répondre directement.</p>
+                </div>
+            </div>
+        </body>
+        </html>
+    `;
+                        const mailOptions = {
+                            from: "safarelec" + process.env.EMAIL_USER,
+                            to: user.email,
+                            subject: `Votre compte Safarelec est maintenant actif ! 🎉`,
+                            html: emailHtml,
+                        };
+            
+                        await transporter.sendMail(mailOptions, (error) => {
+                            if (error) {
+                                return res.status(500).json({ Error: error.message});
+                            } else {
+                                return res.status(201).json({
+                                    message: 'Email sent successfully',
+                                    emailId: email.email_id
+                                });
+                            }
+                        });
 
             return res.status(200).json({ message: 'User activated successfully' });
         } catch (error) {

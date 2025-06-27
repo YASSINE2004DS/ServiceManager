@@ -1,0 +1,158 @@
+/* src/pages/AccountStatus/AccountNotActivated.module.css */
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f6f8; /* Light grey background */
+    padding: 20px;
+    box-sizing: border-box; /* Include padding in element's total width and height */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* Soft, professional shadow */
+    padding: 40px;
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    transform: translateY(-20px); /* Lift card slightly */
+    animation: fadeInSlideUp 0.6s ease-out forwards;
+}
+
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.warningIcon {
+    font-size: 4em; /* Larger icon */
+    color: #ffc107; /* Warning yellow/orange */
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 2.2em;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.message {
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.subMessage {
+    font-size: 0.95em;
+    color: #777;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.instructions {
+    background-color: #e9f7ef; /* Light green background for instructions */
+    border-left: 5px solid #28a745; /* Green border */
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.instructions p {
+    margin: 10px 0;
+    color: #333;
+    font-size: 0.95em;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.instructionIcon {
+    color: #28a745; /* Green for instruction icons */
+    font-size: 1.2em;
+    flex-shrink: 0; /* Prevent icon from shrinking */
+}
+
+.buttonGroup {
+    display: flex;
+    flex-direction: column; /* Stack buttons by default */
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.button {
+    background-color: #007bff; /* Primary blue */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.buttonIcon {
+    font-size: 1.1em;
+}
+
+.secondaryButton {
+    background-color: #6c757d; /* Secondary grey */
+}
+
+.secondaryButton:hover {
+    background-color: #5a6268;
+}
+
+/* Responsive Adjustments */
+@media (min-width: 768px) {
+    .buttonGroup {
+        flex-direction: row; /* Buttons side-by-side on larger screens */
+        justify-content: center;
+    }
+    .button {
+        flex: 1; /* Make buttons take equal width */
+        max-width: 250px; /* Limit max width for buttons */
+    }
+}
+
+@media (max-width: 500px) {
+    .card {
+        padding: 30px 20px;
+        border-radius: 8px;
+    }
+    .warningIcon {
+        font-size: 3.5em;
+    }
+    .title {
+        font-size: 1.8em;
+    }
+    .message, .subMessage, .instructions p {
+        font-size: 0.9em;
+    }
+    .button {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+}

@@ -88,7 +88,7 @@ class InterventionService {
             if(intervention.user_id != userId && User_courant.role !== 'admin') return res.status(403).json({message : "Authorization failed"}) ;
 
             // Return the Interevention informations
-            return res.json(intervention );
+            return res.status(200).json(intervention);
         }catch (error) {
             // handle error
             res.status(500).json({ message : error.message });
@@ -96,37 +96,79 @@ class InterventionService {
     }
 
 
-    async getInterventionsByIdUser(req , res) {
-        try {
-            //reteive the id user from the request parameters    
-            const userId = req.params.id;
-            const page = parseInt(req.query.page) || 1; // get the page number from the query string  
-            const limit =  parseInt(req.query.limit) || 1; // get the limit from the query string
-            const offset = (page - 1) * limit; // calculate the offset
+async getInterventionsByIdUser(req, res) {
+    try {
+        // 1. Validate userId
+        const userId = req.params.id;
 
-            if(isNaN(Number(userId)))
-                return res.status(400).json({ message: "Intervention id not valid!" });
+        // Use a more robust check for valid ID (e.g., UUID if applicable, or simple integer check)
+        // For numbers, ensure it's a positive integer.
+        if (isNaN(parseInt(userId)) || parseInt(userId) <= 0) {
+            return res.status(400).json({ message: "L'identifiant de l'utilisateur n'est pas valide." });
+        }
 
-            // Get the Intreventions from the database.
-            const interventions = await Intervention.findAll({where: { user_id: userId } ,
-                                                            attributes: { exclude: ['updatedAt'] } ,
-                                                            include: {
-                                                                model: Section,
-                                                                attributes: ['name'] // <-- optionnel : liste des attributs à retourner
-                                                              },
-                                                            });
-            // If the Intervention not exist.
-            // if(!rows) return res.status(400).json({ message: `No Intervention has the id : ${userId}` });
+        // 2. Parse and validate pagination parameters
+        // Default values for page and limit should be reasonable for a first fetch.
+        // A limit of 1 is usually not what's intended for pagination. Let's use 10 or 20 as a common default.
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10; // Default limit set to 10 for better usability
 
-            // Return the Interevention informations
-            return res.json({
-                interventions, // return the data
+        // Ensure page and limit are positive integers
+        if (page <= 0 || limit <= 0) {
+            return res.status(400).json({ message: "Les paramètres de pagination (page, limit) doivent être des nombres positifs." });
+        }
+
+        const offset = (page - 1) * limit;
+
+        // 3. Fetch Interventions from the database with pagination
+        // Using `findAndCountAll` is more efficient for pagination as it returns both data and total count.
+        const { count, rows: interventions } = await Intervention.findAndCountAll({
+            where: { user_id: userId },
+            attributes: { exclude: ['updatedAt'] }, // Exclude 'updatedAt' from results
+            include: {
+                model: Section,
+                attributes: ['name'] // Include only the 'name' attribute from the Section model
+            },
+            limit: limit,   // Apply the limit for pagination
+            offset: offset, // Apply the offset for pagination
+            order: [['createdAt', 'DESC']] // Optional: Order interventions, e.g., by most recent
+        });
+
+        // 4. Handle no interventions found for the user
+        // It's better to return an empty array and total count than a 400 error.
+        // A 400 status means a bad request, not "no data found for this valid request".
+        if (interventions.length === 0 && page === 1) {
+            return res.status(200).json({
+                message: `Aucune intervention trouvée pour l'utilisateur avec l'ID : ${userId}.`,
+                interventions: [],
+                totalItems: 0,
+                totalPages: 0,
+                currentPage: page
             });
-        }catch (error) {
-            // handle error
-            res.status(500).json({ message : error.message });
         }
+
+        // 5. Calculate total pages
+        const totalPages = Math.ceil(count / limit);
+
+        // 6. Return the interventions and pagination metadata
+        return res.status(200).json({
+            message: `Interventions récupérées avec succès pour l'utilisateur ${userId}.`,
+            interventions: interventions,
+            totalItems: count,      // Total number of items (interventions)
+            totalPages: totalPages, // Total number of pages
+            currentPage: page,      // Current page number
+            limit: limit            // Limit per page
+        });
+
+    } catch (error) {
+        // 7. Handle internal server errors
+        console.error(`Erreur lors de la récupération des interventions pour l'utilisateur ${req.params.id}:`, error);
+        res.status(500).json({
+            message: "Une erreur est survenue lors de la récupération des interventions.",
+            error: error.message
+        });
     }
+}
 
 
     async createNewIntervention(req , res){

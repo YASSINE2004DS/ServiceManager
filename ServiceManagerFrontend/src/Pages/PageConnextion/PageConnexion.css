@@ -1,3 +1,111 @@
+/* Ajoutez ceci à votre fichier PageConnexion.css */
+
+.register-prompt {
+    /* margin-top: 25px; Espace au-dessus du texte */
+    position: absolute;
+    bottom: 0;
+    right:5% ;
+    font-size: 0.95em;
+    color: #666; /* Couleur de texte plus douce */
+}
+
+.register-link {
+    color: #003366; /* Utilisation de votre bleu primaire */
+    text-decoration: none; /* Pas de soulignement par défaut */
+    font-weight: 600; /* Plus gras */
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.register-link:hover {
+    color: #FF6F00; /* Orange secondaire au survol */
+    text-decoration: underline; /* Souligner au survol */
+}
+
+/* Vous pourriez aussi vouloir ajouter/modifier ces styles pour harmoniser avec PageInscription.css */
+
+/* Variables de couleurs si elles ne sont pas déjà définies globalement */
+:root {
+    --primary-blue: #003366;
+    --secondary-orange: #FF6F00;
+    --text-dark: #333333;
+    --text-medium: #666666;
+    --background-light: #F0F4F8;
+    --background-white: #FFFFFF;
+    --error-red: #dc3545;
+    --input-border: #ced4da;
+    --input-focus-border: var(--primary-blue);
+}
+
+/* Harmonisation du style des titres si nécessaire */
+.welcome-section-form h2 {
+    color: var(--primary-blue);
+    font-size: 2.2em; /* Exemple */
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+/* Harmonisation des labels */
+.welcome-section-form label {
+    font-family: 'Poppins', sans-serif; /* Assurez-vous d'utiliser la même police */
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0 0 8px 0;
+    font-size: 0.95em;
+    display: block; /* Pour que le label prenne toute la largeur */
+}
+
+/* Harmonisation des inputs */
+.Input-Form {
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    padding: 12px 15px; /* Ou ajustez pour les icônes si vous les ajoutez ici plus tard */
+    font-size: 1em;
+    color: var(--text-dark);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box; /* Très important pour le layout */
+    width: 100%; /* S'assurer qu'il prend la largeur disponible */
+}
+
+.Input-Form:focus {
+    border-color: var(--input-focus-border);
+    box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.25);
+    outline: none;
+}
+
+/* Harmonisation du bouton */
+.button-cnx {
+    background-color: var(--secondary-orange);
+    color: white;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.15em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    margin-top: 25px;
+    width: 100%; /* Bouton pleine largeur */
+}
+
+.button-cnx:hover {
+    background-color: #E66300;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(255, 111, 0, 0.3);
+}
+
+/* Harmonisation des messages d'erreur */
+.error-message {
+    background-color: #f8d7da; /* Rouge clair */
+    color: var(--error-red); /* Rouge foncé */
+    border: 1px solid #f5c6cb;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.95em;
+    /* Si vous voulez des icônes ici, vous devrez ajuster le JS et les styles */
+}
+
+
 .container-cnx {
     height          :  100vh;
     width           : 100%;
@@ -96,6 +204,8 @@
     color           : red;
     margin          : 0;
   }
+
+  
 
   /* Animations */
   @keyframes fadeIn {

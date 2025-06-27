@@ -18,12 +18,22 @@
     border-bottom: 1px solid #e9ecef;
 }
 
-.headerSection h1 {
-    color: #343a40;
-    font-size: 2em;
-    margin: 0;
+.pageTitle {
+  font-size: 2.4em;
+  color: var(--primary-dark-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-weight: 600;
+  margin: 0;
+
 }
 
+.titleIcon {
+  font-size: 1.1em;
+  color: var(--primary-color);
+}
 /* Buttons */
 .button {
     padding: 10px 20px;
@@ -105,6 +115,7 @@
 /* Search Section */
 .searchSection {
     margin-bottom: 30px;
+    padding : 10px 0 ;
 }
 
 .searchBar {
@@ -140,6 +151,7 @@
 .tableContainer {
     overflow-x: auto;
     margin-bottom: 30px;
+    padding : 0 ;
 }
 
 .dataTable {

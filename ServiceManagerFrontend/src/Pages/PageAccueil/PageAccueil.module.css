@@ -1,0 +1,716 @@
+/* src/pages/Home/HomePage.module.css - Nouvelle Version */
+
+/* Define Colors as CSS Variables */
+:root {
+    --primary-blue: #003366;       /* Deep Blue */
+    --secondary-orange: #FF6F00;   /* Energetic Orange */
+    --text-dark: #333333;
+    --text-medium: #666666;
+    --background-light: #F0F4F8; /* Very light grey-blue */
+    --background-white: #FFFFFF;
+    --background-dark: #2C3E50; /* Dark grey-blue for footer */
+    --button-hover-light: #E0EBF5; /* Light hover for primary buttons */
+}
+
+.homePage {
+    font-family: 'Poppins', sans-serif; /* A more modern font */
+    color: var(--text-dark);
+    line-height: 1.6;
+    background-color: var(--background-light);
+    overflow-x: hidden; /* Prevent horizontal scroll from animations */
+}
+
+/* --- Header --- */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background-color: var(--background-white);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* More pronounced shadow */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logoContainer {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Slightly more space */
+}
+
+.companyLogo {
+    height: 50px; /* Slightly larger logo */
+    width: auto;
+}
+
+.companyName {
+    font-size: 2em; /* Larger name */
+    font-weight: 800; /* Bolder */
+    color: var(--primary-blue);
+    letter-spacing: -0.5px; /* Tighter spacing */
+}
+
+.mainNav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px; /* More space between nav items */
+    margin: 0;
+    padding: 0;
+}
+
+.navLink {
+    text-decoration: none;
+    color: var(--text-medium);
+    font-weight: 600;
+    font-size: 1.08em;
+    padding: 5px 0;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+/* Underline effect for nav links */
+.navLink::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    bottom: -5px;
+    left: 0;
+    background-color: var(--secondary-orange); /* Orange underline */
+    transition: width 0.3s ease-out;
+}
+
+.navLink:hover::after {
+    width: 100%;
+}
+.navLink:hover {
+    color: var(--primary-blue);
+}
+
+.authButtonsHeader button {
+    padding: 10px 18px; /* Larger padding */
+    border: none;
+    border-radius: 8px; /* Slightly more rounded */
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 15px;
+}
+
+.loginButtonHeader {
+    background-color: transparent;
+    color: var(--primary-blue);
+    border: 2px solid var(--primary-blue); /* Stronger border */
+}
+.loginButtonHeader:hover {
+    background-color: var(--primary-blue);
+    color: var(--background-white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 51, 102, 0.2);
+}
+
+.registerButtonHeader {
+    background-color: var(--secondary-orange); /* Orange for registration */
+    color: white;
+}
+.registerButtonHeader:hover {
+    background-color: #E66300; /* Darker orange */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255, 111, 0, 0.3);
+}
+
+/* --- Hero Section --- */
+.heroSection {
+    background: url('./Shared/electro1.jpeg') no-repeat center center/cover;
+    color: white;
+    text-align: center;
+    padding: 120px 5%; /* More vertical padding */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 700px; /* Taller hero */
+    position: relative;
+}
+
+.heroSection::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
+    z-index: 1;
+}
+
+.heroContent {
+    position: relative;
+    z-index: 2;
+    max-width: 1000px; /* Wider content area */
+    animation: fadeInScale 1s ease-out forwards;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.heroTitle {
+    font-size: 4em; /* Larger title */
+    margin-bottom: 25px;
+    font-weight: 900; /* Extra bold */
+    line-height: 1.1;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+.heroSubtitle {
+    font-size: 1.8em; /* Larger subtitle */
+    margin-bottom: 50px;
+    font-weight: 300; /* Lighter weight */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.heroButtons {
+    display: flex;
+    justify-content: center;
+    gap: 25px; /* More space */
+    flex-wrap: wrap;
+}
+
+.heroButtonPrimary, .heroButtonSecondary {
+    padding: 18px 40px; /* Larger buttons */
+    border: none;
+    border-radius: 50px;
+    font-size: 1.2em; /* Larger font */
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.heroButtonPrimary {
+    background-color: var(--secondary-orange); /* Orange primary */
+    color: white;
+}
+
+.heroButtonPrimary:hover {
+    background-color: #E66300; /* Darker orange */
+    transform: translateY(-4px); /* More pronounced lift */
+    box-shadow: 0 8px 20px rgba(255, 111, 0, 0.4);
+}
+
+.heroButtonSecondary {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.heroButtonSecondary:hover {
+    background-color: rgba(255, 255, 255, 0.15); /* More visible hover */
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+}
+
+/* --- Section Styling (General) --- */
+section {
+    padding: 100px 5%; /* Consistent padding */
+}
+
+.sectionTitle {
+    font-size: 3em; /* Larger section titles */
+    font-weight: 800;
+    color: var(--primary-blue);
+    text-align: center;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.sectionTitle svg { /* Icon in title */
+    color: var(--secondary-orange); /* Orange icon */
+}
+
+.sectionDescription {
+    font-size: 1.2em; /* Larger description */
+    color: var(--text-medium);
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 60px auto; /* More margin below */
+}
+
+/* --- About Section --- */
+.aboutSection {
+    background-color: var(--background-light);
+}
+
+.aboutContent {
+    max-width: 1100px; /* Wider content */
+    margin: 0 auto;
+}
+
+.aboutContent p {
+    text-align: justify;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    color: var(--text-dark);
+}
+
+/* --- Services Section --- */
+.servicesSection {
+    background-color: var(--background-white);
+}
+
+.servicesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Slightly wider cards */
+    gap: 40px; /* More space between cards */
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.serviceCard {
+    background-color: var(--background-white);
+    border-radius: 12px; /* More rounded corners */
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1); /* Stronger shadow */
+    overflow: hidden;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative; /* For the gradient overlay */
+}
+
+.serviceCard:hover {
+    transform: translateY(-12px); /* More pronounced lift */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.serviceImageWrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 60%; /* Aspect ratio for images */
+    overflow: hidden;
+}
+
+.serviceImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.serviceCard:hover .serviceImage {
+    transform: scale(1.1); /* Zoom effect on hover */
+}
+
+/* New: Gradient overlay for icons on service card */
+.serviceImageWrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 51, 102, 0.8), rgba(0, 51, 102, 0.2)); /* Primary blue gradient */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+.serviceCard:hover .serviceImageWrapper::after {
+    opacity: 1;
+}
+
+
+.serviceIconOverlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--secondary-orange); /* Orange background for icon */
+    border-radius: 50%;
+    width: 90px; /* Larger icon circle */
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3; /* Above image and gradient */
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.serviceCard:hover .serviceIconOverlay {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1); /* Pop effect */
+}
+
+.serviceIcon {
+    font-size: 3.2em; /* Larger icon */
+    color: white;
+}
+
+.serviceCard h3 {
+    font-size: 1.8em; /* Larger service title */
+    color: var(--primary-blue);
+    margin: 25px 25px 15px 25px;
+    text-align: center;
+    font-weight: 700;
+}
+
+.serviceCard p {
+    font-size: 1.05em; /* Slightly larger description */
+    color: var(--text-medium);
+    padding: 0 25px 30px 25px; /* More padding bottom */
+    text-align: center;
+    flex-grow: 1;
+}
+
+/* --- Call to Action Section (Bottom) --- */
+.ctaSection {
+    background-color: var(--primary-blue); /* Primary blue background */
+    color: white;
+    text-align: center;
+    padding: 100px 5%; /* Consistent padding */
+}
+
+.ctaTitle {
+    font-size: 3.5em; /* Larger title */
+    margin-bottom: 25px;
+    font-weight: 800;
+}
+
+.ctaSubtitle {
+    font-size: 1.5em; /* Larger subtitle */
+    margin-bottom: 50px;
+    max-width: 900px;
+    margin: 0 auto 50px auto;
+}
+
+.ctaButtons {
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* More space */
+    flex-wrap: wrap;
+}
+
+.ctaButtonPrimary, .ctaButtonSecondary {
+    padding: 18px 45px; /* Larger buttons */
+    border: none;
+    border-radius: 50px;
+    font-size: 1.25em; /* Larger font */
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ctaButtonPrimary {
+    background-color: var(--secondary-orange); /* Orange primary for CTA */
+    color: white;
+}
+
+.ctaButtonPrimary:hover {
+    background-color: #E66300;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(255, 111, 0, 0.4);
+}
+
+.ctaButtonSecondary {
+    background-color: transparent;
+    color: white;
+    border: 3px solid white; /* Thicker border */
+}
+
+.ctaButtonSecondary:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+}
+
+/* --- Footer --- */
+.footer {
+    background-color: var(--background-dark); /* Dark grey-blue */
+    color: white;
+    padding: 60px 5% 30px 5%; /* More padding */
+}
+
+.footerContent {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 40px; /* More space */
+    max-width: 1300px;
+    margin: 0 auto 40px auto;
+}
+
+.footerBrand, .footerLinks, .footerContact {
+    flex: 1;
+    min-width: 250px; /* Ensure columns don't get too narrow */
+}
+
+.footerLogo {
+    height: 60px; /* Larger logo in footer */
+    margin-bottom: 20px;
+}
+
+.footerTagline {
+    font-size: 1em;
+    color: #bbb;
+}
+
+.footerLinks h4, .footerContact h4 {
+    font-size: 1.5em; /* Larger footer titles */
+    margin-bottom: 25px;
+    color: var(--secondary-orange); /* Orange titles */
+    border-bottom: 3px solid var(--secondary-orange); /* Thicker orange underline */
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+.footerLinks ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footerLinks li {
+    margin-bottom: 12px;
+}
+
+.footerLinks a {
+    text-decoration: none;
+    color: #bbb;
+    font-size: 1.05em;
+    transition: color 0.3s ease;
+}
+
+.footerLinks a:hover {
+    color: white;
+}
+
+.footerContact p {
+    margin-bottom: 12px;
+    color: #bbb;
+    font-size: 1.05em;
+}
+
+.footerBottom {
+    text-align: center;
+    border-top: 1px solid #555;
+    padding-top: 25px;
+    font-size: 0.95em;
+    color: #bbb;
+}
+
+
+/* --- Responsive Design --- */
+@media (max-width: 1200px) {
+    .heroTitle {
+        font-size: 3.5em;
+    }
+    .heroSubtitle {
+        font-size: 1.6em;
+    }
+    .sectionTitle {
+        font-size: 2.5em;
+    }
+    .servicesGrid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+    }
+    .ctaTitle {
+        font-size: 3em;
+    }
+}
+
+@media (max-width: 992px) {
+    .companyName {
+        font-size: 1.8em;
+    }
+    .mainNav ul {
+        gap: 20px;
+    }
+    .navLink {
+        font-size: 1em;
+    }
+    .heroSection {
+        padding: 100px 3%;
+        min-height: 600px;
+    }
+    .heroTitle {
+        font-size: 3em;
+    }
+    .heroSubtitle {
+        font-size: 1.4em;
+    }
+    .heroButtonPrimary, .heroButtonSecondary {
+        padding: 15px 30px;
+        font-size: 1.1em;
+    }
+    .sectionTitle {
+        font-size: 2.2em;
+    }
+    .sectionDescription {
+        font-size: 1.1em;
+    }
+    .serviceCard h3 {
+        font-size: 1.6em;
+    }
+    .serviceCard p {
+        font-size: 0.95em;
+    }
+    .ctaTitle {
+        font-size: 2.5em;
+    }
+    .ctaSubtitle {
+        font-size: 1.3em;
+    }
+    .ctaButtonPrimary, .ctaButtonSecondary {
+        padding: 15px 35px;
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px 4%;
+    }
+    .mainNav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+    .authButtonsHeader {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        margin-left: 0;
+    }
+    .authButtonsHeader button {
+        width: 100%;
+        margin-left: 0;
+        justify-content: center;
+    }
+
+    .heroSection {
+        padding: 80px 4%;
+        min-height: 500px;
+    }
+    .heroTitle {
+        font-size: 2.5em;
+    }
+    .heroSubtitle {
+        font-size: 1.2em;
+    }
+    .heroButtons {
+        flex-direction: column;
+        width: 90%;
+    }
+    .heroButtonPrimary, .heroButtonSecondary {
+        width: 100%;
+    }
+
+    section {
+        padding: 80px 4%;
+    }
+    .sectionTitle {
+        font-size: 2em;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .sectionDescription {
+        font-size: 1em;
+    }
+
+    .footerContent {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .footerBrand, .footerLinks, .footerContact {
+        min-width: unset;
+        width: 100%;
+    }
+    .footerLinks h4, .footerContact h4 {
+        margin: 20px auto 15px auto;
+        border-bottom: 2px solid var(--secondary-orange);
+    }
+}
+
+@media (max-width: 480px) {
+    .companyLogo {
+        height: 40px;
+    }
+    .companyName {
+        font-size: 1.6em;
+    }
+    .navLink {
+        font-size: 0.9em;
+    }
+
+    .heroSection {
+        padding: 60px 4%;
+        min-height: 400px;
+    }
+    .heroTitle {
+        font-size: 2em;
+    }
+    .heroSubtitle {
+        font-size: 1em;
+    }
+
+    section {
+        padding: 60px 4%;
+    }
+    .sectionTitle {
+        font-size: 1.8em;
+    }
+    .sectionDescription {
+        font-size: 0.95em;
+    }
+    .serviceCard h3 {
+        font-size: 1.4em;
+    }
+    .serviceCard p {
+        font-size: 0.9em;
+    }
+
+    .ctaTitle {
+        font-size: 2em;
+    }
+    .ctaSubtitle {
+        font-size: 1.2em;
+    }
+    .ctaButtonPrimary, .ctaButtonSecondary {
+        padding: 12px 25px;
+        font-size: 1em;
+    }
+
+    .footerLinks h4, .footerContact h4 {
+        font-size: 1.3em;
+    }
+    .footerLinks a, .footerContact p {
+        font-size: 0.95em;
+    }
+}

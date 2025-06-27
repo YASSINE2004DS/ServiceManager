@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import CompteCard from './CompteCard';
-import styles from './ComptesNonActive.module.css'; // Import the CSS Module
+import { FontAwesomeIcon }            from '@fortawesome/react-fontawesome';
+import { faUsersSlash }               from '@fortawesome/free-solid-svg-icons';
+import CompteCard                     from './CompteCard';
+import styles                         from './ComptesNonActive.module.css'; // Import the CSS Module
+
 
 const ComptesNonActive = () => {
     const [comptesNonActives, setComptesNonActives] = useState([]);
@@ -79,7 +82,9 @@ const ComptesNonActive = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h1>Comptes Non Actifs</h1>
+                   <h1 className={styles.pageTitle}>
+                       <FontAwesomeIcon icon={faUsersSlash} className={styles.titleIcon} /> Gestion des Sections
+                   </h1>
             </div>
 
             {error && <p className={styles.errorMessage}>{error}</p>}

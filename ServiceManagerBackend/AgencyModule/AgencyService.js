@@ -185,7 +185,7 @@ class AgencyService {
           // update the agency
             const agency = await Agency.update({
                 name            : req.body.name,
-                address         : req.body.address,
+                adress          : req.body.adress,
                 start_time      : req.body.start_time,
                 end_time        : req.body.end_time,
                 current         : req.body.current

@@ -167,7 +167,7 @@ const PageInterventions = () => {
 
       RecupererInterventions()
       .then(response=>{
-          SetInterventions(response.data.data);
+          SetInterventions(response.data.interventions);
           setPages(response.data.pages);
          })
       .catch(erreur=>{
@@ -256,9 +256,7 @@ const PageInterventions = () => {
          ) :(
           <div className={styles['Container-globale']}>
             {Success &&  ErrorManagement(null ,Success , "success" , ()=>{} )}
-            {Interventions.length == 0 && 
-               <h2 className={styles['NotExistData']}>Aucune intervention trouvée.</h2>
-            }
+
               <div className={styles['Container-search-pagination']}>
                   <div className={styles['Container-pages']}>
                       {[...Array(pages)].map((_, index) => (
@@ -305,7 +303,7 @@ const PageInterventions = () => {
 
                       <div className={styles['Info-time-send2']}>
                       {interv.validate && <h5 style={{color:'green',}}>✅Send</h5>} 
-                      {!loading.time && Time[index] !== 'Termine' && <h5>⏳{Time[index]}</h5>}
+                      {!loading.time &&  !(interv.validate) && Time[index] !== 'Termine' && <h5>⏳{Time[index]}</h5>}
                       </div>
 
                     </div>
@@ -338,7 +336,7 @@ const PageInterventions = () => {
                   value="Voir plus"
                   onClick={()=>ConsulterInterventionNavigate(interv.intervention_id)}/>
 
-                { !loading.time &&  (Time[index] !== 'Termine') &&  <input 
+                { !loading.time &&   !(interv.validate) && (Time[index] !== 'Termine') &&  <input 
                   className={styles['button-update-show']}
                   type='button' 
                   value="Modifier"
@@ -359,7 +357,9 @@ const PageInterventions = () => {
      */}
     </div>  
      </div>)}
-          
+                      {Array.isArray(Interventions) && Interventions.length == 0 && 
+               <h2 className={styles['NotExistData']}>Aucune intervention trouvée.</h2>
+            }
   </div>
   );
 };

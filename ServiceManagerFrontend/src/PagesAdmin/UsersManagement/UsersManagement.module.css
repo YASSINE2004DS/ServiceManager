@@ -20,11 +20,28 @@
     border-bottom: 2px solid #f0f2f5;
 }
 
-.sectionHeader h2 {
-    color: #2c3e50;
-    font-size: 2.1em;
-    margin: 0;
-    font-weight: 600;
+.headerSection {
+  text-align: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 20px;
+}
+
+.pageTitle {
+  font-size: 2.4em;
+  color: var(--primary-dark-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-weight: 600;
+  margin: 0;
+
+}
+
+.titleIcon {
+  font-size: 1.1em;
+  color: var(--primary-color);
 }
 
 .primaryButton {

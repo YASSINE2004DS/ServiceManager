@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "array-flatten": "^3.0.0",
+    "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "react-icons": "^5.5.0"
   },

@@ -1,7 +1,7 @@
-import{ useState } from 'react';
+import{ useState }      from 'react';
 
-import './PageInscription.css';
-import logo from '../../Shared/Assets/safarelec-logo.png';
+import styles           from './PageInscription.module.css';
+import logo             from '../../Shared/Assets/safarelec-logo.png';
 
 /**
  * @class PageInscription
@@ -82,18 +82,18 @@ const PageInscription = () => {
     };
 
     return (
-        <div className='container-singUp'>
+        <div className={styles["container-singUp"]}>
             {/* Main wrapper for the registration page content */}
-            <div className="home-container">
+            <div className={styles["home-container"]}>
                 {/* Company branding element */}
-                <img src={logo} alt="SAFARELEC Logo" className="logo" />
+                <img src={logo} alt="SAFARELEC Logo" className={styles["logo"]} />
                 
                 {/* 
                  * Registration form component
                  * Handles user input collection and submission
                  */}
                 <form 
-                    className="welcome-section"
+                    className={styles["welcome-section"]}
                     action="" 
                     method="post" 
                     onSubmit={handleSubmit}
@@ -101,13 +101,13 @@ const PageInscription = () => {
                     <h2>Create an Account</h2>
 
                     {/* Error message display */}
-                    {error && <p className="error-message">{error}</p>}
+                    {error && <p className={styles["error-message"]}>{error}</p>}
 
                     {/* User's first name input field */}
                     <label htmlFor="first_name">First name:</label>
                     <input  
                         id="first_name"
-                        className='Input-Form'
+                        className={styles["Input-Form"]}
                         type="text" 
                         placeholder='Enter your first name'
                         value={formData.first_name}
@@ -119,7 +119,7 @@ const PageInscription = () => {
                     <label htmlFor="last_name">Last name:</label>
                     <input  
                         id="last_name"
-                        className='Input-Form'
+                        className={styles["Input-Form"]}
                         type="text" 
                         placeholder='Enter your last name'
                         value={formData.last_name}
@@ -131,7 +131,7 @@ const PageInscription = () => {
                     <label htmlFor="email">Email:</label>
                     <input  
                         id="email"
-                        className='Input-Form'
+                        className={styles["Input-Form"]}
                         type="email" 
                         placeholder='Enter your email'
                         value={formData.email}
@@ -143,11 +143,12 @@ const PageInscription = () => {
                     <label htmlFor="psd">Password:</label>
                     <input  
                         id="psd"
-                        className='Input-Form'
+                        className={styles["Input-Form"]}
                         type="password" 
                         placeholder='Enter password'
                         value={formData.password}
                         onChange={(e)=>{setFormData({...formData, password: e.target.value})}}
+                        autoComplete='new-password'
                         required
                     />
 
@@ -155,7 +156,7 @@ const PageInscription = () => {
                     <label htmlFor="Cpsd">Confirm Password:</label>
                     <input  
                         id="Cpsd"
-                        className='Input-Form'
+                        className={styles["Input-Form"]}
                         type="password" 
                         placeholder='Confirm your password'
                         value={formData.confirm_password}
@@ -164,7 +165,7 @@ const PageInscription = () => {
                     />       
                     
                     {/* Form submission button */}
-                    <button className="button-sing_up">Sign Up</button>
+                    <button className={styles["button-sing_up"]}>Sign Up</button>
                 </form>
             </div>
         </div>

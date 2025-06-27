@@ -20,8 +20,8 @@ export const UserIdAndRole = (token) => {
   try {
     const decoded = jwtDecode(token);
     return {
-      user_Id: decoded.user_id,
-      role: decoded.role,
+      user_Id : decoded.user_id,
+      role    : decoded.role
     };
   } catch (error) {
     return null;
